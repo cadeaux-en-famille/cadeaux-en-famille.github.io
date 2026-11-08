@@ -4,9 +4,9 @@
 // The screen never says whether an address belongs to the family: the same message
 // is shown for known and unknown addresses.
 
-import { h } from "../dom.js?v=0b95232";
-import { t, errorText } from "../i18n.js?v=0b95232";
-import { isConfigured, sendCode, verifyCode } from "../api.js?v=0b95232";
+import { h } from "../dom.js?v=ac29075";
+import { t, errorText } from "../i18n.js?v=ac29075";
+import { isConfigured, sendCode, verifyCode } from "../api.js?v=ac29075";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CODE_PATTERN = /^\d{6}$/;

@@ -88,6 +88,8 @@ export const fr = {
     listEmpty: "Votre liste est vide : ajoutez vos premières idées !",
     listOne: "1 envie dans votre liste",
     listMany: "{count} envies dans votre liste",
+    historyTitle: "Historique",
+    historyText: "Les années passées : à qui j'ai offert",
     messagesTitle: "Messages",
     messagesText: "Mon Père Noël secret, mon receveur et toute la famille",
     profileTitle: "Mon profil",
@@ -196,6 +198,16 @@ export const fr = {
     write: "Écrire un message…",
     send: "Envoyer",
     sending: "Envoi…",
+  },
+
+  history: {
+    title: "Historique",
+    intro: "Les événements auxquels vous avez participé, du plus récent au plus ancien.",
+    empty: "Aucun événement pour l'instant.",
+    gaveTo: "J'ai offert un cadeau à {name}",
+    noDraw: "Pas de tirage enregistré pour moi cette année-là.",
+    inProgress: "Événement en cours : voir mon tirage sur l'accueil",
+    myGifts: "Mes cadeaux notés comme achetés :",
   },
 
   notificationsScreen: {

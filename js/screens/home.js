@@ -8,11 +8,11 @@
 //   - draw already seen                -> receiver's name and link to their list
 // The receiver is only fetched (get_my_draws) when the member asks to see it.
 
-import { h, fill } from "../dom.js?v=0b95232";
-import { t, errorText } from "../i18n.js?v=0b95232";
-import { getMe, select, rpc } from "../api.js?v=0b95232";
-import { field, statusLine, confirmButton, formatEuro, formatDate } from "../ui.js?v=0b95232";
-import { renderNotMember } from "./not-member.js?v=0b95232";
+import { h, fill } from "../dom.js?v=ac29075";
+import { t, errorText } from "../i18n.js?v=ac29075";
+import { getMe, select, rpc } from "../api.js?v=ac29075";
+import { field, statusLine, confirmButton, formatEuro, formatDate } from "../ui.js?v=ac29075";
+import { renderNotMember } from "./not-member.js?v=ac29075";
 
 export async function renderHome({ navigate }) {
   const me = await getMe();
@@ -46,6 +46,7 @@ export async function renderHome({ navigate }) {
       { class: "shortcuts" },
       shortcut("#/my-list", t("home.myListTitle"), wishSummary, wishes.length === 0),
       shortcut("#/messages", t("home.messagesTitle"), t("home.messagesText"), false),
+      shortcut("#/history", t("home.historyTitle"), t("home.historyText"), false),
       shortcut("#/profile", t("home.profileTitle"), t("home.profileText"), false),
     ),
   );

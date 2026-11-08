@@ -4,21 +4,22 @@
 // Each route says whether it needs a signed-in member. Screens may be async
 // (they load data first); a loading text is shown meanwhile.
 
-import { applyTranslations, t } from "./i18n.js?v=0b95232";
-import { h } from "./dom.js?v=0b95232";
-import { initApi, isSignedIn, getMe } from "./api.js?v=0b95232";
-import { renderWelcome } from "./screens/welcome.js?v=0b95232";
-import { renderHome } from "./screens/home.js?v=0b95232";
-import { renderMyList } from "./screens/my-list.js?v=0b95232";
-import { renderProfile } from "./screens/profile.js?v=0b95232";
-import { renderReceiver } from "./screens/receiver.js?v=0b95232";
-import { renderMessages } from "./screens/messages.js?v=0b95232";
-import { renderNotifications, unreadCount } from "./screens/notifications.js?v=0b95232";
-import { renderNotFound } from "./screens/not-found.js?v=0b95232";
-import { renderAdminEvents } from "./screens/admin/events.js?v=0b95232";
-import { renderAdminMembers } from "./screens/admin/members.js?v=0b95232";
-import { renderAdminSettings } from "./screens/admin/settings.js?v=0b95232";
-import { renderAdminEmails } from "./screens/admin/emails.js?v=0b95232";
+import { applyTranslations, t } from "./i18n.js?v=ac29075";
+import { h } from "./dom.js?v=ac29075";
+import { initApi, isSignedIn, getMe } from "./api.js?v=ac29075";
+import { renderWelcome } from "./screens/welcome.js?v=ac29075";
+import { renderHome } from "./screens/home.js?v=ac29075";
+import { renderMyList } from "./screens/my-list.js?v=ac29075";
+import { renderProfile } from "./screens/profile.js?v=ac29075";
+import { renderReceiver } from "./screens/receiver.js?v=ac29075";
+import { renderMessages } from "./screens/messages.js?v=ac29075";
+import { renderHistory } from "./screens/history.js?v=ac29075";
+import { renderNotifications, unreadCount } from "./screens/notifications.js?v=ac29075";
+import { renderNotFound } from "./screens/not-found.js?v=ac29075";
+import { renderAdminEvents } from "./screens/admin/events.js?v=ac29075";
+import { renderAdminMembers } from "./screens/admin/members.js?v=ac29075";
+import { renderAdminSettings } from "./screens/admin/settings.js?v=ac29075";
+import { renderAdminEmails } from "./screens/admin/emails.js?v=ac29075";
 
 const ROUTES = {
   "/": { screen: renderWelcome, public: true },
@@ -27,6 +28,7 @@ const ROUTES = {
   "/profile": { screen: renderProfile },
   "/receiver": { screen: renderReceiver },
   "/messages": { screen: renderMessages },
+  "/history": { screen: renderHistory },
   "/notifications": { screen: renderNotifications },
   "/admin": { screen: renderAdminEvents },
   "/admin/members": { screen: renderAdminMembers },

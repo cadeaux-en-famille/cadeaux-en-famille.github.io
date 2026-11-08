@@ -465,6 +465,13 @@ select { appearance: auto; }
 .notification.unread { border-left: 4px solid var(--accent); font-weight: 600; }
 .notification-date { font-size: 0.8rem; font-weight: 400; color: var(--text-muted); }
 
+/* ---- History --------------------------------------------------------- */
+
+.history-list { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 1rem; }
+.history-receiver { margin: 0.75rem 0 0; font-weight: 600; }
+.history-gifts ul { margin: 0.25rem 0 0; padding-left: 1.1rem; }
+.history-gifts .field-hint { margin-top: 0.75rem; }
+
 /* ---- Admin ----------------------------------------------------------- */
 
 .admin-tabs {
