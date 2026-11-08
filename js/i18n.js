@@ -5,16 +5,26 @@ import { fr } from "./i18n/fr.js";
 
 /**
  * Returns the text for a dotted key, e.g. t("welcome.title").
+ * Placeholders such as {email} are replaced from `vars`: t("welcome.codeSent", { email }).
  * Unknown keys return the key itself so a missing text is visible, not silent.
  * (PowerShell analogy: like reading $dict.welcome.title on a nested hashtable.)
  */
-export function t(key) {
-  const value = key.split(".").reduce((node, part) => (node == null ? undefined : node[part]), fr);
+export function t(key, vars) {
+  const value = lookup(key);
   if (value === undefined) {
     console.warn(`Missing text for key "${key}"`);
     return key;
   }
-  return value;
+  if (!vars || typeof value !== "string") return value;
+  return value.replace(/\{(\w+)\}/g, (match, name) => (name in vars ? String(vars[name]) : match));
+}
+
+/** French message for an ApiError (or any error), falling back to a generic text. */
+export function errorText(error) {
+  const key = error?.key;
+  if (key && lookup(`errors.${key}`) !== undefined) return lookup(`errors.${key}`);
+  if (error?.status === 429) return lookup("errors.rate_limited");
+  return lookup("errors.generic");
 }
 
 /** Fills every element carrying a data-i18n="key" attribute inside root. */
@@ -22,4 +32,8 @@ export function applyTranslations(root = document) {
   for (const element of root.querySelectorAll("[data-i18n]")) {
     element.textContent = t(element.dataset.i18n);
   }
+}
+
+function lookup(key) {
+  return key.split(".").reduce((node, part) => (node == null ? undefined : node[part]), fr);
 }

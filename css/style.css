@@ -120,11 +120,14 @@ a { color: var(--accent); }
   padding: 1.25rem;
 }
 
+.card > :first-child { margin-top: 0; }
+.card > :last-child { margin-bottom: 0; }
+
 .lead { color: var(--text-muted); margin: 0 0 1.5rem; }
 
 label { display: block; font-weight: 600; margin-bottom: 0.4rem; }
 
-input[type="email"], input[type="text"] {
+input[type="email"], input[type="text"], input[type="number"] {
   width: 100%;
   min-height: 48px;           /* comfortable touch target */
   padding: 0.6rem 0.8rem;
@@ -154,7 +157,66 @@ input:focus-visible, button:focus-visible, a:focus-visible {
   border-radius: 10px;
   cursor: pointer;
 }
-.button-primary:hover { filter: brightness(1.08); }
+.button-primary:hover:not(:disabled) { filter: brightness(1.08); }
+button:disabled { opacity: 0.6; cursor: default; }
+
+.button-secondary {
+  min-height: 48px;
+  padding: 0.6rem 1.2rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Text-style button, still with a comfortable touch area. */
+.button-link {
+  min-height: 44px;
+  padding: 0.5rem 0;
+  font: inherit;
+  color: var(--accent);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.button-link:disabled { color: var(--text-muted); text-decoration: none; }
+
+.form-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  margin-top: 0.5rem;
+}
+
+.code-sent { margin: 0 0 1rem; color: var(--text-muted); font-size: 0.95rem; }
+
+/* Large, spaced digits for the 6-digit code. */
+input.code-input {
+  font-size: 1.6rem;
+  letter-spacing: 0.4em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.loading { color: var(--text-muted); }
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 999px;
+}
+
+.actions { margin-top: 1.5rem; }
 
 .form-message { margin: 0.75rem 0 0; font-size: 0.95rem; }
 .form-message:empty { display: none; }
@@ -175,6 +237,17 @@ input:focus-visible, button:focus-visible, a:focus-visible {
   border-radius: 0 10px 10px 0;
   font-size: 0.92rem;
 }
+
+/* ---- Home screen ----------------------------------------------------- */
+
+.home-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.home-header h1 { margin: 0; }
 
 /* ---- Wider screens --------------------------------------------------- */
 
