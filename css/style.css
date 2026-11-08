@@ -15,6 +15,7 @@
   --gold: #a8781c;
   --error: #b3261e;
   --info: #24527a;
+  --success: #2e6b3a;
 
   --radius: 14px;
   --gap: 1rem;
@@ -36,6 +37,7 @@
     --gold: #e0b55a;
     --error: #f28b82;
     --info: #8ab4f8;
+    --success: #81c995;
   }
 }
 
@@ -127,7 +129,7 @@ a { color: var(--accent); }
 
 label { display: block; font-weight: 600; margin-bottom: 0.4rem; }
 
-input[type="email"], input[type="text"], input[type="number"] {
+input[type="email"], input[type="text"], input[type="number"], input[type="url"], textarea, select {
   width: 100%;
   min-height: 48px;           /* comfortable touch target */
   padding: 0.6rem 0.8rem;
@@ -249,10 +251,122 @@ input.code-input {
 }
 .home-header h1 { margin: 0; }
 
+/* ---- Navigation ------------------------------------------------------ */
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0 -0.75rem;   /* align the link text with the page edge on phones */
+}
+.nav-sign-out { margin-left: auto; }
+
+@media (max-width: 39.99rem) {
+  .site-nav { width: calc(100% + 1.5rem); flex-wrap: nowrap; }
+  .site-nav a, .nav-sign-out { padding: 0 0.6rem; font-size: 0.9rem; }
+}
+.site-nav[hidden] { display: none; }
+.site-nav a, .nav-sign-out {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.75rem;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  font: inherit;
+  font-size: 0.95rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.site-nav a[aria-current="page"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.nav-sign-out { color: var(--text-muted); }
+
+/* ---- Forms ----------------------------------------------------------- */
+
+.field { margin-bottom: 1rem; }
+.field-hint { margin: 0.3rem 0 0; font-size: 0.85rem; color: var(--text-muted); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+textarea { min-height: 5.5rem; resize: vertical; line-height: 1.45; }
+select { appearance: auto; }
+.form-message[data-kind="success"] { color: var(--success); }
+
+.danger { color: var(--error); }
+.danger.armed { font-weight: 600; }
+
+.section-title { margin-top: 2.5rem; }
+.empty { color: var(--text-muted); }
+
+/* ---- Wish list ------------------------------------------------------- */
+
+.my-list > .button-primary { margin: 0 0 1rem; }
+.wish-list { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 0.75rem; }
+.wish { padding: 1rem 1.1rem; }
+.wish-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; }
+.wish-head h3 { margin: 0; font-size: 1.05rem; line-height: 1.35; overflow-wrap: anywhere; }
+.wish-meta { margin: 0.35rem 0 0; color: var(--text-muted); font-size: 0.9rem; }
+.wish-description { margin: 0.5rem 0 0; white-space: pre-line; overflow-wrap: anywhere; }
+.wish a { overflow-wrap: anywhere; }
+.wish-actions { display: flex; flex-wrap: wrap; gap: 0 1.25rem; margin-top: 0.4rem; }
+.wish-form .button-primary { margin-top: 0.25rem; }
+.wish-form .button-link { margin-top: 0.5rem; }
+
+.priority {
+  flex-shrink: 0;
+  padding: 0.1rem 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.priority-1 { color: var(--accent-text); background: var(--accent); }
+.priority-2 { color: var(--accent); background: var(--accent-soft); }
+.priority-3 { color: var(--text-muted); border: 1px solid var(--border); }
+
+.archived-section { margin-top: 1.5rem; }
+.archived-section summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--text-muted); }
+.wish-list.archived .wish { opacity: 0.8; }
+.clear-list { margin-top: 1rem; }
+
+/* ---- Home shortcuts -------------------------------------------------- */
+
+.draw-placeholder h2 { margin-bottom: 0.25rem; }
+.shortcuts { display: grid; gap: 0.75rem; margin-top: 0.75rem; }
+.shortcut { display: flex; flex-direction: column; gap: 0.2rem; color: var(--text); text-decoration: none; }
+.shortcut:hover { border-color: var(--accent); }
+.shortcut.highlight { border-color: var(--gold); }
+.shortcut-title { font-family: var(--font-title); font-size: 1.15rem; font-weight: 600; }
+.shortcut-text { color: var(--text-muted); font-size: 0.95rem; }
+
+/* ---- Notification preferences ---------------------------------------- */
+
+.prefs-card { padding: 0.5rem 0.75rem; overflow-x: auto; }
+.prefs { width: 100%; border-collapse: collapse; }
+.prefs th, .prefs td { padding: 0.65rem 0.4rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: middle; }
+.prefs tbody tr:last-child th, .prefs tbody tr:last-child td { border-bottom: 0; }
+.prefs thead th { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+.prefs thead th:not(:first-child), .prefs td { text-align: center; width: 4.5rem; }
+.pref-label { display: block; font-weight: 600; }
+.pref-hint { display: block; font-size: 0.82rem; font-weight: 400; color: var(--text-muted); }
+.toggle { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; margin: 0; cursor: pointer; }
+.toggle input { width: 22px; height: 22px; accent-color: var(--accent); cursor: pointer; }
+
 /* ---- Wider screens --------------------------------------------------- */
 
 @media (min-width: 40rem) {
   h1 { font-size: 2.1rem; }
+  .site-nav { margin: 0; }
+  .shortcuts { grid-template-columns: 1fr 1fr; }
   .site-main { padding-top: 2.5rem; }
   .card { padding: 1.75rem; }
 }

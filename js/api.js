@@ -98,15 +98,69 @@ export function rpc(name, args = {}) {
   return request(`/rest/v1/rpc/${name}`, { method: "POST", body: args });
 }
 
+/** Inserts one row and returns it as saved (with its id). */
+export async function insert(table, row) {
+  const rows = await request(`/rest/v1/${table}`, {
+    method: "POST",
+    body: row,
+    prefer: "return=representation",
+  });
+  return rows[0];
+}
+
+/**
+ * Updates the rows matching `filter` (PostgREST syntax, e.g. "id=eq.123") and returns
+ * them. An empty result means RLS did not allow the change.
+ */
+export function update(table, filter, values) {
+  return request(`/rest/v1/${table}?${filter}`, {
+    method: "PATCH",
+    body: values,
+    prefer: "return=representation",
+  });
+}
+
+/** Deletes the rows matching `filter`. */
+export function remove(table, filter) {
+  return request(`/rest/v1/${table}?${filter}`, { method: "DELETE" });
+}
+
+/** Inserts or updates one row identified by the `conflictColumn` unique column. */
+export async function upsert(table, row, conflictColumn) {
+  const rows = await request(`/rest/v1/${table}?on_conflict=${conflictColumn}`, {
+    method: "POST",
+    body: row,
+    prefer: "resolution=merge-duplicates,return=representation",
+  });
+  return rows[0];
+}
+
+let me = null;
+
+/**
+ * The signed-in member ({ id, display_name, is_admin }), or null if the account is not
+ * linked to an active member. Loaded once, then cached until sign-out.
+ */
+export async function getMe({ refresh = false } = {}) {
+  if (me && !refresh) return me;
+  const rows = await select(
+    "members",
+    `select=id,display_name,is_admin&user_id=eq.${encodeURIComponent(currentUserId())}`,
+  );
+  me = rows[0] ?? null;
+  return me;
+}
+
 // ---------------------------------------------------------------------------
 // Internals
 // ---------------------------------------------------------------------------
 
-async function request(path, { method = "GET", body, auth = true } = {}) {
+async function request(path, { method = "GET", body, auth = true, prefer } = {}) {
   if (!config) throw new ApiError("not_configured", 0);
 
   const headers = { apikey: config.supabasePublishableKey };
   if (body !== undefined) headers["Content-Type"] = "application/json";
+  if (prefer) headers.Prefer = prefer;
   if (auth) {
     const valid = await validSession();
     if (valid) headers.Authorization = `Bearer ${valid.access_token}`;
@@ -173,6 +227,7 @@ function readStoredSession() {
 
 function clearSession() {
   session = null;
+  me = null;
   try {
     localStorage.removeItem(SESSION_KEY);
   } catch {

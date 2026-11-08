@@ -1,49 +1,19 @@
-// Personal space (route "#/home"), signed-in members only.
-// For now it greets the member; draw, wish list and history are added in the next steps.
+// Personal space (route "#/home"), signed-in members only: greeting and shortcuts.
+// The draw card is added in step 7.
 
 import { h } from "../dom.js";
-import { t, errorText } from "../i18n.js";
-import { select, currentUserId, signOut } from "../api.js";
+import { t } from "../i18n.js";
+import { getMe, select } from "../api.js";
+import { renderNotMember } from "./not-member.js";
 
-export async function renderHome({ navigate }) {
-  const signOutButton = h(
-    "button",
-    {
-      type: "button",
-      class: "button-secondary",
-      onclick: async () => {
-        await signOut();
-        navigate("/");
-      },
-    },
-    t("common.signOut"),
-  );
+export async function renderHome() {
+  const me = await getMe();
+  if (!me) return renderNotMember();
 
-  let member;
-  try {
-    const rows = await select(
-      "members",
-      `select=id,display_name,is_admin&user_id=eq.${encodeURIComponent(currentUserId())}`,
-    );
-    member = rows[0];
-  } catch (error) {
-    if (error.status === 401) {
-      navigate("/");
-      return h("div");
-    }
-    return h("section", { class: "card" }, h("p", { class: "form-message", "data-kind": "error" }, errorText(error)), signOutButton);
-  }
-
-  // Signed in, but no active member row (account not linked or deactivated).
-  if (!member) {
-    return h(
-      "section",
-      { class: "card" },
-      h("h1", {}, t("home.notMemberTitle")),
-      h("p", {}, t("home.notMemberText")),
-      signOutButton,
-    );
-  }
+  const wishes = await select("wishes", `select=id&member_id=eq.${me.id}&archived=is.false`);
+  const wishSummary = wishes.length === 0
+    ? t("home.listEmpty")
+    : t(wishes.length === 1 ? "home.listOne" : "home.listMany", { count: wishes.length });
 
   return h(
     "section",
@@ -51,11 +21,25 @@ export async function renderHome({ navigate }) {
     h(
       "div",
       { class: "home-header" },
-      h("h1", {}, t("home.greeting", { name: member.display_name })),
-      member.is_admin ? h("span", { class: "badge" }, t("home.adminBadge")) : null,
+      h("h1", {}, t("home.greeting", { name: me.display_name })),
+      me.is_admin ? h("span", { class: "badge" }, t("home.adminBadge")) : null,
     ),
     h("p", { class: "lead" }, t("home.intro")),
-    h("div", { class: "card" }, h("p", {}, t("home.comingSoon"))),
-    h("div", { class: "actions" }, signOutButton),
+    h("div", { class: "card draw-placeholder" }, h("h2", {}, t("home.drawTitle")), h("p", {}, t("home.drawSoon"))),
+    h(
+      "div",
+      { class: "shortcuts" },
+      shortcut("#/my-list", t("home.myListTitle"), wishSummary, wishes.length === 0),
+      shortcut("#/profile", t("home.profileTitle"), t("home.profileText"), false),
+    ),
+  );
+}
+
+function shortcut(href, title, text, highlight) {
+  return h(
+    "a",
+    { class: `shortcut card${highlight ? " highlight" : ""}`, href },
+    h("span", { class: "shortcut-title" }, title),
+    h("span", { class: "shortcut-text" }, text),
   );
 }

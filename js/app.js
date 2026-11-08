@@ -6,15 +6,26 @@
 
 import { applyTranslations, t } from "./i18n.js";
 import { h } from "./dom.js";
-import { initApi, isSignedIn } from "./api.js";
+import { initApi, isSignedIn, signOut } from "./api.js";
 import { renderWelcome } from "./screens/welcome.js";
 import { renderHome } from "./screens/home.js";
+import { renderMyList } from "./screens/my-list.js";
+import { renderProfile } from "./screens/profile.js";
 import { renderNotFound } from "./screens/not-found.js";
 
 const ROUTES = {
   "/": { screen: renderWelcome, public: true },
   "/home": { screen: renderHome },
+  "/my-list": { screen: renderMyList },
+  "/profile": { screen: renderProfile },
 };
+
+// Links shown in the header for signed-in members.
+const NAV_LINKS = [
+  { path: "/home", label: "nav.home" },
+  { path: "/my-list", label: "nav.myList" },
+  { path: "/profile", label: "nav.profile" },
+];
 
 let renderCount = 0;
 
@@ -32,6 +43,33 @@ export function navigate(path) {
   }
 }
 
+function renderNav(path) {
+  const nav = document.getElementById("site-nav");
+  if (!isSignedIn()) {
+    nav.hidden = true;
+    nav.replaceChildren();
+    return;
+  }
+  nav.hidden = false;
+  nav.replaceChildren(
+    ...NAV_LINKS.map((link) =>
+      h("a", { href: `#${link.path}`, "aria-current": link.path === path ? "page" : null }, t(link.label)),
+    ),
+    h(
+      "button",
+      {
+        type: "button",
+        class: "nav-sign-out",
+        onclick: async () => {
+          await signOut();
+          navigate("/");
+        },
+      },
+      t("common.signOut"),
+    ),
+  );
+}
+
 async function render() {
   const main = document.getElementById("main");
   const path = currentPath();
@@ -41,13 +79,23 @@ async function render() {
   if (route && !route.public && !isSignedIn()) return navigate("/");
   if (path === "/" && isSignedIn()) return navigate("/home");
 
+  renderNav(path);
   const thisRender = ++renderCount;
   main.replaceChildren(h("p", { class: "loading" }, t("common.loading")));
 
-  const content = route ? await route.screen({ navigate }) : renderNotFound();
+  let content;
+  try {
+    content = route ? await route.screen({ navigate }) : renderNotFound();
+  } catch (error) {
+    // A screen that fails to load: if the session ended, back to sign-in.
+    if (!isSignedIn()) return navigate("/");
+    console.error(error);
+    content = h("p", { class: "form-message", "data-kind": "error" }, t("errors.generic"));
+  }
 
   // Ignore a slow screen if the member already moved elsewhere.
   if (thisRender !== renderCount) return;
+  renderNav(path);
   main.replaceChildren(content);
   // Move focus to the new content for keyboard and screen-reader users.
   main.focus({ preventScroll: true });

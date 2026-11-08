@@ -24,3 +24,11 @@ export function h(tag, attrs = {}, ...children) {
   }
   return element;
 }
+
+/** Replaces the content of `element`, skipping null/false children like h() does. */
+export function fill(element, ...children) {
+  element.replaceChildren(
+    ...children.flat().filter((child) => child !== null && child !== undefined && child !== false),
+  );
+  return element;
+}
