@@ -1,0 +1,185 @@
+/* Site styles. Mobile first: base rules target phones, wider screens are handled
+   in the media queries at the end. Colours are defined once as variables below. */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #fbf7f2;
+  --surface: #ffffff;
+  --text: #2b2124;
+  --text-muted: #6b5c60;
+  --border: #e6dcd2;
+  --accent: #7a1f2b;        /* deep cranberry */
+  --accent-text: #ffffff;
+  --accent-soft: #f5e6e3;
+  --gold: #a8781c;
+  --error: #b3261e;
+  --info: #24527a;
+
+  --radius: 14px;
+  --gap: 1rem;
+  --max-width: 34rem;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-title: Georgia, "Times New Roman", serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1517;
+    --surface: #271e21;
+    --text: #f3ebe6;
+    --text-muted: #c2b3b0;
+    --border: #3e3135;
+    --accent: #d9737f;
+    --accent-text: #1c1517;
+    --accent-soft: #3a2328;
+    --gold: #e0b55a;
+    --error: #f28b82;
+    --info: #8ab4f8;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font: 1rem/1.55 var(--font);
+}
+
+h1, h2 { font-family: var(--font-title); line-height: 1.2; font-weight: 600; }
+h1 { font-size: 1.75rem; margin: 0 0 0.75rem; }
+h2 { font-size: 1.2rem; margin: 0 0 0.5rem; }
+a { color: var(--accent); }
+
+/* ---- Layout ---------------------------------------------------------- */
+
+.site-header {
+  padding: 0.75rem 1rem;
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text);
+  text-decoration: none;
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.site-main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+  outline: none;
+}
+
+.site-footer {
+  padding: 1rem;
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.site-footer p { margin: 0; }
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 10;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface);
+  border-radius: 8px;
+}
+
+.noscript { padding: 1rem; text-align: center; }
+
+/* ---- Components ------------------------------------------------------ */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+
+.lead { color: var(--text-muted); margin: 0 0 1.5rem; }
+
+label { display: block; font-weight: 600; margin-bottom: 0.4rem; }
+
+input[type="email"], input[type="text"] {
+  width: 100%;
+  min-height: 48px;           /* comfortable touch target */
+  padding: 0.6rem 0.8rem;
+  font: inherit;
+  font-size: 1.05rem;         /* >= 16px avoids zoom on iOS */
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+input:focus-visible, button:focus-visible, a:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.button-primary {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 0.9rem;
+  padding: 0.6rem 1rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent-text);
+  background: var(--accent);
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.button-primary:hover { filter: brightness(1.08); }
+
+.form-message { margin: 0.75rem 0 0; font-size: 0.95rem; }
+.form-message:empty { display: none; }
+.form-message[data-kind="error"] { color: var(--error); }
+.form-message[data-kind="info"] { color: var(--info); }
+
+/* ---- Welcome screen -------------------------------------------------- */
+
+.welcome .how { margin-top: 2rem; }
+.welcome .how ol { margin: 0; padding-left: 1.3rem; }
+.welcome .how li { margin-bottom: 0.35rem; }
+
+.welcome .privacy {
+  margin-top: 1.5rem;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--gold);
+  background: var(--accent-soft);
+  border-radius: 0 10px 10px 0;
+  font-size: 0.92rem;
+}
+
+/* ---- Wider screens --------------------------------------------------- */
+
+@media (min-width: 40rem) {
+  h1 { font-size: 2.1rem; }
+  .site-main { padding-top: 2.5rem; }
+  .card { padding: 1.75rem; }
+}

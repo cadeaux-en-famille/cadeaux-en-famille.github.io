@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!--
+    Content Security Policy: the page may only load its own files and talk to Supabase.
+    No third-party script, font or stylesheet is ever loaded.
+  -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://*.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#7a1f2b">
+  <title>Tirage des cadeaux</title>
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="common.skipToContent"></a>
+
+  <header class="site-header">
+    <a class="brand" href="#/">
+      <img src="icons/icon.svg" alt="" width="32" height="32">
+      <span data-i18n="common.siteName"></span>
+    </a>
+  </header>
+
+  <!-- Screens are rendered here by js/app.js depending on the URL hash (#/, #/home, ...). -->
+  <main id="main" class="site-main" tabindex="-1" aria-live="polite"></main>
+
+  <footer class="site-footer">
+    <p data-i18n="common.footer"></p>
+  </footer>
+
+  <noscript>
+    <p class="noscript">Ce site a besoin de JavaScript pour fonctionner.</p>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "Tirage des cadeaux",
+  "short_name": "Cadeaux",
+  "description": "Le tirage des cadeaux en famille",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf7f2",
+  "theme_color": "#7a1f2b",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
