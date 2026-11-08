@@ -68,6 +68,7 @@ export const fr = {
     not_configured: "Le site n'est pas encore configuré.",
     session_expired: "Votre session a expiré. Reconnectez-vous.",
     generic: "Une erreur inattendue est survenue. Réessayez dans un instant.",
+    genericWithCode: "Une erreur inattendue est survenue (code : {code}). Réessayez dans un instant.",
   },
 
   notFound: {

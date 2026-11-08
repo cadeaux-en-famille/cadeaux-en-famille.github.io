@@ -24,6 +24,8 @@ export function errorText(error) {
   const key = error?.key;
   if (key && lookup(`errors.${key}`) !== undefined) return lookup(`errors.${key}`);
   if (error?.status === 429) return lookup("errors.rate_limited");
+  // Unknown error: show its technical code so it can be reported and diagnosed.
+  if (key) return t("errors.genericWithCode", { code: `${key}${error.status ? ` / ${error.status}` : ""}` });
   return lookup("errors.generic");
 }
 
