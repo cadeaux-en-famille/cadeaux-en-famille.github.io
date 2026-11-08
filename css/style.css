@@ -361,6 +361,50 @@ select { appearance: auto; }
 .toggle { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; margin: 0; cursor: pointer; }
 .toggle input { width: 22px; height: 22px; accent-color: var(--accent); cursor: pointer; }
 
+/* ---- My draw --------------------------------------------------------- */
+
+.draw-card { border-color: var(--gold); }
+.draw-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; }
+.draw-head h2 { margin: 0; }
+.countdown {
+  flex-shrink: 0;
+  padding: 0.2rem 0.7rem;
+  font-weight: 700;
+  color: var(--accent-text);
+  background: var(--gold);
+  border-radius: 999px;
+}
+.draw-body { margin-top: 1rem; }
+.draw-body.revealed { text-align: center; animation: reveal 0.6s ease-out; }
+.draw-label { margin: 0; color: var(--text-muted); }
+.draw-name { margin: 0.25rem 0 1rem; font-family: var(--font-title); font-size: 2rem; font-weight: 600; color: var(--accent); }
+.link-button { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+.declaration .button-primary { margin-top: 0; }
+@keyframes reveal { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .draw-body.revealed { animation: none; } }
+
+/* ---- Receiver's list ------------------------------------------------- */
+
+.section-title.first { margin-top: 1.5rem; }
+.tastes { margin: 0; }
+.taste + .taste { margin-top: 0.75rem; }
+.tastes dt { font-weight: 600; }
+.tastes dd { margin: 0.15rem 0 0; white-space: pre-line; overflow-wrap: anywhere; }
+.purchase-list { list-style: none; margin: 0 0 1rem; padding: 0; }
+.purchase {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.purchase .button-link { grid-column: 1 / -1; justify-self: start; }
+.purchase-label { overflow-wrap: anywhere; }
+.purchase select { width: auto; min-height: 40px; padding: 0.3rem 0.5rem; }
+.purchase.status-wrapped .purchase-label { color: var(--success); font-weight: 600; }
+.own-idea .button-secondary { width: 100%; }
+
 /* ---- Admin ----------------------------------------------------------- */
 
 .admin-tabs {

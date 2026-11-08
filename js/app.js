@@ -11,6 +11,7 @@ import { renderWelcome } from "./screens/welcome.js";
 import { renderHome } from "./screens/home.js";
 import { renderMyList } from "./screens/my-list.js";
 import { renderProfile } from "./screens/profile.js";
+import { renderReceiver } from "./screens/receiver.js";
 import { renderNotFound } from "./screens/not-found.js";
 import { renderAdminEvents } from "./screens/admin/events.js";
 import { renderAdminMembers } from "./screens/admin/members.js";
@@ -22,6 +23,7 @@ const ROUTES = {
   "/home": { screen: renderHome },
   "/my-list": { screen: renderMyList },
   "/profile": { screen: renderProfile },
+  "/receiver": { screen: renderReceiver },
   "/admin": { screen: renderAdminEvents },
   "/admin/members": { screen: renderAdminMembers },
   "/admin/settings": { screen: renderAdminSettings },
