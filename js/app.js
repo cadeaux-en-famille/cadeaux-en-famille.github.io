@@ -4,19 +4,19 @@
 // Each route says whether it needs a signed-in member. Screens may be async
 // (they load data first); a loading text is shown meanwhile.
 
-import { applyTranslations, t } from "./i18n.js";
-import { h } from "./dom.js";
-import { initApi, isSignedIn, signOut, getMe } from "./api.js";
-import { renderWelcome } from "./screens/welcome.js";
-import { renderHome } from "./screens/home.js";
-import { renderMyList } from "./screens/my-list.js";
-import { renderProfile } from "./screens/profile.js";
-import { renderReceiver } from "./screens/receiver.js";
-import { renderNotFound } from "./screens/not-found.js";
-import { renderAdminEvents } from "./screens/admin/events.js";
-import { renderAdminMembers } from "./screens/admin/members.js";
-import { renderAdminSettings } from "./screens/admin/settings.js";
-import { renderAdminEmails } from "./screens/admin/emails.js";
+import { applyTranslations, t } from "./i18n.js?v=6604111";
+import { h } from "./dom.js?v=6604111";
+import { initApi, isSignedIn, signOut, getMe } from "./api.js?v=6604111";
+import { renderWelcome } from "./screens/welcome.js?v=6604111";
+import { renderHome } from "./screens/home.js?v=6604111";
+import { renderMyList } from "./screens/my-list.js?v=6604111";
+import { renderProfile } from "./screens/profile.js?v=6604111";
+import { renderReceiver } from "./screens/receiver.js?v=6604111";
+import { renderNotFound } from "./screens/not-found.js?v=6604111";
+import { renderAdminEvents } from "./screens/admin/events.js?v=6604111";
+import { renderAdminMembers } from "./screens/admin/members.js?v=6604111";
+import { renderAdminSettings } from "./screens/admin/settings.js?v=6604111";
+import { renderAdminEmails } from "./screens/admin/emails.js?v=6604111";
 
 const ROUTES = {
   "/": { screen: renderWelcome, public: true },

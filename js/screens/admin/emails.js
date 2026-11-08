@@ -3,11 +3,11 @@
 // texts of i18n/fr.js (emailDefaults) are used.
 // Templates only accept the variables below: none of them gives access to draw results.
 
-import { h } from "../../dom.js";
-import { t, errorText } from "../../i18n.js";
-import { select, insert, update, remove } from "../../api.js";
-import { field, statusLine, whileBusy, confirmButton } from "../../ui.js";
-import { requireAdmin, adminShell } from "./common.js";
+import { h } from "../../dom.js?v=6604111";
+import { t, errorText } from "../../i18n.js?v=6604111";
+import { select, insert, update, remove } from "../../api.js?v=6604111";
+import { field, statusLine, whileBusy, confirmButton } from "../../ui.js?v=6604111";
+import { requireAdmin, adminShell } from "./common.js?v=6604111";
 
 export const TEMPLATE_VARIABLES = ["prenom", "evenement", "budget", "date", "date_limite", "lien"];
 
