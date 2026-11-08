@@ -114,3 +114,19 @@ export function textOrNull(text) {
   const value = String(text ?? "").trim();
   return value === "" ? null : value;
 }
+
+const longDate = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+
+/** "2026-12-25" (or an ISO timestamp) -> "25 décembre 2026"; empty -> "". */
+export function formatDate(value) {
+  if (!value) return "";
+  const date = new Date(String(value).length === 10 ? `${value}T00:00:00Z` : value);
+  return Number.isNaN(date.getTime()) ? "" : longDate.format(date);
+}
+
+/** Adds days to a "YYYY-MM-DD" date and returns "YYYY-MM-DD". */
+export function addDays(isoDate, days) {
+  const date = new Date(`${isoDate}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}

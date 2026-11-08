@@ -165,8 +165,199 @@ export const fr = {
     },
   },
 
+  admin: {
+    title: "Administration",
+    navLabel: "Admin",
+    notAllowed: "Cet écran est réservé à l'administrateur.",
+    tabs: {
+      events: "Événements",
+      members: "Membres",
+      settings: "Tirage automatique",
+      emails: "Modèles d'emails",
+    },
+    events: {
+      intro:
+        "Créez l'événement de l'année, choisissez les participants et suivez l'avancement. " +
+        "Vous ne voyez jamais qui offre à qui.",
+      none: "Aucun événement pour l'instant.",
+      create: "Créer un événement",
+      createTitle: "Nouvel événement",
+      year: "Année",
+      title: "Titre",
+      titleDefault: "Noël {year}",
+      date: "Date de l'événement",
+      budget: "Budget conseillé (€)",
+      deadline: "Date limite des listes d'envies",
+      mode: "Mode de tirage",
+      modeRandom: "Tirage au sort par le site",
+      modeDeclared: "Tirage déjà fait : chacun déclare à qui il offre",
+      participants: "Participants",
+      participantsHint: "Seuls les membres actifs sont proposés.",
+      createSubmit: "Créer l'événement",
+      created: "Événement créé.",
+      invalidYear: "Indiquez une année entre 2000 et 2100.",
+      invalidDate: "Indiquez une date.",
+      invalidBudget: "Le budget doit être un nombre, par exemple 25.",
+      status: { preparing: "En préparation", drawn: "Tiré", closed: "Terminé" },
+      modeLabel: { random: "Tirage par le site", declared: "Tirage déclaré" },
+      budgetLine: "Budget conseillé : {budget}",
+      dateLine: "Date : {date}",
+      deadlineLine: "Listes à remplir avant le {date}",
+      progressDeclared: "Déclarations reçues : {assigned} sur {total}",
+      progressViewed: "Tirage consulté : {viewed} sur {total}",
+      progressWishes: "Listes d'envies remplies : {count} sur {total}",
+      edit: "Modifier",
+      save: "Enregistrer",
+      saved: "Événement modifié.",
+      participantsTitle: "Participants ({count})",
+      participantsLocked: "Les participants ne peuvent plus être modifiés une fois le tirage fait.",
+      participantSaved: "Participants mis à jour.",
+      runDraw: "Lancer le tirage",
+      runDrawConfirm: "Confirmer : lancer le tirage maintenant",
+      drawDone: "Tirage effectué : {count} participants ont leur personne. Vous ne voyez pas les résultats.",
+      resetDraw: "Annuler le tirage",
+      resetDrawConfirm: "Confirmer l'annulation",
+      drawReset: "Tirage annulé.",
+      resetDeclaration: "Effacer une déclaration erronée",
+      resetDeclarationHint:
+        "Choisissez la personne qui s'est trompée : sa déclaration est effacée sans que vous la voyiez, " +
+        "et elle pourra en saisir une nouvelle.",
+      resetDeclarationSubmit: "Effacer sa déclaration",
+      declarationReset: "Déclaration effacée.",
+      close: "Clôturer l'événement",
+      closeConfirm: "Confirmer la clôture",
+      closed: "Événement clôturé : les listes ne sont plus visibles par les donneurs.",
+      delete: "Supprimer l'événement",
+      deleteConfirm: "Confirmer la suppression",
+      deleted: "Événement supprimé.",
+    },
+    members: {
+      intro:
+        "Les membres sont ajoutés, retirés ou rattachés à leur adresse email par l'Action GitHub " +
+        "« Import members ». Les adresses ne sont jamais affichées sur le site.",
+      name: "Membre",
+      household: "Foyer",
+      noHousehold: "Aucun",
+      active: "Actif",
+      signIn: "Connexion",
+      canSignIn: "Possible",
+      cannotSignIn: "Pas encore",
+      admin: "administrateur",
+      saved: "Membre modifié.",
+      householdHint: "Les deux membres d'un couple partagent le même foyer : ils ne se tirent jamais au sort.",
+    },
+    settings: {
+      intro:
+        "Chaque année à la date choisie, le site crée l'événement de Noël, inscrit les membres actifs, " +
+        "fait le tirage et prévient tout le monde.",
+      enabled: "Tirage automatique activé",
+      day: "Jour du tirage",
+      month: "Mois du tirage",
+      budget: "Budget conseillé par défaut (€)",
+      deadlineDays: "Listes à remplir combien de jours avant Noël",
+      save: "Enregistrer",
+      saved: "Paramètres enregistrés.",
+      invalid: "Vérifiez les valeurs saisies.",
+      months: [
+        "janvier", "février", "mars", "avril", "mai", "juin",
+        "juillet", "août", "septembre", "octobre", "novembre", "décembre",
+      ],
+      emailsTitle: "Emails aux membres",
+      emailsOff:
+        "Désactivés : aucun membre ne reçoit d'email, seuls les vôtres partent. " +
+        "Ils seront activés par l'Action GitHub « Open the site to the family ».",
+      emailsOn: "Activés depuis le {date}.",
+    },
+    emails: {
+      intro:
+        "Modifiez le texte des emails envoyés aux membres. Les variables entre accolades sont " +
+        "remplacées à l'envoi. Aucune variable ne donne accès au résultat du tirage.",
+      kind: "Email",
+      subject: "Objet",
+      body: "Texte",
+      variables: "Variables disponibles :",
+      preview: "Aperçu",
+      save: "Enregistrer le modèle",
+      saved: "Modèle enregistré.",
+      reset: "Revenir au texte par défaut",
+      resetDone: "Texte par défaut rétabli (pensez à enregistrer).",
+      custom: "Modèle personnalisé",
+      default: "Texte par défaut",
+      required: "L'objet et le texte sont obligatoires.",
+      sample: {
+        prenom: "Camille",
+        evenement: "Noël 2027",
+        budget: "25,00 €",
+        date: "25 décembre 2027",
+        date_limite: "25 novembre 2027",
+        lien: "https://cadeaux-en-famille.github.io",
+      },
+    },
+  },
+
+  // Default email texts, used until the admin saves his own version.
+  // Variables: {prenom} {evenement} {budget} {date} {date_limite} {lien}
+  emailDefaults: {
+    draw_opened: {
+      subject: "{evenement} : le tirage est fait !",
+      body:
+        "Bonjour {prenom},\n\nLe tirage de {evenement} est fait. Connectez-vous pour découvrir " +
+        "à qui vous offrirez un cadeau, et pensez à remplir votre liste d'envies avant le {date_limite}.\n\n" +
+        "Budget conseillé : {budget}.\n\n{lien}\n\nÀ bientôt !",
+    },
+    wishlist_reminder: {
+      subject: "Pensez à votre liste d'envies",
+      body:
+        "Bonjour {prenom},\n\nVotre liste d'envies pour {evenement} est encore vide ou presque. " +
+        "Ajoutez quelques idées avant le {date_limite} pour aider la personne qui vous offre un cadeau.\n\n{lien}",
+    },
+    event_reminder: {
+      subject: "{evenement} approche !",
+      body:
+        "Bonjour {prenom},\n\n{evenement} a lieu le {date}. Il est encore temps de préparer votre cadeau " +
+        "(budget conseillé : {budget}).\n\n{lien}",
+    },
+    private_message: {
+      subject: "Vous avez un nouveau message",
+      body: "Bonjour {prenom},\n\nVous avez reçu un nouveau message pour {evenement}. Connectez-vous pour le lire.\n\n{lien}",
+    },
+    family_message: {
+      subject: "Nouveau message à toute la famille",
+      body: "Bonjour {prenom},\n\nUn nouveau message a été publié pour {evenement}.\n\n{lien}",
+    },
+    receiver_list_changed: {
+      subject: "Une liste d'envies a changé",
+      body:
+        "Bonjour {prenom},\n\nLa personne à qui vous offrez un cadeau pour {evenement} a modifié sa liste d'envies.\n\n{lien}",
+    },
+    weekly_digest: {
+      subject: "Votre récapitulatif de la semaine",
+      body: "Bonjour {prenom},\n\nVoici les nouveautés de la semaine pour {evenement}.\n\n{lien}",
+    },
+  },
+
   // Error messages, by ApiError.key (see js/api.js).
   errors: {
+    draw: {
+      admin_only: "Seul l'administrateur peut faire cette action.",
+      not_a_member: "Votre compte n'est pas rattaché à la famille.",
+      event_not_found: "Cet événement n'existe plus.",
+      not_random_mode: "Cet événement utilise un tirage déclaré, pas un tirage au sort.",
+      already_drawn: "Le tirage a déjà été fait pour cet événement.",
+      already_viewed: "Impossible d'annuler : quelqu'un a déjà consulté son tirage.",
+      cannot_reset: "Ce tirage ne peut pas être annulé.",
+      cannot_close: "Seul un événement tiré peut être clôturé.",
+      not_enough_participants: "Il faut au moins 3 participants pour un tirage.",
+      no_valid_draw: "Aucun tirage ne respecte toutes les règles avec ces participants.",
+      declaration_closed: "Les déclarations sont fermées pour cet événement.",
+      not_a_participant: "Vous ne participez pas à cet événement.",
+      receiver_not_participant: "Cette personne ne participe pas à cet événement.",
+      receiver_is_self: "Vous ne pouvez pas vous offrir un cadeau à vous-même.",
+      receiver_is_partner: "Vous ne pouvez pas déclarer votre conjoint.",
+      already_declared: "Vous avez déjà fait votre déclaration.",
+      receiver_taken: "Cette personne a déjà été choisie par quelqu'un d'autre.",
+    },
+    "23505": "Cet élément existe déjà (par exemple un événement pour cette année).",
     "23514": "Une des valeurs saisies n'est pas acceptée (trop longue ou mal formée).",
     "42501": "Vous n'avez pas le droit de faire cette action.",
     network: "Connexion impossible. Vérifiez votre accès à Internet et réessayez.",

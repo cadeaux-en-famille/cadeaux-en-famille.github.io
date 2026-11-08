@@ -129,7 +129,7 @@ a { color: var(--accent); }
 
 label { display: block; font-weight: 600; margin-bottom: 0.4rem; }
 
-input[type="email"], input[type="text"], input[type="number"], input[type="url"], textarea, select {
+input[type="email"], input[type="text"], input[type="number"], input[type="url"], input[type="date"], textarea, select {
   width: 100%;
   min-height: 48px;           /* comfortable touch target */
   padding: 0.6rem 0.8rem;
@@ -271,7 +271,7 @@ input.code-input {
 .nav-sign-out { margin-left: auto; }
 
 @media (max-width: 39.99rem) {
-  .site-nav { width: calc(100% + 1.5rem); flex-wrap: nowrap; }
+  .site-nav { width: calc(100% + 1.5rem); }
   .site-nav a, .nav-sign-out { padding: 0 0.6rem; font-size: 0.9rem; }
 }
 .site-nav[hidden] { display: none; }
@@ -360,6 +360,76 @@ select { appearance: auto; }
 .pref-hint { display: block; font-size: 0.82rem; font-weight: 400; color: var(--text-muted); }
 .toggle { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; margin: 0; cursor: pointer; }
 .toggle input { width: 22px; height: 22px; accent-color: var(--accent); cursor: pointer; }
+
+/* ---- Admin ----------------------------------------------------------- */
+
+.admin-tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin: 0 0 1.25rem;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+}
+.admin-tabs a {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.75rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+}
+.admin-tabs a[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+.admin > .button-primary, .admin .event-list { margin-top: 1rem; }
+.event-list { display: grid; gap: 1rem; }
+.event-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; }
+.event-head h2 { margin: 0; }
+.event-meta, .progress-list { margin: 0.75rem 0 0; padding-left: 1.1rem; color: var(--text-muted); font-size: 0.95rem; }
+.progress-list { color: var(--text); }
+.status {
+  flex-shrink: 0;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.status-preparing { color: var(--gold); border: 1px solid var(--gold); }
+.status-drawn { color: var(--accent-text); background: var(--accent); }
+.status-closed { color: var(--text-muted); border: 1px solid var(--border); }
+
+.participants { margin-top: 0.75rem; }
+.participants summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 600; }
+.checklist { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: 0 0.75rem; }
+fieldset.checklist { border: 0; padding: 0; margin: 0 0 1rem; }
+fieldset.checklist legend, fieldset.checklist .field-hint { grid-column: 1 / -1; }
+fieldset.checklist legend { font-weight: 600; padding: 0; margin-bottom: 0.2rem; }
+.check { display: flex; align-items: center; gap: 0.6rem; min-height: 44px; font-weight: 400; margin: 0; cursor: pointer; }
+.check input { width: 20px; height: 20px; accent-color: var(--accent); flex-shrink: 0; }
+.switch { font-weight: 600; margin-bottom: 0.75rem; }
+
+.button-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.button-secondary.armed { color: var(--accent-text); background: var(--error); border-color: var(--error); }
+.reset-declaration { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+
+.table-card { padding: 0.25rem 0.75rem; overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; }
+.admin-table th, .admin-table td { padding: 0.5rem 0.4rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: middle; }
+.admin-table tbody tr:last-child th, .admin-table tbody tr:last-child td { border-bottom: 0; }
+.admin-table thead th { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+.admin-table select { min-height: 40px; padding: 0.3rem 0.4rem; font-size: 0.95rem; width: auto; min-width: 5.5rem; }
+.admin-table td.ok { color: var(--success); }
+.admin-table td.muted { color: var(--text-muted); }
+
+.gate-closed { border-left: 4px solid var(--gold); }
+.gate-open { border-left: 4px solid var(--success); }
+
+.email-preview { white-space: pre-line; }
+.preview-subject { font-weight: 600; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+code { font-size: 0.9em; padding: 0.05rem 0.3rem; margin-right: 0.3rem; background: var(--accent-soft); border-radius: 4px; }
 
 /* ---- Wider screens --------------------------------------------------- */
 

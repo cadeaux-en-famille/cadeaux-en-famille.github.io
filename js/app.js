@@ -6,18 +6,26 @@
 
 import { applyTranslations, t } from "./i18n.js";
 import { h } from "./dom.js";
-import { initApi, isSignedIn, signOut } from "./api.js";
+import { initApi, isSignedIn, signOut, getMe } from "./api.js";
 import { renderWelcome } from "./screens/welcome.js";
 import { renderHome } from "./screens/home.js";
 import { renderMyList } from "./screens/my-list.js";
 import { renderProfile } from "./screens/profile.js";
 import { renderNotFound } from "./screens/not-found.js";
+import { renderAdminEvents } from "./screens/admin/events.js";
+import { renderAdminMembers } from "./screens/admin/members.js";
+import { renderAdminSettings } from "./screens/admin/settings.js";
+import { renderAdminEmails } from "./screens/admin/emails.js";
 
 const ROUTES = {
   "/": { screen: renderWelcome, public: true },
   "/home": { screen: renderHome },
   "/my-list": { screen: renderMyList },
   "/profile": { screen: renderProfile },
+  "/admin": { screen: renderAdminEvents },
+  "/admin/members": { screen: renderAdminMembers },
+  "/admin/settings": { screen: renderAdminSettings },
+  "/admin/emails": { screen: renderAdminEmails },
 };
 
 // Links shown in the header for signed-in members.
@@ -25,6 +33,7 @@ const NAV_LINKS = [
   { path: "/home", label: "nav.home" },
   { path: "/my-list", label: "nav.myList" },
   { path: "/profile", label: "nav.profile" },
+  { path: "/admin", label: "admin.navLabel", adminOnly: true },
 ];
 
 let renderCount = 0;
@@ -43,17 +52,24 @@ export function navigate(path) {
   }
 }
 
-function renderNav(path) {
+async function renderNav(path) {
   const nav = document.getElementById("site-nav");
   if (!isSignedIn()) {
     nav.hidden = true;
     nav.replaceChildren();
     return;
   }
+  let isAdmin = false;
+  try {
+    isAdmin = (await getMe())?.is_admin === true;
+  } catch {
+    // Navigation still works without the admin link.
+  }
+  const section = path.startsWith("/admin") ? "/admin" : path;
   nav.hidden = false;
   nav.replaceChildren(
-    ...NAV_LINKS.map((link) =>
-      h("a", { href: `#${link.path}`, "aria-current": link.path === path ? "page" : null }, t(link.label)),
+    ...NAV_LINKS.filter((link) => !link.adminOnly || isAdmin).map((link) =>
+      h("a", { href: `#${link.path}`, "aria-current": link.path === section ? "page" : null }, t(link.label)),
     ),
     h(
       "button",
@@ -79,7 +95,6 @@ async function render() {
   if (route && !route.public && !isSignedIn()) return navigate("/");
   if (path === "/" && isSignedIn()) return navigate("/home");
 
-  renderNav(path);
   const thisRender = ++renderCount;
   main.replaceChildren(h("p", { class: "loading" }, t("common.loading")));
 
@@ -95,7 +110,7 @@ async function render() {
 
   // Ignore a slow screen if the member already moved elsewhere.
   if (thisRender !== renderCount) return;
-  renderNav(path);
+  await renderNav(path);
   main.replaceChildren(content);
   // Move focus to the new content for keyboard and screen-reader users.
   main.focus({ preventScroll: true });
