@@ -52,7 +52,10 @@ export const fr = {
   nav: {
     home: "Accueil",
     myList: "Ma liste",
+    messages: "Messages",
     profile: "Profil",
+    notifications: "Notifications",
+    notificationsCount: "Notifications : {count} non lue(s)",
   },
 
   home: {
@@ -85,6 +88,8 @@ export const fr = {
     listEmpty: "Votre liste est vide : ajoutez vos premières idées !",
     listOne: "1 envie dans votre liste",
     listMany: "{count} envies dans votre liste",
+    messagesTitle: "Messages",
+    messagesText: "Mon Père Noël secret, mon receveur et toute la famille",
     profileTitle: "Mon profil",
     profileText: "Votre nom affiché et vos notifications",
     notMemberTitle: "Compte non activé",
@@ -156,6 +161,7 @@ export const fr = {
     noneText: "Vous n'avez pas encore de personne à qui offrir un cadeau pour l'événement en cours.",
     wishesTitle: "Ses envies",
     wishesEmpty: "{name} n'a pas encore rempli sa liste d'envies. Revenez un peu plus tard !",
+    ask: "Poser une question anonyme",
     chooseWish: "Je prends cette idée",
     chosen: "Dans mon suivi d'achat ✓",
     tastesTitle: "Ses goûts",
@@ -171,8 +177,36 @@ export const fr = {
     purchaseSaved: "Suivi mis à jour.",
   },
 
+  messages: {
+    title: "Messages",
+    intro: "{event} : écrivez à votre Père Noël secret, à la personne à qui vous offrez, ou à toute la famille.",
+    noEvent: "Aucun événement en cours : les messages s'ouvrent avec le prochain tirage.",
+    withGiverTitle: "Avec mon Père Noël secret",
+    withGiverHint: "Vous ne savez pas qui c'est, et ça reste secret. Posez-lui vos questions ou donnez-lui des indices.",
+    withReceiverTitle: "Avec {name}",
+    withReceiverHidden: "Avec la personne à qui j'offre",
+    withReceiverHint: "Cette personne ne saura pas que c'est vous : demandez-lui une taille, une couleur…",
+    familyTitle: "Toute la famille",
+    familyHint: "Messages signés, lus par tous les participants.",
+    toEveryone: "À toute la famille",
+    secretGiver: "Père Noël secret",
+    myReceiver: "Mon receveur",
+    me: "Moi",
+    empty: "Aucun message pour l'instant.",
+    write: "Écrire un message…",
+    send: "Envoyer",
+    sending: "Envoi…",
+  },
+
+  notificationsScreen: {
+    title: "Notifications",
+    empty: "Aucune notification.",
+    markAll: "Tout marquer comme lu",
+  },
+
   profile: {
     title: "Mon profil",
+    signOutTitle: "Session",
     nameLabel: "Nom affiché",
     nameHint: "C'est le nom que voit la famille (40 caractères au maximum).",
     nameSave: "Enregistrer",
@@ -191,19 +225,19 @@ export const fr = {
   notifications: {
     private_message: {
       label: "Message personnel",
-      hint: "Un message de mon Père Noël secret ou de la personne à qui j'offre.",
+      hint: "Un message de mon Père Noël secret ou de la personne à qui j'offre.", text: "Vous avez un nouveau message personnel."
     },
-    family_message: { label: "Message à toute la famille", hint: "Un nouveau message dans le fil familial." },
-    draw_opened: { label: "Nouveau tirage", hint: "Le tirage de l'année est disponible." },
-    wishlist_reminder: { label: "Rappel de liste", hint: "Penser à créer ou compléter ma liste d'envies." },
+    family_message: { label: "Message à toute la famille", hint: "Un nouveau message dans le fil familial.", text: "{author} a écrit à toute la famille." },
+    draw_opened: { label: "Nouveau tirage", hint: "Le tirage de l'année est disponible.", text: "Le tirage est fait : découvrez à qui vous offrez !" },
+    wishlist_reminder: { label: "Rappel de liste", hint: "Penser à créer ou compléter ma liste d'envies.", text: "Pensez à compléter votre liste d'envies." },
     receiver_list_changed: {
       label: "Liste de mon receveur modifiée",
-      hint: "La personne à qui j'offre a changé sa liste.",
+      hint: "La personne à qui j'offre a changé sa liste.", text: "La personne à qui vous offrez a modifié sa liste."
     },
-    event_reminder: { label: "Rappel avant l'événement", hint: "Une semaine avant Noël." },
+    event_reminder: { label: "Rappel avant l'événement", hint: "Une semaine avant Noël.", text: "L'événement approche : plus qu'une semaine !" },
     weekly_digest: {
       label: "Récapitulatif hebdomadaire",
-      hint: "Un seul email par semaine au lieu d'emails séparés.",
+      hint: "Un seul email par semaine au lieu d'emails séparés.", text: "Votre récapitulatif de la semaine est disponible."
     },
   },
 
@@ -380,6 +414,14 @@ export const fr = {
 
   // Error messages, by ApiError.key (see js/api.js).
   errors: {
+    messages: {
+      not_a_member: "Votre compte n'est pas rattaché à la famille.",
+      event_closed: "Cet événement est terminé : les messages sont fermés.",
+      invalid_body: "Le message doit contenir entre 1 et 2000 caractères.",
+      invalid_thread: "Conversation inconnue.",
+      no_receiver: "Vous n'avez pas encore de personne à qui offrir pour cet événement.",
+      no_giver: "Votre Père Noël secret n'est pas encore connu : réessayez un peu plus tard.",
+    },
     draw: {
       admin_only: "Seul l'administrateur peut faire cette action.",
       not_a_member: "Votre compte n'est pas rattaché à la famille.",

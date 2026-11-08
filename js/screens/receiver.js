@@ -2,11 +2,11 @@
 // I give to in the current event (read-only, allowed by RLS only to their giver), and my
 // private purchase tracking, which the receiver can never see.
 
-import { h, fill } from "../dom.js?v=6604111";
-import { t, errorText } from "../i18n.js?v=6604111";
-import { getMe, select, rpc, insert, update, remove } from "../api.js?v=6604111";
-import { field, statusLine, whileBusy, confirmButton, formatEuro, textOrNull } from "../ui.js?v=6604111";
-import { renderNotMember } from "./not-member.js?v=6604111";
+import { h, fill } from "../dom.js?v=0b95232";
+import { t, errorText } from "../i18n.js?v=0b95232";
+import { getMe, select, rpc, insert, update, remove } from "../api.js?v=0b95232";
+import { field, statusLine, whileBusy, confirmButton, formatEuro, textOrNull } from "../ui.js?v=0b95232";
+import { renderNotMember } from "./not-member.js?v=0b95232";
 
 const PROFILE_FIELDS = ["interests", "sizes", "colors", "dislikes", "favorite_shops"];
 const PURCHASE_STATUSES = ["idea", "bought", "wrapped"];
@@ -175,6 +175,7 @@ export async function renderReceiver() {
     { class: "receiver" },
     h("h1", {}, t("receiver.title", { name: draw.receiver_name })),
     h("p", { class: "lead" }, t("receiver.intro", { event: draw.title, budget: formatEuro(budget) })),
+    h("a", { class: "button-secondary link-button ask", href: "#/messages" }, t("receiver.ask")),
     status.element,
     h("h2", { class: "section-title first" }, t("receiver.wishesTitle")),
     wishes.length === 0

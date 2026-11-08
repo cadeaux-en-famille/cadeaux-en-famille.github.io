@@ -268,7 +268,6 @@ input.code-input {
   gap: 0.25rem;
   margin: 0 -0.75rem;   /* align the link text with the page edge on phones */
 }
-.nav-sign-out { margin-left: auto; }
 
 @media (max-width: 39.99rem) {
   .site-nav { width: calc(100% + 1.5rem); }
@@ -404,6 +403,67 @@ select { appearance: auto; }
 .purchase select { width: auto; min-height: 40px; padding: 0.3rem 0.5rem; }
 .purchase.status-wrapped .purchase-label { color: var(--success); font-weight: 600; }
 .own-idea .button-secondary { width: 100%; }
+
+/* ---- Messages and notifications -------------------------------------- */
+
+.nav-bell { position: relative; padding: 0 0.6rem; }
+.bell-count {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  color: var(--accent-text);
+  background: var(--accent);
+  border-radius: 999px;
+}
+.bell-count[hidden] { display: none; }
+.site-nav .nav-bell { margin-left: auto; }
+
+.thread { margin-top: 1rem; }
+.thread h2 { margin-bottom: 0.25rem; }
+.bubbles { list-style: none; margin: 1rem 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.bubble {
+  max-width: 85%;
+  padding: 0.55rem 0.8rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px 14px 14px 4px;
+}
+.bubble.mine { align-self: flex-end; background: var(--accent-soft); border-color: transparent; border-radius: 14px 14px 4px 14px; }
+.bubble.unread { border-color: var(--gold); }
+.bubble-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.2rem 0.5rem; margin: 0 0 0.2rem; font-size: 0.78rem; color: var(--text-muted); }
+.bubble-author { font-weight: 600; color: var(--text); }
+.bubble-tag { padding: 0 0.4rem; border: 1px solid var(--gold); border-radius: 999px; color: var(--gold); }
+.bubble-body { margin: 0; white-space: pre-line; overflow-wrap: anywhere; }
+.composer { display: grid; gap: 0.5rem; }
+.composer textarea { min-height: 3rem; }
+.composer .button-primary { margin-top: 0; }
+.receiver .ask { margin-bottom: 1rem; }
+
+.notification-list { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
+.notification {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 1rem;
+  font: inherit;
+  text-align: left;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.notification.unread { border-left: 4px solid var(--accent); font-weight: 600; }
+.notification-date { font-size: 0.8rem; font-weight: 400; color: var(--text-muted); }
 
 /* ---- Admin ----------------------------------------------------------- */
 

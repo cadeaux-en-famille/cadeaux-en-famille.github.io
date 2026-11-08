@@ -2,11 +2,11 @@
 // cancel the draw, follow progress (counts only) and close the event.
 // The admin never sees who gives to whom: the database only returns counts.
 
-import { h, fill } from "../../dom.js?v=6604111";
-import { t, errorText } from "../../i18n.js?v=6604111";
-import { select, insert, update, remove, rpc } from "../../api.js?v=6604111";
-import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount, addDays } from "../../ui.js?v=6604111";
-import { requireAdmin, adminShell } from "./common.js?v=6604111";
+import { h, fill } from "../../dom.js?v=0b95232";
+import { t, errorText } from "../../i18n.js?v=0b95232";
+import { select, insert, update, remove, rpc } from "../../api.js?v=0b95232";
+import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount, addDays } from "../../ui.js?v=0b95232";
+import { requireAdmin, adminShell } from "./common.js?v=0b95232";
 
 export async function renderAdminEvents() {
   const denied = await requireAdmin();

@@ -1,13 +1,13 @@
 // "Mon profil" (route "#/profile"): display name and notification preferences.
 // Each preference is saved as soon as its box is ticked or unticked.
 
-import { h } from "../dom.js?v=6604111";
-import { t, errorText } from "../i18n.js?v=6604111";
-import { getMe, select, update } from "../api.js?v=6604111";
-import { field, statusLine, whileBusy } from "../ui.js?v=6604111";
-import { renderNotMember } from "./not-member.js?v=6604111";
+import { h } from "../dom.js?v=0b95232";
+import { t, errorText } from "../i18n.js?v=0b95232";
+import { getMe, select, update, signOut } from "../api.js?v=0b95232";
+import { field, statusLine, whileBusy } from "../ui.js?v=0b95232";
+import { renderNotMember } from "./not-member.js?v=0b95232";
 
-export async function renderProfile() {
+export async function renderProfile({ navigate }) {
   const me = await getMe();
   if (!me) return renderNotMember();
 
@@ -124,5 +124,18 @@ export async function renderProfile() {
     h("p", { class: "lead" }, t("profile.prefsIntro")),
     h("div", { class: "card prefs-card" }, prefsTable, prefsStatus.element),
     h("p", { class: "field-hint" }, t("profile.signInNote")),
+    h("h2", { class: "section-title" }, t("profile.signOutTitle")),
+    h(
+      "button",
+      {
+        type: "button",
+        class: "button-secondary",
+        onclick: async () => {
+          await signOut();
+          navigate("/");
+        },
+      },
+      t("common.signOut"),
+    ),
   );
 }
