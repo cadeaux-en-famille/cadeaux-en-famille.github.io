@@ -1,9 +1,9 @@
 // Shared frame of the admin screens: admin-only guard and the tab bar.
 // The guard is only for display: every admin action is also checked by the database.
 
-import { h } from "../../dom.js?v=ac29075";
-import { t } from "../../i18n.js?v=ac29075";
-import { getMe } from "../../api.js?v=ac29075";
+import { h } from "../../dom.js?v=fffb887";
+import { t } from "../../i18n.js?v=fffb887";
+import { getMe } from "../../api.js?v=fffb887";
 
 export const ADMIN_TABS = [
   { path: "/admin", key: "events" },

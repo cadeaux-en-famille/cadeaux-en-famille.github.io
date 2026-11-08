@@ -247,6 +247,11 @@ export const fr = {
       hint: "La personne à qui j'offre a changé sa liste.", text: "La personne à qui vous offrez a modifié sa liste."
     },
     event_reminder: { label: "Rappel avant l'événement", hint: "Une semaine avant Noël.", text: "L'événement approche : plus qu'une semaine !" },
+    invitation: {
+      label: "Invitation au site",
+      hint: "Email envoyé à l'ouverture du site.",
+      text: "Bienvenue sur le site du tirage des cadeaux !",
+    },
     weekly_digest: {
       label: "Récapitulatif hebdomadaire",
       hint: "Un seul email par semaine au lieu d'emails séparés.", text: "Votre récapitulatif de la semaine est disponible."
@@ -333,6 +338,9 @@ export const fr = {
       admin: "administrateur",
       saved: "Membre modifié.",
       householdHint: "Les deux membres d'un couple partagent le même foyer : ils ne se tirent jamais au sort.",
+      resend: "Renvoyer l'invitation",
+      resendConfirm: "Confirmer l'envoi",
+      resent: "Invitation de {name} prête : elle partira dans l'heure.",
     },
     settings: {
       intro:
@@ -367,6 +375,10 @@ export const fr = {
       preview: "Aperçu",
       save: "Enregistrer le modèle",
       saved: "Modèle enregistré.",
+      test: "M'envoyer un email de test",
+      testQueued:
+        "Email de test prêt : il vous arrivera dans l'heure, ou tout de suite si vous lancez " +
+        "l'Action GitHub « Send emails ».",
       reset: "Revenir au texte par défaut",
       resetDone: "Texte par défaut rétabli (pensez à enregistrer).",
       custom: "Modèle personnalisé",
@@ -379,13 +391,29 @@ export const fr = {
         date: "25 décembre 2027",
         date_limite: "25 novembre 2027",
         lien: "https://cadeaux-en-famille.github.io",
+        resume: "- 2 nouveaux messages personnels\n- 1 message à toute la famille",
       },
     },
+  },
+
+  // Lines of the weekly digest email ({resume} variable), one per kind.
+  digest: {
+    private_message: "- {count} nouveau(x) message(s) personnel(s)",
+    family_message: "- {count} nouveau(x) message(s) à toute la famille",
+    receiver_list_changed: "- La personne à qui vous offrez a modifié sa liste d'envies",
   },
 
   // Default email texts, used until the admin saves his own version.
   // Variables: {prenom} {evenement} {budget} {date} {date_limite} {lien}
   emailDefaults: {
+    invitation: {
+      subject: "Le site du tirage des cadeaux est ouvert !",
+      body:
+        "Bonjour {prenom},\n\nLa famille a maintenant son site pour le tirage des cadeaux : vous y trouverez " +
+        "la personne à qui vous offrez un cadeau, sa liste d'envies, et vous pourrez remplir la vôtre.\n\n" +
+        "Pour vous connecter, ouvrez le lien ci-dessous et saisissez cette adresse email : vous recevrez " +
+        "un code à 6 chiffres, sans mot de passe.\n\n{lien}\n\nÀ très bientôt !",
+    },
     draw_opened: {
       subject: "{evenement} : le tirage est fait !",
       body:
@@ -420,12 +448,17 @@ export const fr = {
     },
     weekly_digest: {
       subject: "Votre récapitulatif de la semaine",
-      body: "Bonjour {prenom},\n\nVoici les nouveautés de la semaine pour {evenement}.\n\n{lien}",
+      body: "Bonjour {prenom},\n\nVoici les nouveautés de la semaine pour {evenement} :\n\n{resume}\n\n{lien}",
     },
   },
 
   // Error messages, by ApiError.key (see js/api.js).
   errors: {
+    emails: {
+      disabled: "Les emails aux membres ne sont pas encore activés : le site n'est pas ouvert.",
+      cannot_sign_in: "Ce membre n'a pas encore d'adresse de connexion.",
+      empty: "L'objet et le texte sont obligatoires.",
+    },
     messages: {
       not_a_member: "Votre compte n'est pas rattaché à la famille.",
       event_closed: "Cet événement est terminé : les messages sont fermés.",

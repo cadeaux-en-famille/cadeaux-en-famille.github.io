@@ -3,18 +3,13 @@
 // texts of i18n/fr.js (emailDefaults) are used.
 // Templates only accept the variables below: none of them gives access to draw results.
 
-import { h } from "../../dom.js?v=ac29075";
-import { t, errorText } from "../../i18n.js?v=ac29075";
-import { select, insert, update, remove } from "../../api.js?v=ac29075";
-import { field, statusLine, whileBusy, confirmButton } from "../../ui.js?v=ac29075";
-import { requireAdmin, adminShell } from "./common.js?v=ac29075";
+import { h } from "../../dom.js?v=fffb887";
+import { t, errorText } from "../../i18n.js?v=fffb887";
+import { select, insert, update, remove, rpc } from "../../api.js?v=fffb887";
+import { field, statusLine, whileBusy, confirmButton } from "../../ui.js?v=fffb887";
+import { requireAdmin, adminShell } from "./common.js?v=fffb887";
+import { TEMPLATE_VARIABLES, renderTemplate } from "../../email-template.js?v=fffb887";
 
-export const TEMPLATE_VARIABLES = ["prenom", "evenement", "budget", "date", "date_limite", "lien"];
-
-/** Replaces {variable} placeholders; unknown ones are left as they are. */
-export function renderTemplate(text, values) {
-  return text.replace(/\{(\w+)\}/g, (match, name) => (TEMPLATE_VARIABLES.includes(name) && name in values ? values[name] : match));
-}
 
 export async function renderAdminEmails() {
   const denied = await requireAdmin();
@@ -40,6 +35,7 @@ export async function renderAdminEmails() {
   const previewSubject = h("p", { class: "preview-subject" });
   const previewBody = h("div", { class: "preview-body" });
   const submit = h("button", { type: "submit", class: "button-primary" }, t("admin.emails.save"));
+  const testButton = h("button", { type: "button", class: "button-secondary", onclick: sendTest }, t("admin.emails.test"));
   const resetButton = confirmButton({
     label: t("admin.emails.reset"),
     confirmLabel: t("myList.deleteConfirm"),
@@ -88,6 +84,23 @@ export async function renderAdminEmails() {
     }
   }
 
+  // Queues the previewed email (sample values) to the admin; the Send emails workflow
+  // delivers it within the hour, or at once when run by hand.
+  async function sendTest() {
+    try {
+      await whileBusy(testButton, t("common.saving"), () =>
+        rpc("send_test_email", {
+          p_kind: kind.input.value,
+          p_subject: renderTemplate(subject.input.value, sample),
+          p_body: renderTemplate(body.input.value, sample),
+        }),
+      );
+      status.show(t("admin.emails.testQueued"), "success");
+    } catch (error) {
+      status.show(errorText(error), "error");
+    }
+  }
+
   async function resetToDefault() {
     const current = saved.get(kind.input.value);
     try {
@@ -119,7 +132,7 @@ export async function renderAdminEmails() {
       TEMPLATE_VARIABLES.map((name) => h("code", {}, `{${name}}`)),
     ),
     submit,
-    resetButton,
+    h("div", { class: "button-row" }, testButton, resetButton),
     status.element,
   );
   load();

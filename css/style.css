@@ -533,6 +533,7 @@ fieldset.checklist legend { font-weight: 600; padding: 0; margin-bottom: 0.2rem;
 .admin-table thead th { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
 .admin-table select { min-height: 40px; padding: 0.3rem 0.4rem; font-size: 0.95rem; width: auto; min-width: 5.5rem; }
 .admin-table td.ok { color: var(--success); }
+.admin-table .button-link.small { display: block; min-height: 36px; padding: 0.2rem 0; font-size: 0.85rem; text-align: left; }
 .admin-table td.muted { color: var(--text-muted); }
 
 .gate-closed { border-left: 4px solid var(--gold); }

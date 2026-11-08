@@ -1,11 +1,11 @@
 // Admin > Tirage automatique (route "#/admin/settings"): date and defaults of the yearly
 // automatic draw, and the (read-only) status of the email gate.
 
-import { h } from "../../dom.js?v=ac29075";
-import { t, errorText } from "../../i18n.js?v=ac29075";
-import { select, update } from "../../api.js?v=ac29075";
-import { field, statusLine, whileBusy, parseAmount, formatDate } from "../../ui.js?v=ac29075";
-import { requireAdmin, adminShell } from "./common.js?v=ac29075";
+import { h } from "../../dom.js?v=fffb887";
+import { t, errorText } from "../../i18n.js?v=fffb887";
+import { select, update } from "../../api.js?v=fffb887";
+import { field, statusLine, whileBusy, parseAmount, formatDate } from "../../ui.js?v=fffb887";
+import { requireAdmin, adminShell } from "./common.js?v=fffb887";
 
 export async function renderAdminSettings() {
   const denied = await requireAdmin();

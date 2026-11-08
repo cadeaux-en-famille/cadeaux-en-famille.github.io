@@ -1,18 +1,18 @@
 // "Mon profil" (route "#/profile"): display name and notification preferences.
 // Each preference is saved as soon as its box is ticked or unticked.
 
-import { h } from "../dom.js?v=ac29075";
-import { t, errorText } from "../i18n.js?v=ac29075";
-import { getMe, select, update, signOut } from "../api.js?v=ac29075";
-import { field, statusLine, whileBusy } from "../ui.js?v=ac29075";
-import { renderNotMember } from "./not-member.js?v=ac29075";
+import { h } from "../dom.js?v=fffb887";
+import { t, errorText } from "../i18n.js?v=fffb887";
+import { getMe, select, update, signOut } from "../api.js?v=fffb887";
+import { field, statusLine, whileBusy } from "../ui.js?v=fffb887";
+import { renderNotMember } from "./not-member.js?v=fffb887";
 
 export async function renderProfile({ navigate }) {
   const me = await getMe();
   if (!me) return renderNotMember();
 
   const [kinds, preferences] = await Promise.all([
-    select("notification_kinds", "select=kind&order=sort_order"),
+    select("notification_kinds", "select=kind&user_configurable=is.true&order=sort_order"),
     select("notification_preferences", `select=kind,in_app,by_email&member_id=eq.${me.id}`),
   ]);
   const byKind = new Map(preferences.map((p) => [p.kind, p]));

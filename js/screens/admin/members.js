@@ -2,11 +2,11 @@
 // Adding members and email addresses is done by the "Import members" workflow,
 // so no email address ever reaches the site.
 
-import { h } from "../../dom.js?v=ac29075";
-import { t, errorText } from "../../i18n.js?v=ac29075";
-import { select, update } from "../../api.js?v=ac29075";
-import { statusLine } from "../../ui.js?v=ac29075";
-import { requireAdmin, adminShell } from "./common.js?v=ac29075";
+import { h } from "../../dom.js?v=fffb887";
+import { t, errorText } from "../../i18n.js?v=fffb887";
+import { select, update, rpc } from "../../api.js?v=fffb887";
+import { statusLine, confirmButton } from "../../ui.js?v=fffb887";
+import { requireAdmin, adminShell } from "./common.js?v=fffb887";
 
 export async function renderAdminMembers() {
   const denied = await requireAdmin();
@@ -69,6 +69,21 @@ export async function renderAdminMembers() {
         "td",
         { class: member.user_id ? "ok" : "muted" },
         t(member.user_id ? "admin.members.canSignIn" : "admin.members.cannotSignIn"),
+        member.user_id && member.is_active
+          ? confirmButton({
+              label: t("admin.members.resend"),
+              confirmLabel: t("admin.members.resendConfirm"),
+              className: "button-link small",
+              onConfirm: async () => {
+                try {
+                  await rpc("resend_invitation", { p_member_id: member.id });
+                  status.show(t("admin.members.resent", { name: member.display_name }), "success");
+                } catch (error) {
+                  status.show(errorText(error), "error");
+                }
+              },
+            })
+          : null,
       ),
     );
   });
