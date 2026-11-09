@@ -4,11 +4,11 @@
 //   - with the whole family  (signed, shown as "À toute la famille")
 // Opening the screen marks the messages and their notifications as read.
 
-import { h } from "../dom.js?v=b3b045e";
-import { t, errorText } from "../i18n.js?v=b3b045e";
-import { getMe, select, rpc, insert, update } from "../api.js?v=b3b045e";
-import { statusLine, whileBusy, formatDateTime } from "../ui.js?v=b3b045e";
-import { renderNotMember } from "./not-member.js?v=b3b045e";
+import { h } from "../dom.js?v=d8be852";
+import { t, errorText } from "../i18n.js?v=d8be852";
+import { getMe, select, rpc, insert, update } from "../api.js?v=d8be852";
+import { statusLine, whileBusy, formatDateTime } from "../ui.js?v=d8be852";
+import { renderNotMember } from "./not-member.js?v=d8be852";
 
 export async function renderMessages({ navigate }) {
   const me = await getMe();
@@ -45,14 +45,18 @@ export async function renderMessages({ navigate }) {
     { class: "messages" },
     h("h1", {}, t("messages.title")),
     h("p", { class: "lead" }, t("messages.intro", { event: event.title })),
-    anonymousThread({
-      title: t("messages.withGiverTitle"),
-      hint: t("messages.withGiverHint"),
-      messages: messages.filter((m) => m.thread === "giver"),
-      theirLabel: t("messages.secretGiver"),
-      send: (body) => rpc("send_anonymous_message", { p_event_id: event.id, p_to: "giver", p_body: body }),
-      reload,
-    }),
+    // Both conversations are two-way and anonymous for the giver: whoever writes
+    // first, the other can answer. They only open once the draw gives them two ends.
+    drawStatus.has_giver
+      ? anonymousThread({
+          title: t("messages.withGiverTitle"),
+          hint: t("messages.withGiverHint"),
+          messages: messages.filter((m) => m.thread === "giver"),
+          theirLabel: t("messages.secretGiver"),
+          send: (body) => rpc("send_anonymous_message", { p_event_id: event.id, p_to: "giver", p_body: body }),
+          reload,
+        })
+      : closedThread(t("messages.withGiverTitle"), t("messages.noGiverYet")),
     drawStatus.has_draw
       ? anonymousThread({
           title: receiverName ? t("messages.withReceiverTitle", { name: receiverName }) : t("messages.withReceiverHidden"),
@@ -62,7 +66,7 @@ export async function renderMessages({ navigate }) {
           send: (body) => rpc("send_anonymous_message", { p_event_id: event.id, p_to: "receiver", p_body: body }),
           reload,
         })
-      : null,
+      : closedThread(t("messages.withReceiverHidden"), t("messages.noReceiverYet", { event: event.title })),
     familyThread(event, familyMessages, names, me, reload),
   );
 
@@ -84,6 +88,16 @@ function anonymousThread({ title, hint, messages, theirLabel, send, reload }) {
       unread: !m.mine && !m.read_at,
     }))),
     composer(send, reload),
+  );
+}
+
+/** A conversation that cannot be opened yet: says why, instead of a box that fails. */
+function closedThread(title, explanation) {
+  return h(
+    "article",
+    { class: "card thread closed" },
+    h("h2", {}, title),
+    h("p", { class: "empty" }, explanation),
   );
 }
 

@@ -2,11 +2,11 @@
 // I give to in the current event (read-only, allowed by RLS only to their giver), and my
 // private purchase tracking, which the receiver can never see.
 
-import { h, fill } from "../dom.js?v=b3b045e";
-import { t, errorText } from "../i18n.js?v=b3b045e";
-import { getMe, select, rpc, insert, update, remove } from "../api.js?v=b3b045e";
-import { field, statusLine, whileBusy, confirmButton, formatEuro, textOrNull } from "../ui.js?v=b3b045e";
-import { renderNotMember } from "./not-member.js?v=b3b045e";
+import { h, fill } from "../dom.js?v=d8be852";
+import { t, errorText } from "../i18n.js?v=d8be852";
+import { getMe, select, rpc, insert, update, remove } from "../api.js?v=d8be852";
+import { field, statusLine, whileBusy, confirmButton, formatEuro, textOrNull } from "../ui.js?v=d8be852";
+import { renderNotMember } from "./not-member.js?v=d8be852";
 
 const PROFILE_FIELDS = ["interests", "sizes", "colors", "dislikes", "favorite_shops"];
 const PURCHASE_STATUSES = ["idea", "bought", "wrapped"];

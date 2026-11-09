@@ -184,15 +184,25 @@ export const fr = {
     intro: "{event} : écrivez à votre Père Noël secret, à la personne à qui vous offrez, ou à toute la famille.",
     noEvent: "Aucun événement en cours : les messages s'ouvrent avec le prochain tirage.",
     withGiverTitle: "Avec mon Père Noël secret",
-    withGiverHint: "Vous ne savez pas qui c'est, et ça reste secret. Posez-lui vos questions ou donnez-lui des indices.",
+    withGiverHint:
+      "Vous ne savez pas qui c'est et ça restera secret. Écrivez-lui, donnez-lui des indices : " +
+      "il peut vous répondre ici, toujours anonymement.",
     withReceiverTitle: "Avec {name}",
     withReceiverHidden: "Avec la personne à qui j'offre",
-    withReceiverHint: "Cette personne ne saura pas que c'est vous : demandez-lui une taille, une couleur…",
+    withReceiverHint:
+      "Cette personne ne saura jamais que c'est vous : demandez-lui une taille, une couleur… " +
+      "elle peut vous répondre ici.",
     familyTitle: "Toute la famille",
     familyHint: "Messages signés, lus par tous les participants.",
     toEveryone: "À toute la famille",
     secretGiver: "Père Noël secret",
     myReceiver: "Mon receveur",
+    noGiverYet:
+      "Cette conversation s'ouvrira dès que quelqu'un vous aura tiré au sort. " +
+      "Vous pourrez alors échanger sans jamais savoir qui c'est.",
+    noReceiverYet:
+      "Dès que vous saurez à qui vous offrez pour {event}, vous pourrez lui écrire ici " +
+      "sans qu'il sache que c'est vous, et il pourra vous répondre.",
     me: "Moi",
     empty: "Aucun message pour l'instant.",
     write: "Écrire un message…",
@@ -340,7 +350,16 @@ export const fr = {
       householdHint: "Les deux membres d'un couple partagent le même foyer : ils ne se tirent jamais au sort.",
       resend: "Renvoyer l'invitation",
       resendConfirm: "Confirmer l'envoi",
-      resent: "Invitation de {name} prête : elle partira dans l'heure.",
+      resent: "Invitation de {name} prête : elle partira à la prochaine distribution.",
+      invite: "Ouvrir l'accès",
+      inviteConfirm: "Ouvrir pour {name} ?",
+      invited: "{name} est invité : son compte et son invitation partent à la prochaine distribution.",
+      invitedOn: "invité le {date}",
+      inviteHint:
+        "Vous pouvez ouvrir le site à une personne à la fois pour l'essayer : elle seule reçoit un compte " +
+        "et une invitation. Les autres ne peuvent toujours pas se connecter ni recevoir d'email. " +
+        "Les envois ont lieu entre 8 h et 20 h.",
+      openHint: "Le site est ouvert à toute la famille : chacun peut se connecter et recevoir ses emails.",
     },
     settings: {
       intro:

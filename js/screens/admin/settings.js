@@ -1,11 +1,11 @@
 // Admin > Tirage automatique (route "#/admin/settings"): date and defaults of the yearly
 // automatic draw, and the (read-only) status of the email gate.
 
-import { h } from "../../dom.js?v=b3b045e";
-import { t, errorText } from "../../i18n.js?v=b3b045e";
-import { select, update } from "../../api.js?v=b3b045e";
-import { field, statusLine, whileBusy, parseAmount, formatDate } from "../../ui.js?v=b3b045e";
-import { requireAdmin, adminShell } from "./common.js?v=b3b045e";
+import { h } from "../../dom.js?v=d8be852";
+import { t, errorText } from "../../i18n.js?v=d8be852";
+import { select, update } from "../../api.js?v=d8be852";
+import { field, statusLine, whileBusy, parseAmount, formatDate } from "../../ui.js?v=d8be852";
+import { requireAdmin, adminShell } from "./common.js?v=d8be852";
 
 // What the daily "Yearly draw" workflow will do next, in the owner's words.
 // Mirrors private.run_annual_draw: nothing before the chosen date, nothing twice
