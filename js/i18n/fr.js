@@ -32,9 +32,13 @@ export const fr = {
     submit: "Recevoir mon code",
     sending: "Envoi en cours…",
     invalidEmail: "Cette adresse email ne semble pas valide.",
+    unknownAddress:
+      "Cette adresse ne permet pas de se connecter. Vérifiez qu'elle est bien écrite. " +
+      "Si c'est la bonne, votre accès n'est pas encore ouvert : l'organisateur vous enverra " +
+      "une invitation par email.",
     notReady: "La connexion n'est pas encore ouverte. Revenez un peu plus tard.",
     codeSent:
-      "Si l'adresse {email} est enregistrée, un code à 6 chiffres vient de lui être envoyé. " +
+      "Un code à 6 chiffres vient d'être envoyé à {email}. " +
       "Pensez à regarder dans les courriers indésirables.",
     codeLabel: "Code reçu par email",
     codeSubmit: "Me connecter",
@@ -272,6 +276,8 @@ export const fr = {
     title: "Administration",
     navLabel: "Admin",
     notAllowed: "Cet écran est réservé à l'administrateur.",
+    pausedBanner: "Les envois d'emails sont suspendus depuis le {date} : aucun email ne part.",
+    pausedBannerLink: "Gérer les envois",
     tabs: {
       events: "Événements",
       members: "Membres",
@@ -386,6 +392,20 @@ export const fr = {
         "Désactivés : aucun membre ne reçoit d'email, seuls les vôtres partent. " +
         "Ils seront activés par l'Action GitHub « Open the site to the family ».",
       emailsOn: "Activés depuis le {date}.",
+      sendingTitle: "Envoi des emails",
+      sendingOn: "Les emails partent normalement, entre 8 h et 20 h. Emails en attente : {count}.",
+      pause: "Suspendre tous les envois",
+      pauseConfirm: "Confirmer la suspension",
+      paused: "Envois suspendus depuis le {date}. Emails en attente : {count}.",
+      resume: "Reprendre les envois",
+      resumeConfirm: "Confirmer la reprise",
+      resumeCancel: "Reprendre et annuler les emails en attente",
+      resumeCancelConfirm: "Annuler {count} email(s) et reprendre ?",
+      cancelled: "{count} email(s) annulé(s). Les envois ont repris.",
+      pauseHint:
+        "La suspension arrête tous les emails envoyés par le site : rappels, messages, invitations. " +
+        "Les notifications restent visibles sur le site et les emails attendent la reprise ; " +
+        "s'ils contiennent une erreur, reprenez en les annulant. Les codes de connexion ne sont pas concernés.",
     },
     emails: {
       intro:
@@ -508,6 +528,9 @@ export const fr = {
       receiver_is_partner: "Vous ne pouvez pas déclarer votre conjoint.",
       already_declared: "Vous avez déjà fait votre déclaration.",
       receiver_taken: "Cette personne a déjà été choisie par quelqu'un d'autre.",
+      event_has_draws:
+        "Cet événement contient déjà des tirages ou des déclarations : il ne peut plus être supprimé. " +
+        "Rechargez la page pour voir son état actuel.",
     },
     "23505": "Cet élément existe déjà (par exemple un événement pour cette année).",
     "23514": "Une des valeurs saisies n'est pas acceptée (trop longue ou mal formée).",

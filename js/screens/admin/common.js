@@ -1,9 +1,11 @@
-// Shared frame of the admin screens: admin-only guard and the tab bar.
+// Shared frame of the admin screens: admin-only guard, the tab bar, and a banner while
+// the emails are paused (a pause forgotten in December would silently stop all mail).
 // The guard is only for display: every admin action is also checked by the database.
 
-import { h } from "../../dom.js?v=d8be852";
-import { t } from "../../i18n.js?v=d8be852";
-import { getMe } from "../../api.js?v=d8be852";
+import { h, fill } from "../../dom.js?v=adc93c1";
+import { t } from "../../i18n.js?v=adc93c1";
+import { getMe, select } from "../../api.js?v=adc93c1";
+import { formatDate } from "../../ui.js?v=adc93c1";
 
 export const ADMIN_TABS = [
   { path: "/admin", key: "events" },
@@ -21,10 +23,29 @@ export async function requireAdmin() {
 
 /** Title, tab bar and the screen content. */
 export function adminShell(activePath, ...content) {
+  const banner = h("div", { role: "status" });
+  // Filled once the settings arrive; the screen does not wait for it.
+  select("settings", "select=emails_paused,emails_paused_at")
+    .then(([settings]) => {
+      if (!settings?.emails_paused) return;
+      fill(
+        banner,
+        h(
+          "p",
+          { class: "form-message paused-banner", "data-kind": "error" },
+          t("admin.pausedBanner", { date: formatDate(settings.emails_paused_at) }),
+          " ",
+          h("a", { href: "#/admin/settings" }, t("admin.pausedBannerLink")),
+        ),
+      );
+    })
+    .catch(() => {});
+
   return h(
     "section",
     { class: "admin" },
     h("h1", {}, t("admin.title")),
+    banner,
     h(
       "nav",
       { class: "admin-tabs", "aria-label": t("admin.title") },

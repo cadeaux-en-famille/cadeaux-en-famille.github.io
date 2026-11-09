@@ -1,11 +1,12 @@
 // Admin > Tirage automatique (route "#/admin/settings"): date and defaults of the yearly
-// automatic draw, and the (read-only) status of the email gate.
+// automatic draw, the (read-only) status of the email gate, and the pause switch that
+// stops every email the site sends.
 
-import { h } from "../../dom.js?v=d8be852";
-import { t, errorText } from "../../i18n.js?v=d8be852";
-import { select, update } from "../../api.js?v=d8be852";
-import { field, statusLine, whileBusy, parseAmount, formatDate } from "../../ui.js?v=d8be852";
-import { requireAdmin, adminShell } from "./common.js?v=d8be852";
+import { h } from "../../dom.js?v=adc93c1";
+import { t, errorText } from "../../i18n.js?v=adc93c1";
+import { select, update, rpc } from "../../api.js?v=adc93c1";
+import { field, statusLine, whileBusy, parseAmount, formatDate, confirmButton } from "../../ui.js?v=adc93c1";
+import { requireAdmin, adminShell } from "./common.js?v=adc93c1";
 
 // What the daily "Yearly draw" workflow will do next, in the owner's words.
 // Mirrors private.run_annual_draw: nothing before the chosen date, nothing twice
@@ -21,11 +22,11 @@ function nextDrawText(settings, today = new Date()) {
   return t("admin.settings.next", { date: formatDate(new Date(next).toISOString().slice(0, 10)) });
 }
 
-export async function renderAdminSettings() {
+export async function renderAdminSettings({ navigate }) {
   const denied = await requireAdmin();
   if (denied) return denied;
 
-  const [settings] = await select("settings", "select=*");
+  const [[settings], waiting] = await Promise.all([select("settings", "select=*"), rpc("waiting_emails")]);
   const status = statusLine();
 
   const enabled = h("input", { type: "checkbox", id: "auto-draw", checked: settings.auto_draw_enabled });
@@ -89,6 +90,55 @@ export async function renderAdminSettings() {
     ? t("admin.settings.emailsOn", { date: formatDate(settings.emails_enabled_at) })
     : t("admin.settings.emailsOff");
 
+  // ---- Pause switch ---------------------------------------------------------
+  const sendingStatus = statusLine();
+  const setPaused = (paused, cancelWaiting = false) => async () => {
+    try {
+      const cancelled = await rpc("set_emails_paused", { p_paused: paused, p_cancel_waiting: cancelWaiting });
+      navigate("/admin/settings");   // redraws the screen and the banner
+      if (cancelled > 0) sendingStatus.show(t("admin.settings.cancelled", { count: cancelled }), "success");
+    } catch (error) {
+      sendingStatus.show(errorText(error), "error");
+    }
+  };
+  const sending = settings.emails_paused
+    ? h(
+        "div",
+        { class: "card gate gate-closed" },
+        h("p", {}, t("admin.settings.paused", { date: formatDate(settings.emails_paused_at), count: waiting })),
+        h(
+          "div",
+          { class: "button-row" },
+          confirmButton({
+            label: t("admin.settings.resume"),
+            confirmLabel: t("admin.settings.resumeConfirm"),
+            className: "button-primary",
+            onConfirm: setPaused(false),
+          }),
+          waiting > 0
+            ? confirmButton({
+                label: t("admin.settings.resumeCancel"),
+                confirmLabel: t("admin.settings.resumeCancelConfirm", { count: waiting }),
+                className: "button-secondary",
+                onConfirm: setPaused(false, true),
+              })
+            : null,
+        ),
+        sendingStatus.element,
+      )
+    : h(
+        "div",
+        { class: "card gate gate-open" },
+        h("p", {}, t("admin.settings.sendingOn", { count: waiting })),
+        confirmButton({
+          label: t("admin.settings.pause"),
+          confirmLabel: t("admin.settings.pauseConfirm"),
+          className: "button-secondary",
+          onConfirm: setPaused(true),
+        }),
+        sendingStatus.element,
+      );
+
   return adminShell(
     "/admin/settings",
     h("p", { class: "lead" }, t("admin.settings.intro")),
@@ -99,5 +149,8 @@ export async function renderAdminSettings() {
     form,
     h("h2", { class: "section-title" }, t("admin.settings.emailsTitle")),
     h("div", { class: `card gate ${settings.emails_enabled ? "gate-open" : "gate-closed"}` }, h("p", {}, gate)),
+    h("h2", { class: "section-title", id: "sending" }, t("admin.settings.sendingTitle")),
+    sending,
+    h("p", { class: "field-hint" }, t("admin.settings.pauseHint")),
   );
 }

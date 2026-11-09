@@ -1,19 +1,21 @@
 // Public welcome screen (route "#/"): generic text and the two-step sign-in.
 //   Step 1: the member types their email, Supabase emails a 6-digit code.
 //   Step 2: the member types the code and is signed in.
-// The screen never says whether an address belongs to the family: the same message
-// is shown for known and unknown addresses.
+// An address that cannot sign in (unknown, mistyped, or a member not let in yet) gets
+// a clear message on step 1. This is the owner's choice (November 2026): it tells
+// somebody testing addresses which ones have access, a small risk for a family site,
+// against a member left waiting for a code that will never come.
 
-import { h } from "../dom.js?v=d8be852";
-import { t, errorText } from "../i18n.js?v=d8be852";
-import { isConfigured, sendCode, verifyCode } from "../api.js?v=d8be852";
+import { h } from "../dom.js?v=adc93c1";
+import { t, errorText } from "../i18n.js?v=adc93c1";
+import { isConfigured, sendCode, verifyCode } from "../api.js?v=adc93c1";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CODE_PATTERN = /^\d{6}$/;
 const RESEND_DELAY_SECONDS = 60;
 
-// Auth error keys that must look like a success (unknown address).
-const SILENT_ERRORS = new Set(["otp_disabled", "user_not_found", "signup_disabled", "email_address_not_authorized"]);
+// What Supabase answers for an address without a sign-in account (sign-ups are off).
+const UNKNOWN_ADDRESS = new Set(["otp_disabled", "user_not_found", "signup_disabled", "email_address_not_authorized"]);
 
 export function renderWelcome({ navigate }) {
   const formSlot = h("div");
@@ -62,10 +64,11 @@ export function renderWelcome({ navigate }) {
       }
       setBusy(button, true, t("welcome.sending"));
       try {
-        await requestCode();
+        await sendCode(email);
         showCodeStep();
       } catch (error) {
-        showMessage(message, errorText(error), "error");
+        showMessage(message, signInErrorText(error), "error");
+        if (UNKNOWN_ADDRESS.has(error.key)) input.select();
       } finally {
         setBusy(button, false, t("welcome.submit"));
       }
@@ -133,28 +136,30 @@ export function renderWelcome({ navigate }) {
     async function resendCode() {
       resend.disabled = true;
       try {
-        await requestCode();
+        await sendCode(email);
         showMessage(message, t("welcome.resent"), "info");
       } catch (error) {
-        showMessage(message, errorText(error), "error");
+        showMessage(message, signInErrorText(error), "error");
       }
       startTimer(resend);
     }
   }
 
   // ---- Helpers ------------------------------------------------------------
-  async function requestCode() {
-    try {
-      await sendCode(email);
-    } catch (error) {
-      if (!SILENT_ERRORS.has(error.key)) throw error;
-    }
+  function signInErrorText(error) {
+    return UNKNOWN_ADDRESS.has(error.key) ? t("welcome.unknownAddress") : errorText(error);
   }
 
   function startTimer(button) {
     stopTimer();
     let remaining = RESEND_DELAY_SECONDS;
     const tick = () => {
+      // The member left the screen (another page, the back button): the button is no
+      // longer in the page, so the timer has nothing left to update.
+      if (!button.isConnected) {
+        stopTimer();
+        return;
+      }
       if (remaining <= 0) {
         stopTimer();
         button.disabled = false;

@@ -25,7 +25,7 @@ export class ApiError extends Error {
 /** Loads config.js (generated at deployment). Returns false if the site is not configured. */
 export async function initApi() {
   try {
-    ({ config } = await import("../config.js?v=d8be852"));
+    ({ config } = await import("../config.js?v=adc93c1"));
   } catch {
     config = null;
     return false;
