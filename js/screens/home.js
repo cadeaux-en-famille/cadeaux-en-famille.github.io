@@ -1,4 +1,5 @@
-// Personal space (route "#/home"): greeting, the current event with "my draw", shortcuts.
+// Personal space (route "#/home"): greeting, the current event with "my draw", the
+// birthdays of the coming weeks, shortcuts.
 //
 // "My draw" card, depending on the situation:
 //   - no event in progress            -> short message
@@ -8,20 +9,21 @@
 //   - draw already seen                -> receiver's name and link to their list
 // The receiver is only fetched (get_my_draws) when the member asks to see it.
 
-import { h, fill } from "../dom.js?v=f63197d";
-import { t, errorText } from "../i18n.js?v=f63197d";
-import { getMe, select, rpc } from "../api.js?v=f63197d";
-import { field, statusLine, confirmButton, formatEuro, formatDate } from "../ui.js?v=f63197d";
-import { renderNotMember } from "./not-member.js?v=f63197d";
+import { h, fill } from "../dom.js?v=930b6bf";
+import { t, errorText } from "../i18n.js?v=930b6bf";
+import { getMe, select, rpc } from "../api.js?v=930b6bf";
+import { field, statusLine, confirmButton, formatEuro, formatDate, formatBirthday, daysUntilBirthday } from "../ui.js?v=930b6bf";
+import { renderNotMember } from "./not-member.js?v=930b6bf";
 
 export async function renderHome({ navigate }) {
   const me = await getMe();
   if (!me) return renderNotMember();
 
-  const [wishes, events, statuses] = await Promise.all([
+  const [wishes, events, statuses, birthdays] = await Promise.all([
     select("wishes", `select=id&member_id=eq.${me.id}&archived=is.false`),
     select("events", "select=*&status=neq.closed&order=year.desc"),
     rpc("my_draw_status"),
+    select("members", "select=id,display_name,birthday_day,birthday_month&is_active=is.true&birthday_day=not.is.null"),
   ]);
   const statusByEvent = new Map(statuses.map((s) => [s.event_id, s]));
   const event = events.find((e) => statusByEvent.has(e.id)) ?? null;
@@ -41,6 +43,7 @@ export async function renderHome({ navigate }) {
     ),
     h("p", { class: "lead" }, t("home.intro")),
     await drawCard(me, event, event ? statusByEvent.get(event.id) : null, navigate),
+    birthdayCard(me, birthdays),
     h(
       "div",
       { class: "shortcuts" },
@@ -165,6 +168,43 @@ function countdown(eventDate) {
   if (days < 0) return null;
   const text = days === 0 ? t("home.today") : days === 1 ? t("home.tomorrow") : t("home.daysLeft", { days });
   return h("span", { class: "countdown" }, text);
+}
+
+// The birthdays of the next BIRTHDAY_DAYS days, the closest first (none: no card).
+const BIRTHDAY_DAYS = 30;
+
+function birthdayCard(me, members) {
+  const coming = members
+    .map((m) => ({ ...m, days: daysUntilBirthday(m.birthday_day, m.birthday_month) }))
+    .filter((m) => m.days !== null && m.days <= BIRTHDAY_DAYS)
+    .sort((a, b) => a.days - b.days || a.display_name.localeCompare(b.display_name, "fr"));
+  if (coming.length === 0) return null;
+  return h(
+    "article",
+    { class: "card birthdays" },
+    h("h2", {}, t("home.birthdaysTitle")),
+    h(
+      "ul",
+      { class: "birthday-list" },
+      coming.map((m) =>
+        h(
+          "li",
+          {},
+          h("span", { class: "birthday-name" }, m.id === me.id ? t("home.birthdayMe") : m.display_name),
+          t("home.birthdaySeparator"),
+          h(
+            "span",
+            { class: "birthday-when" },
+            m.days === 0
+              ? t("home.birthdayToday")
+              : m.days === 1
+                ? t("home.birthdayTomorrow", { date: formatBirthday(m.birthday_day, m.birthday_month) })
+                : t("home.birthdayIn", { date: formatBirthday(m.birthday_day, m.birthday_month), days: m.days }),
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 function shortcut(href, title, text, highlight) {

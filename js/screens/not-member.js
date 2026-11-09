@@ -1,7 +1,7 @@
 // Shown to a signed-in account that is not linked to an active family member.
 
-import { h } from "../dom.js?v=f63197d";
-import { t } from "../i18n.js?v=f63197d";
+import { h } from "../dom.js?v=930b6bf";
+import { t } from "../i18n.js?v=930b6bf";
 
 export function renderNotMember() {
   return h(

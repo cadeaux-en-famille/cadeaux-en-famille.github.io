@@ -1,10 +1,10 @@
 // "Notifications" (route "#/notifications"): what the bell counts. Texts come from
 // i18n/fr.js (notifications.<kind>.text); a click opens the matching screen.
 
-import { h } from "../dom.js?v=f63197d";
-import { t, errorText } from "../i18n.js?v=f63197d";
-import { select, update } from "../api.js?v=f63197d";
-import { statusLine, formatDateTime } from "../ui.js?v=f63197d";
+import { h } from "../dom.js?v=930b6bf";
+import { t, errorText } from "../i18n.js?v=930b6bf";
+import { select, update } from "../api.js?v=930b6bf";
+import { statusLine, formatDateTime } from "../ui.js?v=930b6bf";
 
 const LINKS = {
   private_message: "/messages",

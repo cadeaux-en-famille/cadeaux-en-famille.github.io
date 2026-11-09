@@ -526,15 +526,24 @@ fieldset.checklist legend { font-weight: 600; padding: 0; margin-bottom: 0.2rem;
 .button-secondary.armed { color: var(--accent-text); background: var(--error); border-color: var(--error); }
 .reset-declaration { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
 
-.table-card { padding: 0.25rem 0.75rem; overflow-x: auto; }
-.admin-table { width: 100%; border-collapse: collapse; }
-.admin-table th, .admin-table td { padding: 0.5rem 0.4rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: middle; }
-.admin-table tbody tr:last-child th, .admin-table tbody tr:last-child td { border-bottom: 0; }
-.admin-table thead th { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
-.admin-table select { min-height: 40px; padding: 0.3rem 0.4rem; font-size: 0.95rem; width: auto; min-width: 5.5rem; }
-.admin-table td.ok { color: var(--success); }
-.admin-table .button-link.small { display: block; min-height: 36px; padding: 0.2rem 0; font-size: 0.85rem; text-align: left; }
-.admin-table td.muted { color: var(--text-muted); }
+/* Admin > Membres */
+.member-add { margin-bottom: 1rem; }
+.member-list { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: 0.75rem; }
+.member-head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.member-head h2 { margin: 0; font-size: 1.1rem; overflow-wrap: anywhere; }
+.member-meta { margin: 0.35rem 0 0; color: var(--text-muted); font-size: 0.95rem; overflow-wrap: anywhere; }
+.member-meta.ok { color: var(--success); }
+.member-actions { margin-top: 0.5rem; }
+.member-actions .button-link { min-height: 48px; }
+.member-left { opacity: 0.75; }
+.member-form h2 { margin-top: 0; font-size: 1.1rem; }
+fieldset.birthday { border: 0; padding: 0; margin: 0 0 1rem; }
+fieldset.birthday legend { font-weight: 600; padding: 0; margin-bottom: 0.4rem; }
+
+/* Accueil : anniversaires */
+.birthday-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+.birthday-name { font-weight: 600; }
+.birthday-when { color: var(--text-muted); }
 
 .gate-closed { border-left: 4px solid var(--gold); }
 .gate-open { border-left: 4px solid var(--success); }

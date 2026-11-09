@@ -1,7 +1,7 @@
 // Small building blocks shared by the screens: form fields, status messages,
 // busy buttons, two-step confirmation and French number formatting.
 
-import { h } from "./dom.js?v=f63197d";
+import { h } from "./dom.js?v=930b6bf";
 
 let fieldCounter = 0;
 
@@ -137,4 +137,24 @@ const dateTime = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "shor
 export function formatDateTime(value) {
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? "" : dateTime.format(date);
+}
+
+const dayAndMonth = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", timeZone: "UTC" });
+
+/** Birthday (14, 7) -> "14 juillet" (year 2000: 29 February exists). */
+export function formatBirthday(day, month) {
+  return day && month ? dayAndMonth.format(new Date(Date.UTC(2000, month - 1, day))) : "";
+}
+
+/**
+ * Days from today (the member's calendar) to the next birthday: 0 = today. A 29 February
+ * is celebrated on 1 March in the other years.
+ */
+export function daysUntilBirthday(day, month, today = new Date()) {
+  const start = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+  for (const year of [today.getFullYear(), today.getFullYear() + 1]) {
+    const date = new Date(Date.UTC(year, month - 1, day));   // 29/02 of a common year -> 01/03
+    if (date.getTime() >= start) return Math.round((date.getTime() - start) / 86400000);
+  }
+  return null;
 }

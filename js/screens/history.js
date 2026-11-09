@@ -2,11 +2,11 @@
 // the budget and, for finished events, who I gave to and the gifts I noted as bought.
 // Events still running only link to the home screen: their draw is never revealed here.
 
-import { h } from "../dom.js?v=f63197d";
-import { t } from "../i18n.js?v=f63197d";
-import { getMe, select, rpc } from "../api.js?v=f63197d";
-import { formatEuro, formatDate } from "../ui.js?v=f63197d";
-import { renderNotMember } from "./not-member.js?v=f63197d";
+import { h } from "../dom.js?v=930b6bf";
+import { t } from "../i18n.js?v=930b6bf";
+import { getMe, select, rpc } from "../api.js?v=930b6bf";
+import { formatEuro, formatDate } from "../ui.js?v=930b6bf";
+import { renderNotMember } from "./not-member.js?v=930b6bf";
 
 export async function renderHistory() {
   const me = await getMe();
