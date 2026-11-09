@@ -2,14 +2,14 @@
 // Visible only to the member and, while an event runs, to the person who gives to them
 // (enforced by RLS in the database, not here).
 
-import { h, fill } from "../dom.js?v=fffb887";
-import { t, errorText } from "../i18n.js?v=fffb887";
-import { getMe, select, insert, update, remove, upsert } from "../api.js?v=fffb887";
+import { h, fill } from "../dom.js?v=b3b045e";
+import { t, errorText } from "../i18n.js?v=b3b045e";
+import { getMe, select, insert, update, remove, upsert } from "../api.js?v=b3b045e";
 import {
   field, statusLine, whileBusy, confirmButton,
   formatEuro, parseAmount, normaliseUrl, textOrNull,
-} from "../ui.js?v=fffb887";
-import { renderNotMember } from "./not-member.js?v=fffb887";
+} from "../ui.js?v=b3b045e";
+import { renderNotMember } from "./not-member.js?v=b3b045e";
 
 const PRIORITIES = [1, 2, 3];
 const PROFILE_FIELDS = ["interests", "sizes", "colors", "dislikes", "favorite_shops"];

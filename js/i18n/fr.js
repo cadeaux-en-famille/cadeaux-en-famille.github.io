@@ -354,6 +354,10 @@ export const fr = {
       save: "Enregistrer",
       saved: "Paramètres enregistrés.",
       invalid: "Vérifiez les valeurs saisies.",
+      next: "Prochain tirage automatique : le {date}.",
+      nextDue: "Le tirage automatique est attendu : il se fera cette nuit.",
+      nextOff: "Tirage automatique désactivé : créez l'événement vous-même depuis « Événements ».",
+      lastDone: "Dernière année déjà traitée automatiquement : {year}.",
       months: [
         "janvier", "février", "mars", "avril", "mai", "juin",
         "juillet", "août", "septembre", "octobre", "novembre", "décembre",

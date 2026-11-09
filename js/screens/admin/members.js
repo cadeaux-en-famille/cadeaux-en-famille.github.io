@@ -2,11 +2,11 @@
 // Adding members and email addresses is done by the "Import members" workflow,
 // so no email address ever reaches the site.
 
-import { h } from "../../dom.js?v=fffb887";
-import { t, errorText } from "../../i18n.js?v=fffb887";
-import { select, update, rpc } from "../../api.js?v=fffb887";
-import { statusLine, confirmButton } from "../../ui.js?v=fffb887";
-import { requireAdmin, adminShell } from "./common.js?v=fffb887";
+import { h } from "../../dom.js?v=b3b045e";
+import { t, errorText } from "../../i18n.js?v=b3b045e";
+import { select, update, rpc } from "../../api.js?v=b3b045e";
+import { statusLine, confirmButton } from "../../ui.js?v=b3b045e";
+import { requireAdmin, adminShell } from "./common.js?v=b3b045e";
 
 export async function renderAdminMembers() {
   const denied = await requireAdmin();

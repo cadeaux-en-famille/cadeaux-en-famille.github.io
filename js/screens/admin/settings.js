@@ -1,11 +1,25 @@
 // Admin > Tirage automatique (route "#/admin/settings"): date and defaults of the yearly
 // automatic draw, and the (read-only) status of the email gate.
 
-import { h } from "../../dom.js?v=fffb887";
-import { t, errorText } from "../../i18n.js?v=fffb887";
-import { select, update } from "../../api.js?v=fffb887";
-import { field, statusLine, whileBusy, parseAmount, formatDate } from "../../ui.js?v=fffb887";
-import { requireAdmin, adminShell } from "./common.js?v=fffb887";
+import { h } from "../../dom.js?v=b3b045e";
+import { t, errorText } from "../../i18n.js?v=b3b045e";
+import { select, update } from "../../api.js?v=b3b045e";
+import { field, statusLine, whileBusy, parseAmount, formatDate } from "../../ui.js?v=b3b045e";
+import { requireAdmin, adminShell } from "./common.js?v=b3b045e";
+
+// What the daily "Yearly draw" workflow will do next, in the owner's words.
+// Mirrors private.run_annual_draw: nothing before the chosen date, nothing twice
+// in the same year.
+function nextDrawText(settings, today = new Date()) {
+  if (!settings.auto_draw_enabled) return t("admin.settings.nextOff");
+  const year = today.getUTCFullYear();
+  const handled = settings.last_auto_draw_year === year;
+  const due = Date.UTC(year, settings.draw_month - 1, settings.draw_day);
+  const startOfToday = Date.UTC(year, today.getUTCMonth(), today.getUTCDate());
+  if (!handled && due <= startOfToday) return t("admin.settings.nextDue");
+  const next = handled ? Date.UTC(year + 1, settings.draw_month - 1, settings.draw_day) : due;
+  return t("admin.settings.next", { date: formatDate(new Date(next).toISOString().slice(0, 10)) });
+}
 
 export async function renderAdminSettings() {
   const denied = await requireAdmin();
@@ -78,6 +92,10 @@ export async function renderAdminSettings() {
   return adminShell(
     "/admin/settings",
     h("p", { class: "lead" }, t("admin.settings.intro")),
+    h("p", { class: "field-hint" }, nextDrawText(settings)),
+    settings.last_auto_draw_year
+      ? h("p", { class: "field-hint" }, t("admin.settings.lastDone", { year: settings.last_auto_draw_year }))
+      : null,
     form,
     h("h2", { class: "section-title" }, t("admin.settings.emailsTitle")),
     h("div", { class: `card gate ${settings.emails_enabled ? "gate-open" : "gate-closed"}` }, h("p", {}, gate)),
