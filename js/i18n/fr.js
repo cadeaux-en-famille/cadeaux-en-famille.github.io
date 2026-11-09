@@ -52,9 +52,10 @@ export const fr = {
     resendIn: "Renvoyer le code ({seconds} s)",
     resent: "Un nouveau code a été envoyé.",
     changeEmail: "Utiliser une autre adresse",
+    helpLink: "Besoin d'aide ? Lire le mode d'emploi illustré",
     privacy:
       "Seuls les membres de la famille invités peuvent se connecter. " +
-      "Votre liste d'envies n'est visible que par la personne qui vous offre un cadeau.",
+      "Votre liste d'envies n'est visible que par les personnes qui vous préparent un cadeau.",
   },
 
   nav: {
@@ -120,7 +121,7 @@ export const fr = {
 
   myList: {
     title: "Ma liste d'envies",
-    intro: "Seule la personne qui vous offre un cadeau peut voir cette liste.",
+    intro: "Seules les personnes qui vous préparent un cadeau (à Noël ou pour votre anniversaire) voient cette liste.",
     empty: "Votre liste est vide pour l'instant.",
     add: "Ajouter une envie",
     addTitle: "Nouvelle envie",
@@ -130,7 +131,7 @@ export const fr = {
     save: "Enregistrer",
     saved: "Envie modifiée.",
     archive: "Archiver",
-    archived: "Envie archivée. Elle n'est plus visible par la personne qui vous offre.",
+    archived: "Envie archivée. Elle n'est plus visible par les personnes qui vous offrent un cadeau.",
     restore: "Remettre dans ma liste",
     restored: "Envie remise dans votre liste.",
     delete: "Supprimer",
@@ -158,7 +159,7 @@ export const fr = {
     },
     profile: {
       title: "Mes goûts",
-      intro: "Des repères pour la personne qui vous offre un cadeau, en plus de votre liste.",
+      intro: "Des repères pour les personnes qui vous offrent un cadeau, en plus de votre liste.",
       interests: "Centres d'intérêt",
       interestsHint: "Loisirs, passions, auteurs, séries…",
       sizes: "Tailles",
@@ -302,6 +303,140 @@ export const fr = {
       label: "Récapitulatif hebdomadaire",
       hint: "Un seul email par semaine au lieu d'emails séparés.", text: "Votre récapitulatif de la semaine est disponible."
     },
+  },
+
+  // The illustrated guide (#/help, and site/help/guide.pdf). One entry per section of
+  // site/js/screens/help.js; "alt" holds one description per picture.
+  help: {
+    title: "Mode d'emploi",
+    intro:
+        "Tout ce qu'il faut savoir en quelques minutes : se connecter, remplir sa liste d'envies, " +
+        "découvrir à qui on offre, et préparer les anniversaires. Les images montrent une famille " +
+        "imaginaire.",
+    signIn: "Me connecter",
+    pdf: "Télécharger le guide (PDF)",
+    tocTitle: "Sommaire",
+    faqTitle: "Questions fréquentes",
+    footerLink: "Mode d'emploi",
+    sections: {
+      connexion: {
+        title: "Se connecter",
+        steps: [
+          "Ouvrez le lien du site reçu par email (gardez-le dans vos favoris).",
+          "Tapez votre adresse email, celle à laquelle vous avez reçu l'invitation, puis « Recevoir mon code ».",
+          "Un email arrive avec un code à 6 chiffres. Rien reçu ? Regardez dans les courriers indésirables.",
+          "Tapez le code puis « Me connecter ». C'est tout : pas de mot de passe à retenir.",
+        ],
+        alt: [
+          "L'écran de connexion : la case pour l'adresse email et le bouton « Recevoir mon code ».",
+          "Le code à 6 chiffres reçu par email se tape dans la case « Code reçu par email ».",
+        ],
+        tip: "Vous restez connecté sur votre téléphone. Le code ne sert qu'une fois : demandez-en un nouveau si besoin.",
+      },
+      accueil: {
+        title: "L'accueil",
+        steps: [
+          "L'accueil montre l'événement en cours : la date, le budget conseillé et votre tirage.",
+          "Le menu en haut mène à votre liste d'envies, aux messages et à votre profil.",
+          "La cloche signale les nouveautés (un message, un rappel…).",
+        ],
+        alt: ["L'accueil : le tirage de Noël, les anniversaires à venir et le menu."],
+        tip: "",
+      },
+      liste: {
+        title: "Ma liste d'envies",
+        steps: [
+          "Dans « Ma liste », touchez « Ajouter une envie » : un titre suffit.",
+          "Vous pouvez ajouter un lien vers un site marchand, un prix, une boutique et une priorité.",
+          "Indiquez aussi vos goûts (tailles, couleurs, ce que vous n'aimez pas) : ça aide beaucoup.",
+        ],
+        alt: ["« Ma liste d'envies » avec quelques idées et le bouton pour en ajouter."],
+        tip:
+            "Seules les personnes qui vous préparent un cadeau voient votre liste. Elle reste d'une année " +
+            "sur l'autre : retirez simplement ce que vous avez reçu.",
+      },
+      tirage: {
+        title: "À qui j'offre à Noël",
+        steps: [
+          "Le jour du tirage, vous recevez un email. Sur l'accueil, touchez « Découvrir à qui j'offre ».",
+          "Vous découvrez le prénom de la personne à qui vous offrez, sa liste d'envies et ses goûts.",
+          "Touchez « Je prends cette idée », puis notez où vous en êtes (idée, acheté, emballé) : " +
+            "le rappel d'avant Noël ne vous concerne plus quand c'est emballé.",
+        ],
+        alt: ["La page de la personne tirée au sort : sa liste d'envies et le suivi de votre achat."],
+        rulesTitle: "Les règles du tirage",
+        rules: [
+          "On ne se tire jamais soi-même.",
+          "On ne tire jamais son conjoint.",
+          "On ne retombe pas sur la personne à qui on a offert l'an dernier.",
+          "On ne tombe pas non plus sur la personne qui nous a offert l'an dernier.",
+          "Pas d'échange : si vous offrez à quelqu'un, cette personne ne vous offre pas en retour.",
+        ],
+        tip: "Personne d'autre ne voit votre tirage, pas même l'organisateur.",
+      },
+      messages: {
+        title: "Écrire en secret",
+        steps: [
+          "Dans « Messages », écrivez à la personne à qui vous offrez : elle ne sait pas que c'est vous.",
+          "Elle peut vous répondre sans savoir qui vous êtes.",
+          "Vous pouvez aussi écrire à votre propre père Noël secret pour lui donner un indice.",
+        ],
+        alt: ["Les messages : la conversation secrète avec la personne à qui vous offrez."],
+        tip: "Pratique pour demander une taille ou une couleur sans gâcher la surprise.",
+      },
+      anniversaires: {
+        title: "Les anniversaires",
+        steps: [
+          "Quelques semaines avant un anniversaire, les participants reçoivent un email.",
+          "Sur l'accueil, « Voir la préparation » ouvre la page de l'anniversaire. Pour un anniversaire " +
+            "pas encore ouvert, « Lancer la préparation » le démarre.",
+          "Sur une idée de sa liste, touchez « Je m'en occupe » (vous l'achetez) ou « Je participe » " +
+            "(vous donnez une somme pour un cadeau commun).",
+          "Vous pouvez aussi proposer un cadeau commun et discuter avec les autres participants.",
+        ],
+        alt: [
+          "Les anniversaires à venir sur l'accueil, avec « Voir la préparation » et « Lancer la préparation ».",
+          "La page d'un anniversaire : qui s'occupe de quoi, et le bouton « Je participe ».",
+        ],
+        tip: "La personne fêtée ne voit rien de tout cela : c'est une surprise jusqu'au bout.",
+      },
+      notifications: {
+        title: "Mes emails et notifications",
+        steps: [
+          "Dans « Profil », choisissez ce que vous voulez recevoir par email ou seulement sur le site.",
+          "Vous pouvez aussi y changer votre prénom affiché et vous déconnecter.",
+        ],
+        alt: ["Le profil : les cases pour choisir vos emails et notifications."],
+        tip: "Les emails partent entre 8 h et 20 h, jamais la nuit.",
+      },
+    },
+    faq: [
+      {
+        q: "Je n'ai pas reçu de code.",
+        a:
+            "Attendez une minute et regardez dans les courriers indésirables. Vérifiez l'adresse tapée, puis " +
+            "touchez « Renvoyer le code ». Si le site dit que l'adresse ne permet pas de se connecter, " +
+            "prévenez l'organisateur.",
+      },
+      {
+        q: "J'ai changé d'adresse email.",
+        a: "Prévenez l'organisateur : il la change pour vous, et vous recevez une nouvelle invitation.",
+      },
+      {
+        q: "L'organisateur peut-il voir à qui j'offre ?",
+        a: "Non. Le tirage est caché à tout le monde, organisateur compris.",
+      },
+      {
+        q: "Je me suis trompé dans ma liste.",
+        a: "Dans « Ma liste », chaque envie a ses boutons « Modifier », « Archiver » et « Supprimer », utilisables à tout moment.",
+      },
+      {
+        q: "Le site est-il une application à installer ?",
+        a:
+            "Non, il s'ouvre dans le navigateur. Sur téléphone, vous pouvez l'ajouter à l'écran d'accueil " +
+            "(menu du navigateur, « Ajouter à l'écran d'accueil ») pour le retrouver comme une application.",
+      },
+    ],
   },
 
   // Birthday events (scripts/birthdays.mjs reads titleDefault for the automatic ones).

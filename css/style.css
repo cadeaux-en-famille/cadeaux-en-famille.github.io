@@ -577,3 +577,49 @@ code { font-size: 0.9em; padding: 0.05rem 0.3rem; margin-right: 0.3rem; backgrou
   .site-main { padding-top: 2.5rem; }
   .card { padding: 1.75rem; }
 }
+
+/* Mode d'emploi (#/help) */
+.help-actions { margin: 1rem 0; }
+.help-toc h2 { margin-top: 0; font-size: 1.1rem; }
+.help-toc ol { margin: 0; padding-left: 1.4rem; display: grid; gap: 0.35rem; }
+.help-toc a { display: inline-block; padding: 0.35rem 0; }
+.help-section { margin-top: 1rem; scroll-margin-top: 1rem; }
+.help-section h2 { display: flex; align-items: center; gap: 0.6rem; margin-top: 0; }
+.help-number {
+  flex: none; display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--accent); color: var(--accent-text); font-size: 1rem;
+}
+.help-steps { padding-left: 1.4rem; display: grid; gap: 0.4rem; }
+.help-figure { margin: 1rem auto 0; max-width: 320px; }
+.help-figure img {
+  display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.08);
+}
+.help-figure figcaption { margin-top: 0.4rem; font-size: 0.9rem; color: var(--text-muted); text-align: center; }
+.help-tip { margin: 1rem 0 0; padding: 0.75rem 1rem; border-radius: 8px; background: var(--accent-soft); }
+.help-rules h3 { margin: 1rem 0 0.4rem; font-size: 1rem; }
+.help-rules ul { margin: 0; padding-left: 1.4rem; display: grid; gap: 0.3rem; }
+.help-faq dt { font-weight: 600; margin-top: 0.9rem; }
+.help-faq dt:first-child { margin-top: 0; }
+.help-faq dd { margin: 0.25rem 0 0; }
+.help-link { margin-top: 1rem; }
+
+/* The guide printed to PDF (scripts/help/make-guide.mjs): no navigation; each section
+   keeps its steps on the left and its pictures on the right, on one page. */
+@media print {
+  @page { size: A4; margin: 12mm; }
+  .site-header, .site-footer, .skip-link, .help-actions, .help-toc { display: none !important; }
+  html, body { background: #fff; color: #000; }
+  .site-main { max-width: none; padding: 0; }
+  .help > h1 { margin-top: 0; }
+  .help-section {
+    break-inside: avoid; box-shadow: none; border: 1px solid #ddd;
+    display: grid; grid-template-columns: 1fr auto; gap: 0 6mm; align-items: start;
+  }
+  .help-section > h2 { grid-column: 1 / -1; }
+  .help-figures { display: flex; gap: 4mm; }
+  .help-figure { margin: 0; width: 46mm; max-width: none; }
+  .help-figure img { box-shadow: none; }
+  .help-figure figcaption { font-size: 8pt; }
+  #questions { display: block; }
+}

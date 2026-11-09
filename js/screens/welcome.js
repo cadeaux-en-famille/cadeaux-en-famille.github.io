@@ -6,9 +6,9 @@
 // somebody testing addresses which ones have access, a small risk for a family site,
 // against a member left waiting for a code that will never come.
 
-import { h } from "../dom.js?v=7d6d5f9";
-import { t, errorText } from "../i18n.js?v=7d6d5f9";
-import { isConfigured, sendCode, verifyCode } from "../api.js?v=7d6d5f9";
+import { h } from "../dom.js?v=8f2143a";
+import { t, errorText } from "../i18n.js?v=8f2143a";
+import { isConfigured, sendCode, verifyCode } from "../api.js?v=8f2143a";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CODE_PATTERN = /^\d{6}$/;
@@ -192,6 +192,7 @@ export function renderWelcome({ navigate }) {
       h("ol", {}, t("welcome.steps").map((step) => h("li", {}, step))),
     ),
     h("p", { class: "privacy" }, t("welcome.privacy")),
+    h("p", { class: "help-link" }, h("a", { href: "#/help" }, t("welcome.helpLink"))),
   );
 }
 

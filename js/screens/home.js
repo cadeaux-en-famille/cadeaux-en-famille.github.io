@@ -9,11 +9,11 @@
 //   - draw already seen                -> receiver's name and link to their list
 // The receiver is only fetched (get_my_draws) when the member asks to see it.
 
-import { h, fill } from "../dom.js?v=7d6d5f9";
-import { t, errorText } from "../i18n.js?v=7d6d5f9";
-import { getMe, select, rpc } from "../api.js?v=7d6d5f9";
-import { field, statusLine, confirmButton, formatEuro, formatDate, formatBirthday } from "../ui.js?v=7d6d5f9";
-import { renderNotMember } from "./not-member.js?v=7d6d5f9";
+import { h, fill } from "../dom.js?v=8f2143a";
+import { t, errorText } from "../i18n.js?v=8f2143a";
+import { getMe, select, rpc } from "../api.js?v=8f2143a";
+import { field, statusLine, confirmButton, formatEuro, formatDate, formatBirthday } from "../ui.js?v=8f2143a";
+import { renderNotMember } from "./not-member.js?v=8f2143a";
 
 export async function renderHome({ navigate }) {
   const me = await getMe();

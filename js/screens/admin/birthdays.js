@@ -4,11 +4,11 @@
 // being prepared or past: change their date or contribution, cancel one, open its page to choose the
 // participants. The database hides the administrator's own birthday and his partner's.
 
-import { h, fill } from "../../dom.js?v=7d6d5f9";
-import { t, errorText } from "../../i18n.js?v=7d6d5f9";
-import { select, update, remove } from "../../api.js?v=7d6d5f9";
-import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount } from "../../ui.js?v=7d6d5f9";
-import { requireAdmin, adminShell } from "./common.js?v=7d6d5f9";
+import { h, fill } from "../../dom.js?v=8f2143a";
+import { t, errorText } from "../../i18n.js?v=8f2143a";
+import { select, update, remove } from "../../api.js?v=8f2143a";
+import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount } from "../../ui.js?v=8f2143a";
+import { requireAdmin, adminShell } from "./common.js?v=8f2143a";
 
 let flash = null;
 
