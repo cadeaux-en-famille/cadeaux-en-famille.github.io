@@ -4,18 +4,18 @@
 //   - with the whole family  (signed, shown as "À toute la famille")
 // Opening the screen marks the messages and their notifications as read.
 
-import { h } from "../dom.js?v=930b6bf";
-import { t, errorText } from "../i18n.js?v=930b6bf";
-import { getMe, select, rpc, insert, update } from "../api.js?v=930b6bf";
-import { statusLine, whileBusy, formatDateTime } from "../ui.js?v=930b6bf";
-import { renderNotMember } from "./not-member.js?v=930b6bf";
+import { h } from "../dom.js?v=0a82ace";
+import { t, errorText } from "../i18n.js?v=0a82ace";
+import { getMe, select, rpc, insert, update } from "../api.js?v=0a82ace";
+import { statusLine, whileBusy, formatDateTime } from "../ui.js?v=0a82ace";
+import { renderNotMember } from "./not-member.js?v=0a82ace";
 
 export async function renderMessages({ navigate }) {
   const me = await getMe();
   if (!me) return renderNotMember();
 
   const [events, statuses] = await Promise.all([
-    select("events", "select=id,title,status&status=neq.closed&order=year.desc"),
+    select("events", "select=id,title,status&status=neq.closed&kind=eq.christmas&order=year.desc"),
     rpc("my_draw_status"),
   ]);
   const statusByEvent = new Map(statuses.map((s) => [s.event_id, s]));
@@ -118,7 +118,7 @@ function familyThread(event, familyMessages, names, me, reload) {
   );
 }
 
-function bubbles(items) {
+export function bubbles(items) {
   if (items.length === 0) return h("p", { class: "empty" }, t("messages.empty"));
   return h(
     "ol",
@@ -140,7 +140,7 @@ function bubbles(items) {
   );
 }
 
-function composer(send, reload) {
+export function composer(send, reload) {
   const status = statusLine();
   const input = h("textarea", { rows: 2, maxlength: 2000, "aria-label": t("messages.write"), placeholder: t("messages.write") });
   const button = h("button", { type: "submit", class: "button-primary" }, t("messages.send"));

@@ -2,13 +2,14 @@
 // the emails are paused (a pause forgotten in December would silently stop all mail).
 // The guard is only for display: every admin action is also checked by the database.
 
-import { h, fill } from "../../dom.js?v=930b6bf";
-import { t } from "../../i18n.js?v=930b6bf";
-import { getMe, select } from "../../api.js?v=930b6bf";
-import { formatDate } from "../../ui.js?v=930b6bf";
+import { h, fill } from "../../dom.js?v=0a82ace";
+import { t } from "../../i18n.js?v=0a82ace";
+import { getMe, select } from "../../api.js?v=0a82ace";
+import { formatDate } from "../../ui.js?v=0a82ace";
 
 export const ADMIN_TABS = [
   { path: "/admin", key: "events" },
+  { path: "/admin/birthdays", key: "birthdays" },
   { path: "/admin/members", key: "members" },
   { path: "/admin/settings", key: "settings" },
   { path: "/admin/emails", key: "emails" },

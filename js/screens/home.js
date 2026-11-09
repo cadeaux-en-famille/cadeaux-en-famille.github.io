@@ -1,5 +1,5 @@
-// Personal space (route "#/home"): greeting, the current event with "my draw", the
-// birthdays of the coming weeks, shortcuts.
+// Personal space (route "#/home"): greeting, the current Christmas event with "my draw",
+// the coming birthdays (with a way to launch or open their preparation), shortcuts.
 //
 // "My draw" card, depending on the situation:
 //   - no event in progress            -> short message
@@ -9,11 +9,11 @@
 //   - draw already seen                -> receiver's name and link to their list
 // The receiver is only fetched (get_my_draws) when the member asks to see it.
 
-import { h, fill } from "../dom.js?v=930b6bf";
-import { t, errorText } from "../i18n.js?v=930b6bf";
-import { getMe, select, rpc } from "../api.js?v=930b6bf";
-import { field, statusLine, confirmButton, formatEuro, formatDate, formatBirthday, daysUntilBirthday } from "../ui.js?v=930b6bf";
-import { renderNotMember } from "./not-member.js?v=930b6bf";
+import { h, fill } from "../dom.js?v=0a82ace";
+import { t, errorText } from "../i18n.js?v=0a82ace";
+import { getMe, select, rpc } from "../api.js?v=0a82ace";
+import { field, statusLine, confirmButton, formatEuro, formatDate, formatBirthday } from "../ui.js?v=0a82ace";
+import { renderNotMember } from "./not-member.js?v=0a82ace";
 
 export async function renderHome({ navigate }) {
   const me = await getMe();
@@ -21,9 +21,9 @@ export async function renderHome({ navigate }) {
 
   const [wishes, events, statuses, birthdays] = await Promise.all([
     select("wishes", `select=id&member_id=eq.${me.id}&archived=is.false`),
-    select("events", "select=*&status=neq.closed&order=year.desc"),
+    select("events", "select=*&status=neq.closed&kind=eq.christmas&order=year.desc"),
     rpc("my_draw_status"),
-    select("members", "select=id,display_name,birthday_day,birthday_month&is_active=is.true&birthday_day=not.is.null"),
+    rpc("upcoming_birthdays", { p_days: BIRTHDAY_DAYS }),
   ]);
   const statusByEvent = new Map(statuses.map((s) => [s.event_id, s]));
   const event = events.find((e) => statusByEvent.has(e.id)) ?? null;
@@ -43,7 +43,7 @@ export async function renderHome({ navigate }) {
     ),
     h("p", { class: "lead" }, t("home.intro")),
     await drawCard(me, event, event ? statusByEvent.get(event.id) : null, navigate),
-    birthdayCard(me, birthdays),
+    birthdayCard(birthdays, navigate),
     h(
       "div",
       { class: "shortcuts" },
@@ -170,40 +170,68 @@ function countdown(eventDate) {
   return h("span", { class: "countdown" }, text);
 }
 
-// The birthdays of the next BIRTHDAY_DAYS days, the closest first (none: no card).
-const BIRTHDAY_DAYS = 30;
+// The birthdays of the next BIRTHDAY_DAYS days, the closest first (none: no card). A
+// birthday opens by itself two months before; any member but the celebrated one and
+// their partner may launch it earlier, up to six months before.
+const BIRTHDAY_DAYS = 180;
+const SHOWN_WITHOUT_ACTION = 30;   // further away, only the ones somebody can act on
 
-function birthdayCard(me, members) {
-  const coming = members
-    .map((m) => ({ ...m, days: daysUntilBirthday(m.birthday_day, m.birthday_month) }))
-    .filter((m) => m.days !== null && m.days <= BIRTHDAY_DAYS)
-    .sort((a, b) => a.days - b.days || a.display_name.localeCompare(b.display_name, "fr"));
+function birthdayCard(birthdays, navigate) {
+  const status = statusLine();
+  const coming = birthdays.filter((b) => b.days <= SHOWN_WITHOUT_ACTION || b.state === "open" || b.state === "to_launch");
   if (coming.length === 0) return null;
   return h(
     "article",
     { class: "card birthdays" },
     h("h2", {}, t("home.birthdaysTitle")),
+    status.element,
+    h("ul", { class: "birthday-list" }, coming.map((b) => birthdayLine(b, status, navigate))),
+  );
+}
+
+function birthdayLine(b, status, navigate) {
+  const date = formatBirthday(b.birthday_day, b.birthday_month);
+  const when = b.days === 0
+    ? t("home.birthdayToday")
+    : b.days === 1
+      ? t("home.birthdayTomorrow", { date })
+      : t("home.birthdayIn", { date, days: b.days });
+
+  let action = null;
+  if (b.state === "open") {
+    action = h("a", { class: "button-link", href: `#/birthday?id=${b.event_id}` }, t("home.birthdayOpen"));
+  } else if (b.state === "elsewhere") {
+    action = h("span", { class: "birthday-state" }, t("home.birthdayElsewhere"));
+  } else if (b.state === "to_launch") {
+    action = confirmButton({
+      label: t("home.birthdayLaunch"),
+      confirmLabel: t("home.birthdayLaunchConfirm", { name: b.display_name }),
+      className: "button-link",
+      onConfirm: async () => {
+        try {
+          const eventId = await rpc("launch_birthday", {
+            p_member_id: b.member_id,
+            p_title: t("birthday.titleDefault", { name: b.display_name }),
+          });
+          navigate(`/birthday?id=${eventId}`);
+        } catch (error) {
+          status.show(errorText(error), "error");
+        }
+      },
+    });
+  }
+
+  return h(
+    "li",
+    {},
     h(
-      "ul",
-      { class: "birthday-list" },
-      coming.map((m) =>
-        h(
-          "li",
-          {},
-          h("span", { class: "birthday-name" }, m.id === me.id ? t("home.birthdayMe") : m.display_name),
-          t("home.birthdaySeparator"),
-          h(
-            "span",
-            { class: "birthday-when" },
-            m.days === 0
-              ? t("home.birthdayToday")
-              : m.days === 1
-                ? t("home.birthdayTomorrow", { date: formatBirthday(m.birthday_day, m.birthday_month) })
-                : t("home.birthdayIn", { date: formatBirthday(m.birthday_day, m.birthday_month), days: m.days }),
-          ),
-        ),
-      ),
+      "p",
+      { class: "birthday-line" },
+      h("span", { class: "birthday-name" }, b.state === "mine" ? t("home.birthdayMe") : b.display_name),
+      t("home.birthdaySeparator"),
+      h("span", { class: "birthday-when" }, when),
     ),
+    action,
   );
 }
 

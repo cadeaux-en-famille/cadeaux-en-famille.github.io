@@ -1,10 +1,10 @@
 // "Notifications" (route "#/notifications"): what the bell counts. Texts come from
 // i18n/fr.js (notifications.<kind>.text); a click opens the matching screen.
 
-import { h } from "../dom.js?v=930b6bf";
-import { t, errorText } from "../i18n.js?v=930b6bf";
-import { select, update } from "../api.js?v=930b6bf";
-import { statusLine, formatDateTime } from "../ui.js?v=930b6bf";
+import { h } from "../dom.js?v=0a82ace";
+import { t, errorText } from "../i18n.js?v=0a82ace";
+import { select, update } from "../api.js?v=0a82ace";
+import { statusLine, formatDateTime } from "../ui.js?v=0a82ace";
 
 const LINKS = {
   private_message: "/messages",
@@ -16,6 +16,12 @@ const LINKS = {
   weekly_digest: "/home",
 };
 
+/** Screen a notification opens: a birthday's own page for anything about a birthday. */
+function linkFor(row) {
+  if (row.event_id && row.events?.kind === "birthday") return `/birthday?id=${row.event_id}`;
+  return LINKS[row.kind] ?? "/home";
+}
+
 /** Number of unread notifications shown under the bell. */
 export async function unreadCount() {
   const rows = await select("notifications", "select=id&in_app=is.true&read_at=is.null");
@@ -23,7 +29,7 @@ export async function unreadCount() {
 }
 
 export async function renderNotifications({ navigate }) {
-  const rows = await select("notifications", "select=*&in_app=is.true&order=created_at.desc&limit=50");
+  const rows = await select("notifications", "select=*,events(kind)&in_app=is.true&order=created_at.desc&limit=50");
   const status = statusLine();
 
   async function markAllRead() {
@@ -45,7 +51,7 @@ export async function renderNotifications({ navigate }) {
         // still open the screen
       }
     }
-    navigate(LINKS[row.kind] ?? "/home");
+    navigate(linkFor(row));
   }
 
   const unread = rows.filter((r) => !r.read_at).length;
@@ -69,7 +75,7 @@ export async function renderNotifications({ navigate }) {
               h(
                 "button",
                 { type: "button", class: `notification${row.read_at ? "" : " unread"}`, onclick: () => open(row) },
-                h("span", { class: "notification-text" }, t(`notifications.${row.kind}.text`, { author: row.payload?.author ?? "" })),
+                h("span", { class: "notification-text" }, t(`notifications.${row.kind}.text`, { author: row.payload?.author ?? "", days: row.payload?.days ?? "" })),
                 h("span", { class: "notification-date" }, formatDateTime(row.created_at)),
               ),
             ),

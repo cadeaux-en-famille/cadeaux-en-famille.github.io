@@ -1,12 +1,13 @@
-// Admin > Événements (route "#/admin"): create events, choose participants, run or
-// cancel the draw, follow progress (counts only) and close the event.
+// Admin > Noël (route "#/admin"): create the Christmas events, choose participants, run
+// or cancel the draw, follow progress (counts only) and close the event. Birthdays have
+// their own screen (admin/birthdays.js).
 // The admin never sees who gives to whom: the database only returns counts.
 
-import { h, fill } from "../../dom.js?v=930b6bf";
-import { t, errorText } from "../../i18n.js?v=930b6bf";
-import { select, insert, update, remove, rpc } from "../../api.js?v=930b6bf";
-import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount, addDays } from "../../ui.js?v=930b6bf";
-import { requireAdmin, adminShell } from "./common.js?v=930b6bf";
+import { h, fill } from "../../dom.js?v=0a82ace";
+import { t, errorText } from "../../i18n.js?v=0a82ace";
+import { select, insert, update, remove, rpc } from "../../api.js?v=0a82ace";
+import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount, addDays } from "../../ui.js?v=0a82ace";
+import { requireAdmin, adminShell } from "./common.js?v=0a82ace";
 
 export async function renderAdminEvents() {
   const denied = await requireAdmin();
@@ -20,7 +21,7 @@ export async function renderAdminEvents() {
   // Loads everything and (re)draws the screen; `message` is shown at the top.
   async function load(message, kind = "success") {
     const [events, members, participants, settingsRows] = await Promise.all([
-      select("events", "select=*&order=year.desc"),
+      select("events", "select=*&kind=eq.christmas&order=year.desc"),
       select("members", "select=id,display_name,is_active&order=display_name"),
       select("participants", "select=event_id,member_id"),
       select("settings", "select=default_budget_eur,wishlist_deadline_days"),

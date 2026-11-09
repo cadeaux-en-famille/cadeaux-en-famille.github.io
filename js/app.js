@@ -4,22 +4,24 @@
 // Each route says whether it needs a signed-in member. Screens may be async
 // (they load data first); a loading text is shown meanwhile.
 
-import { applyTranslations, t } from "./i18n.js?v=930b6bf";
-import { h } from "./dom.js?v=930b6bf";
-import { initApi, isSignedIn, getMe } from "./api.js?v=930b6bf";
-import { renderWelcome } from "./screens/welcome.js?v=930b6bf";
-import { renderHome } from "./screens/home.js?v=930b6bf";
-import { renderMyList } from "./screens/my-list.js?v=930b6bf";
-import { renderProfile } from "./screens/profile.js?v=930b6bf";
-import { renderReceiver } from "./screens/receiver.js?v=930b6bf";
-import { renderMessages } from "./screens/messages.js?v=930b6bf";
-import { renderHistory } from "./screens/history.js?v=930b6bf";
-import { renderNotifications, unreadCount } from "./screens/notifications.js?v=930b6bf";
-import { renderNotFound } from "./screens/not-found.js?v=930b6bf";
-import { renderAdminEvents } from "./screens/admin/events.js?v=930b6bf";
-import { renderAdminMembers } from "./screens/admin/members.js?v=930b6bf";
-import { renderAdminSettings } from "./screens/admin/settings.js?v=930b6bf";
-import { renderAdminEmails } from "./screens/admin/emails.js?v=930b6bf";
+import { applyTranslations, t } from "./i18n.js?v=0a82ace";
+import { h } from "./dom.js?v=0a82ace";
+import { initApi, isSignedIn, getMe } from "./api.js?v=0a82ace";
+import { renderWelcome } from "./screens/welcome.js?v=0a82ace";
+import { renderHome } from "./screens/home.js?v=0a82ace";
+import { renderMyList } from "./screens/my-list.js?v=0a82ace";
+import { renderProfile } from "./screens/profile.js?v=0a82ace";
+import { renderReceiver } from "./screens/receiver.js?v=0a82ace";
+import { renderMessages } from "./screens/messages.js?v=0a82ace";
+import { renderHistory } from "./screens/history.js?v=0a82ace";
+import { renderBirthday } from "./screens/birthday.js?v=0a82ace";
+import { renderNotifications, unreadCount } from "./screens/notifications.js?v=0a82ace";
+import { renderNotFound } from "./screens/not-found.js?v=0a82ace";
+import { renderAdminEvents } from "./screens/admin/events.js?v=0a82ace";
+import { renderAdminMembers } from "./screens/admin/members.js?v=0a82ace";
+import { renderAdminBirthdays } from "./screens/admin/birthdays.js?v=0a82ace";
+import { renderAdminSettings } from "./screens/admin/settings.js?v=0a82ace";
+import { renderAdminEmails } from "./screens/admin/emails.js?v=0a82ace";
 
 const ROUTES = {
   "/": { screen: renderWelcome, public: true },
@@ -29,9 +31,11 @@ const ROUTES = {
   "/receiver": { screen: renderReceiver },
   "/messages": { screen: renderMessages },
   "/history": { screen: renderHistory },
+  "/birthday": { screen: renderBirthday },
   "/notifications": { screen: renderNotifications },
   "/admin": { screen: renderAdminEvents },
   "/admin/members": { screen: renderAdminMembers },
+  "/admin/birthdays": { screen: renderAdminBirthdays },
   "/admin/settings": { screen: renderAdminSettings },
   "/admin/emails": { screen: renderAdminEmails },
 };
@@ -53,9 +57,14 @@ function currentPath() {
   return path === "" ? "/" : path;
 }
 
+// "#/birthday?id=…" -> URLSearchParams of what follows "?".
+function routeParams() {
+  return new URLSearchParams(location.hash.split("?")[1] ?? "");
+}
+
 // "#/admin/settings?to=sending" -> "sending": the screen opens scrolled to that element.
 function scrollTarget() {
-  return new URLSearchParams(location.hash.split("?")[1] ?? "").get("to");
+  return routeParams().get("to");
 }
 
 export function navigate(path) {
@@ -145,7 +154,7 @@ async function render() {
 
   let content;
   try {
-    content = route ? await route.screen({ navigate }) : renderNotFound();
+    content = route ? await route.screen({ navigate, params: routeParams() }) : renderNotFound();
   } catch (error) {
     // A screen that fails to load: if the session ended, back to sign-in.
     if (!isSignedIn()) return navigate("/");

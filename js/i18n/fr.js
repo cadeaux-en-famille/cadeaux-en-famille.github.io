@@ -94,6 +94,10 @@ export const fr = {
     declareHint: "En cas d'erreur, demandez à l'organisateur d'effacer votre choix (il ne le verra pas).",
     birthdaysTitle: "Anniversaires à venir",
     birthdayMe: "Vous",
+    birthdayOpen: "Voir la préparation",
+    birthdayElsewhere: "En préparation",
+    birthdayLaunch: "Lancer la préparation",
+    birthdayLaunchConfirm: "Lancer pour {name} ?",
     birthdaySeparator: "\u00a0: ",
     birthdayToday: "aujourd'hui ! 🎂",
     birthdayTomorrow: "demain, le {date}",
@@ -232,6 +236,14 @@ export const fr = {
     noDraw: "Pas de tirage enregistré pour moi cette année-là.",
     inProgress: "Événement en cours : voir mon tirage sur l'accueil",
     myGifts: "Mes cadeaux notés comme achetés :",
+    myBirthday: "Mon anniversaire {year}",
+    birthdayParticipants: "Ont participé à mon cadeau : {names}",
+    birthdayOpen: "Voir la page de l'anniversaire",
+    birthdayStatus: {
+      preparing: "En préparation",
+      drawn: "En préparation",
+      closed: "Passé",
+    },
   },
 
   notificationsScreen: {
@@ -270,16 +282,89 @@ export const fr = {
       label: "Liste de mon receveur modifiée",
       hint: "La personne à qui j'offre a changé sa liste.", text: "La personne à qui vous offrez a modifié sa liste."
     },
-    event_reminder: { label: "Rappel avant l'événement", hint: "Une semaine avant Noël.", text: "L'événement approche : plus qu'une semaine !" },
+    event_reminder: { label: "Rappel avant l'événement", hint: "Une semaine avant Noël, sauf si mon cadeau est déjà emballé.", text: "L'événement approche : plus qu'une semaine !" },
     invitation: {
       label: "Invitation au site",
       hint: "Email envoyé à l'ouverture du site.",
       text: "Bienvenue sur le site du tirage des cadeaux !",
     },
+    birthday_opened: {
+      label: "Anniversaire en préparation",
+      hint: "Un anniversaire se prépare et j'y participe.",
+      text: "Un anniversaire se prépare : choisissez comment participer.",
+    },
+    birthday_reminder: {
+      label: "Rappel d'anniversaire",
+      hint: "Deux semaines puis trois jours avant, tant que je n'ai rien choisi.",
+      text: "L'anniversaire approche (dans {days} jours) et vous n'avez encore rien choisi.",
+    },
     weekly_digest: {
       label: "Récapitulatif hebdomadaire",
       hint: "Un seul email par semaine au lieu d'emails séparés.", text: "Votre récapitulatif de la semaine est disponible."
     },
+  },
+
+  // Birthday events (scripts/birthdays.mjs reads titleDefault for the automatic ones).
+  birthday: {
+    titleDefault: "Anniversaire de {name}",
+    notFoundTitle: "Anniversaire introuvable",
+    notFoundText: "Cet anniversaire n'existe pas ou vous n'y participez pas.",
+    dateLine: "Le {date}",
+    contributionLine: "Contribution indicative : {amount} par personne",
+    totalLine: "Déjà réuni : {amount}",
+    intro:
+        "On prépare la surprise de {name}, qui ne voit rien de cette page. Prenez une idée en charge, " +
+        "participez à un cadeau commun ou proposez-en un : chacun voit qui fait quoi.",
+    closedIntro: "Cet anniversaire est passé. Voici ce qui avait été organisé pour {name}.",
+    notTakingPart:
+        "Vous ne participez pas à cet anniversaire : vous voyez seulement qui y participe. " +
+        "{name} ne voit rien de cette page.",
+    wishesTitle: "La liste d'envies de {name}",
+    wishesEmpty: "{name} n'a encore rien mis dans sa liste d'envies. Proposez un cadeau commun ci-dessous.",
+    commonTitle: "Cadeaux communs proposés",
+    commonEmpty: "Aucune proposition pour l'instant.",
+    propose: "Proposer un cadeau commun",
+    proposeHint: "Une idée qui n'est pas dans sa liste, à laquelle les autres pourront participer.",
+    proposeTitle: "Idée de cadeau",
+    proposeUrl: "Lien (facultatif)",
+    proposeNote: "Précisions (facultatif)",
+    proposeSubmit: "Proposer",
+    proposed: "Proposition ajoutée.",
+    proposedBy: "Proposé par {name}",
+    removeProposal: "Retirer la proposition",
+    removeProposalConfirm: "Confirmer le retrait",
+    proposalRemoved: "Proposition retirée.",
+    you: "vous",
+    withAmount: "{name} ({amount})",
+    buyerLine: "Pris en charge par {name}",
+    helpersLine: "Participent : {names}",
+    giftTotal: "Total : {amount}",
+    nobodyYet: "Personne ne s'en occupe pour l'instant.",
+    takeInHand: "Je m'en occupe",
+    chipIn: "Je participe",
+    amountLabel: "Mon montant en euros (facultatif)",
+    amountHint: "Contribution indicative : {amount}. Laissez vide pour ne pas indiquer de montant.",
+    confirmPledge: "Valider",
+    buyerDone: "C'est noté : vous vous en occupez.",
+    helperDone: "C'est noté : vous participez.",
+    youBuy: "Vous vous en occupez.",
+    youHelp: "Vous participez.",
+    changeAmount: "Changer le montant",
+    withdraw: "Me retirer",
+    withdrawConfirm: "Confirmer",
+    withdrawn: "Vous ne participez plus à ce cadeau.",
+    tastesTitle: "Les goûts de {name}",
+    tastesEmpty: "Rien de renseigné pour l'instant.",
+    discussionTitle: "Discussion entre participants",
+    discussionHint: "Pour vous organiser entre vous : {name} ne voit pas ces messages.",
+    participantsTitle: "Participants ({count})",
+    participantsHint: "La personne qui a lancé l'anniversaire (ou l'administrateur) choisit les participants.",
+    editParticipants: "Modifier les participants",
+    participantsLegend: "Qui participe ?",
+    participantsEditHint:
+        "Les nouveaux participants sont prévenus. Une personne retirée perd ce qu'elle avait choisi.",
+    saveParticipants: "Enregistrer les participants",
+    participantsSaved: "Participants enregistrés.",
   },
 
   admin: {
@@ -289,7 +374,8 @@ export const fr = {
     pausedBanner: "Les envois d'emails sont suspendus depuis le {date} : aucun email ne part.",
     pausedBannerLink: "Gérer les envois",
     tabs: {
-      events: "Événements",
+      events: "Noël",
+      birthdays: "Anniversaires",
       members: "Membres",
       settings: "Tirage automatique",
       emails: "Modèles d'emails",
@@ -415,6 +501,32 @@ export const fr = {
         "Les envois ont lieu entre 8\u00a0h et 20\u00a0h.",
       openHint: "Le site est ouvert à toute la famille : chacun peut se connecter et recevoir ses emails.",
     },
+    birthdays: {
+      intro:
+        "Chaque anniversaire s'ouvre tout seul deux mois avant la date (ou plus tôt si un membre le lance). " +
+        "Ni la personne fêtée ni son conjoint n'y participent par défaut.",
+      contribution: "Contribution indicative par personne (€)",
+      contributionHint: "Proposée pour chaque nouvel anniversaire ; modifiable ensuite pour chacun.",
+      invalidContribution: "Indiquez un montant, par exemple 25 ou 25,50.",
+      defaultParticipants: "Participants par défaut",
+      defaultParticipantsHint:
+        "Les membres cochés participent à chaque anniversaire, sauf au leur et à celui de leur conjoint. " +
+        "La personne qui lance un anniversaire peut ensuite changer ses participants.",
+      save: "Enregistrer",
+      saved: "Réglages des anniversaires enregistrés.",
+      withoutDate: "Sans date d'anniversaire (à renseigner dans Membres) : {names}.",
+      listTitle: "Anniversaires",
+      none: "Aucun anniversaire en préparation ni passé pour l'instant.",
+      hiddenHint: "Votre anniversaire et celui de votre conjoint n'apparaissent pas ici : c'est une surprise pour vous aussi.",
+      contributionLine: "Contribution indicative : {amount}",
+      participantsLine: "{count} participant(s)",
+      launchedBy: "Lancé par {name}",
+      automatic: "Ouvert automatiquement",
+      openPage: "Participants",
+      cancel: "Annuler l'anniversaire",
+      cancelConfirm: "Confirmer l'annulation",
+      cancelled: "{title} est annulé.",
+    },
     settings: {
       intro:
         "Chaque année à la date choisie, le site crée l'événement de Noël, inscrit les membres actifs, " +
@@ -539,6 +651,21 @@ export const fr = {
       body:
         "Bonjour {prenom},\n\nLa personne à qui vous offrez un cadeau pour {evenement} a modifié sa liste d'envies.\n\n{lien}",
     },
+    birthday_opened: {
+      subject: "{evenement} : on prépare la surprise !",
+      body:
+        "Bonjour {prenom},\n\n{evenement} tombe le {date} et vous faites partie des participants. " +
+        "Sur le site, vous trouverez sa liste d'envies : prenez une idée en charge, participez à un cadeau " +
+        "commun ou proposez-en un. Chacun voit qui fait quoi, et la personne fêtée ne voit rien.\n\n" +
+        "Contribution indicative : {budget}.\n\n{lien}\n\nChut, c'est une surprise !",
+    },
+    birthday_reminder: {
+      subject: "{evenement} approche",
+      body:
+        "Bonjour {prenom},\n\n{evenement} tombe le {date} et vous n'avez encore choisi aucun cadeau. " +
+        "Il est encore temps de prendre une idée en charge ou de participer à un cadeau commun " +
+        "(contribution indicative : {budget}).\n\n{lien}",
+    },
     weekly_digest: {
       subject: "Votre récapitulatif de la semaine",
       body: "Bonjour {prenom},\n\nVoici les nouveautés de la semaine pour {evenement} :\n\n{resume}\n\n{lien}",
@@ -551,6 +678,27 @@ export const fr = {
       disabled: "Les emails aux membres ne sont pas encore activés : le site n'est pas ouvert.",
       cannot_sign_in: "Ce membre n'a pas encore d'adresse de connexion.",
       empty: "L'objet et le texte sont obligatoires.",
+    },
+    birthday: {
+      not_allowed: "On ne prépare pas son propre anniversaire, ni celui de son conjoint.",
+      no_date: "Cette personne n'a pas de date d'anniversaire.",
+      invalid_title: "Indiquez un titre (80 caractères au plus pour un anniversaire, 120 pour une idée).",
+      too_early: "C'est trop tôt : un anniversaire se lance au plus six mois avant.",
+      already_open: "Cet anniversaire est déjà en préparation.",
+      not_organiser: "Seule la personne qui a lancé l'anniversaire (ou l'administrateur) choisit les participants.",
+      closed: "Cet anniversaire est passé : il ne peut plus être modifié.",
+      celebrated_cannot_take_part: "La personne fêtée ne peut pas participer à son propre anniversaire.",
+      no_participants: "Choisissez au moins un participant.",
+      not_a_participant: "Vous ne participez pas à cet anniversaire.",
+      invalid_request: "Demande incomplète. Rechargez la page.",
+      invalid_amount: "Indiquez un montant positif, par exemple 20 ou 15,50.",
+      wish_not_found: "Cette idée n'est plus dans sa liste. Rechargez la page.",
+      gift_not_found: "Ce cadeau n'existe plus. Rechargez la page.",
+      buyer_taken: "Quelqu'un s'occupe déjà de ce cadeau : vous pouvez y participer.",
+      invalid_url: "Le lien doit commencer par http:// ou https://.",
+      note_too_long: "Les précisions ne doivent pas dépasser 500 caractères.",
+      not_your_gift: "Seule la personne qui l'a proposé peut retirer ce cadeau.",
+      gift_has_contributions: "D'autres participent déjà à ce cadeau : il ne peut plus être retiré.",
     },
     members: {
       household_full: "Ce foyer compte déjà deux personnes : un foyer est un couple.",
