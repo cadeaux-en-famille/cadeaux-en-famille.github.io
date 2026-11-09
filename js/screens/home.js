@@ -9,11 +9,11 @@
 //   - draw already seen                -> receiver's name and link to their list
 // The receiver is only fetched (get_my_draws) when the member asks to see it.
 
-import { h, fill } from "../dom.js?v=0a82ace";
-import { t, errorText } from "../i18n.js?v=0a82ace";
-import { getMe, select, rpc } from "../api.js?v=0a82ace";
-import { field, statusLine, confirmButton, formatEuro, formatDate, formatBirthday } from "../ui.js?v=0a82ace";
-import { renderNotMember } from "./not-member.js?v=0a82ace";
+import { h, fill } from "../dom.js?v=7d6d5f9";
+import { t, errorText } from "../i18n.js?v=7d6d5f9";
+import { getMe, select, rpc } from "../api.js?v=7d6d5f9";
+import { field, statusLine, confirmButton, formatEuro, formatDate, formatBirthday } from "../ui.js?v=7d6d5f9";
+import { renderNotMember } from "./not-member.js?v=7d6d5f9";
 
 export async function renderHome({ navigate }) {
   const me = await getMe();
@@ -170,9 +170,10 @@ function countdown(eventDate) {
   return h("span", { class: "countdown" }, text);
 }
 
-// The birthdays of the next BIRTHDAY_DAYS days, the closest first (none: no card). A
-// birthday opens by itself two months before; any member but the celebrated one and
-// their partner may launch it earlier, up to six months before.
+// The birthdays of the next BIRTHDAY_DAYS days, the closest first (none: no card). The
+// birthdays of the members ticked in Admin > Anniversaires open by themselves (two months
+// before by default); any member but the celebrated one and their partner may launch any
+// birthday earlier, up to six months before.
 const BIRTHDAY_DAYS = 180;
 const SHOWN_WITHOUT_ACTION = 30;   // further away, only the ones somebody can act on
 

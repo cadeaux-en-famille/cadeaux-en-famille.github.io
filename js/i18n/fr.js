@@ -503,15 +503,27 @@ export const fr = {
     },
     birthdays: {
       intro:
-        "Chaque anniversaire s'ouvre tout seul deux mois avant la date (ou plus tôt si un membre le lance). " +
+        "L'anniversaire des membres cochés ci-dessous s'ouvre tout seul avant la date. Celui des autres " +
+        "s'ouvre quand un membre clique sur « Lancer la préparation » depuis l'accueil. " +
         "Ni la personne fêtée ni son conjoint n'y participent par défaut.",
       contribution: "Contribution indicative par personne (€)",
       contributionHint: "Proposée pour chaque nouvel anniversaire ; modifiable ensuite pour chacun.",
       invalidContribution: "Indiquez un montant, par exemple 25 ou 25,50.",
-      defaultParticipants: "Participants par défaut",
+      opening: "Ouverture automatique",
+      openAmount: "Délai",
+      openUnit: "En",
+      weeks: "semaines",
+      months: "mois",
+      openingHint:
+        "Un anniversaire s'ouvre tout seul ce délai avant la date (de 1 à 6 mois, ou de 1 à 26 semaines), " +
+        "et ses participants reçoivent un email. Un membre peut toujours le lancer plus tôt.",
+      invalidMonths: "Indiquez un nombre de mois entre 1 et 6.",
+      invalidWeeks: "Indiquez un nombre de semaines entre 1 et 26.",
+      defaultParticipants: "Membres concernés",
       defaultParticipantsHint:
-        "Les membres cochés participent à chaque anniversaire, sauf au leur et à celui de leur conjoint. " +
-        "La personne qui lance un anniversaire peut ensuite changer ses participants.",
+        "Pour chaque membre coché, l'anniversaire s'ouvre automatiquement, et il participe par défaut à " +
+        "l'anniversaire des autres (sauf à celui de son conjoint). La personne qui lance un anniversaire " +
+        "peut ensuite changer ses participants.",
       save: "Enregistrer",
       saved: "Réglages des anniversaires enregistrés.",
       withoutDate: "Sans date d'anniversaire (à renseigner dans Membres) : {names}.",

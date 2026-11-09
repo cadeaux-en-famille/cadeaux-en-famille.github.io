@@ -537,8 +537,8 @@ fieldset.checklist legend { font-weight: 600; padding: 0; margin-bottom: 0.2rem;
 .member-actions .button-link { min-height: 48px; }
 .member-left { opacity: 0.75; }
 .member-form h2 { margin-top: 0; font-size: 1.1rem; }
-fieldset.birthday { border: 0; padding: 0; margin: 0 0 1rem; }
-fieldset.birthday legend { font-weight: 600; padding: 0; margin-bottom: 0.4rem; }
+fieldset.birthday, fieldset.opening { border: 0; padding: 0; margin: 0 0 1rem; }
+fieldset.birthday legend, fieldset.opening legend { font-weight: 600; padding: 0; margin-bottom: 0.4rem; }
 
 /* Accueil : anniversaires */
 .card.birthdays { margin-top: 1rem; }

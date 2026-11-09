@@ -1,22 +1,26 @@
 // Admin > Anniversaires (route "#/admin/birthdays"): the defaults of every birthday (the
-// indicative contribution, the members taking part), and the birthdays being prepared
-// or past: change their date or contribution, cancel one, open its page to choose the
+// indicative contribution, how long before it opens by itself, the members concerned:
+// their birthday opens by itself and they take part in the others'), and the birthdays
+// being prepared or past: change their date or contribution, cancel one, open its page to choose the
 // participants. The database hides the administrator's own birthday and his partner's.
 
-import { h, fill } from "../../dom.js?v=0a82ace";
-import { t, errorText } from "../../i18n.js?v=0a82ace";
-import { select, update, remove } from "../../api.js?v=0a82ace";
-import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount } from "../../ui.js?v=0a82ace";
-import { requireAdmin, adminShell } from "./common.js?v=0a82ace";
+import { h, fill } from "../../dom.js?v=7d6d5f9";
+import { t, errorText } from "../../i18n.js?v=7d6d5f9";
+import { select, update, remove } from "../../api.js?v=7d6d5f9";
+import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount } from "../../ui.js?v=7d6d5f9";
+import { requireAdmin, adminShell } from "./common.js?v=7d6d5f9";
 
 let flash = null;
+
+const MAX_MONTHS = 6;
+const MAX_WEEKS = 26;
 
 export async function renderAdminBirthdays({ navigate }) {
   const denied = await requireAdmin();
   if (denied) return denied;
 
   const [[settings], members, events, participants] = await Promise.all([
-    select("settings", "select=birthday_contribution_eur"),
+    select("settings", "select=birthday_contribution_eur,birthday_open_amount,birthday_open_unit"),
     select("members", "select=id,display_name,is_active,in_birthdays,birthday_day&is_active=is.true&order=display_name"),
     select("events", "select=*&kind=eq.birthday&order=event_date.desc"),
     select("participants", "select=event_id,member_id"),
@@ -39,6 +43,23 @@ export async function renderAdminBirthdays({ navigate }) {
     value: settings?.birthday_contribution_eur ?? 25,
     hint: t("admin.birthdays.contributionHint"),
   });
+  // How long before the birthday it opens by itself: 1 to 6 months, or 1 to 26 weeks
+  // (the database checks the same limits).
+  const openAmount = field({
+    label: t("admin.birthdays.openAmount"),
+    inputmode: "numeric",
+    value: settings?.birthday_open_amount ?? 2,
+    maxlength: 2,
+  });
+  const openUnit = field({
+    label: t("admin.birthdays.openUnit"),
+    kind: "select",
+    value: settings?.birthday_open_unit ?? "months",
+    options: [
+      { value: "weeks", label: t("admin.birthdays.weeks") },
+      { value: "months", label: t("admin.birthdays.months") },
+    ],
+  });
   const boxes = members.map((m) => ({ member: m, box: h("input", { type: "checkbox", checked: m.in_birthdays, value: m.id }) }));
   const submit = h("button", { type: "submit", class: "button-primary" }, t("admin.birthdays.save"));
   const defaults = h(
@@ -53,11 +74,21 @@ export async function renderAdminBirthdays({ navigate }) {
           status.show(t("admin.birthdays.invalidContribution"), "error");
           return;
         }
+        const opening = { amount: Number(openAmount.input.value.trim()), unit: openUnit.input.value };
+        const maximum = opening.unit === "weeks" ? MAX_WEEKS : MAX_MONTHS;
+        if (!Number.isInteger(opening.amount) || opening.amount < 1 || opening.amount > maximum) {
+          status.show(t(opening.unit === "weeks" ? "admin.birthdays.invalidWeeks" : "admin.birthdays.invalidMonths"), "error");
+          return;
+        }
         const ticked = boxes.filter(({ box }) => box.checked).map(({ member }) => member.id);
         const unticked = boxes.filter(({ box }) => !box.checked).map(({ member }) => member.id);
         try {
           await whileBusy(submit, t("common.saving"), async () => {
-            await update("settings", "id=eq.true", { birthday_contribution_eur: amount });
+            await update("settings", "id=eq.true", {
+              birthday_contribution_eur: amount,
+              birthday_open_amount: opening.amount,
+              birthday_open_unit: opening.unit,
+            });
             if (ticked.length > 0) await update("members", `id=in.(${ticked.join(",")})`, { in_birthdays: true });
             if (unticked.length > 0) await update("members", `id=in.(${unticked.join(",")})`, { in_birthdays: false });
           });
@@ -68,6 +99,13 @@ export async function renderAdminBirthdays({ navigate }) {
       },
     },
     contribution.element,
+    h(
+      "fieldset",
+      { class: "opening" },
+      h("legend", {}, t("admin.birthdays.opening")),
+      h("div", { class: "field-row" }, openAmount.element, openUnit.element),
+      h("p", { class: "field-hint" }, t("admin.birthdays.openingHint")),
+    ),
     h(
       "fieldset",
       { class: "checklist" },
