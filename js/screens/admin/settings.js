@@ -2,11 +2,14 @@
 // automatic draw, the (read-only) status of the email gate, and the pause switch that
 // stops every email the site sends.
 
-import { h } from "../../dom.js?v=adc93c1";
-import { t, errorText } from "../../i18n.js?v=adc93c1";
-import { select, update, rpc } from "../../api.js?v=adc93c1";
-import { field, statusLine, whileBusy, parseAmount, formatDate, confirmButton } from "../../ui.js?v=adc93c1";
-import { requireAdmin, adminShell } from "./common.js?v=adc93c1";
+import { h } from "../../dom.js?v=f63197d";
+import { t, errorText } from "../../i18n.js?v=f63197d";
+import { select, update, rpc } from "../../api.js?v=f63197d";
+import { field, statusLine, whileBusy, parseAmount, formatDate, confirmButton } from "../../ui.js?v=f63197d";
+import { requireAdmin, adminShell } from "./common.js?v=f63197d";
+
+// Message to show once the screen is redrawn after pausing or resuming the emails.
+let flash = null;
 
 // What the daily "Yearly draw" workflow will do next, in the owner's words.
 // Mirrors private.run_annual_draw: nothing before the chosen date, nothing twice
@@ -92,11 +95,20 @@ export async function renderAdminSettings({ navigate }) {
 
   // ---- Pause switch ---------------------------------------------------------
   const sendingStatus = statusLine();
+  if (flash) {
+    sendingStatus.show(flash, "success");
+    flash = null;
+  }
   const setPaused = (paused, cancelWaiting = false) => async () => {
     try {
       const cancelled = await rpc("set_emails_paused", { p_paused: paused, p_cancel_waiting: cancelWaiting });
-      navigate("/admin/settings");   // redraws the screen and the banner
-      if (cancelled > 0) sendingStatus.show(t("admin.settings.cancelled", { count: cancelled }), "success");
+      flash = paused
+        ? t("admin.settings.pausedDone")
+        : cancelled > 0
+          ? t("admin.settings.cancelled", { count: cancelled })
+          : t("admin.settings.resumedDone");
+      // Redraws the screen (and the banner), back on this section, with the message.
+      navigate("/admin/settings?to=sending");
     } catch (error) {
       sendingStatus.show(errorText(error), "error");
     }

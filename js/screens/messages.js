@@ -4,11 +4,11 @@
 //   - with the whole family  (signed, shown as "À toute la famille")
 // Opening the screen marks the messages and their notifications as read.
 
-import { h } from "../dom.js?v=adc93c1";
-import { t, errorText } from "../i18n.js?v=adc93c1";
-import { getMe, select, rpc, insert, update } from "../api.js?v=adc93c1";
-import { statusLine, whileBusy, formatDateTime } from "../ui.js?v=adc93c1";
-import { renderNotMember } from "./not-member.js?v=adc93c1";
+import { h } from "../dom.js?v=f63197d";
+import { t, errorText } from "../i18n.js?v=f63197d";
+import { getMe, select, rpc, insert, update } from "../api.js?v=f63197d";
+import { statusLine, whileBusy, formatDateTime } from "../ui.js?v=f63197d";
+import { renderNotMember } from "./not-member.js?v=f63197d";
 
 export async function renderMessages({ navigate }) {
   const me = await getMe();

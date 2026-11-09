@@ -364,7 +364,7 @@ export const fr = {
       inviteHint:
         "Vous pouvez ouvrir le site à une personne à la fois pour l'essayer : elle seule reçoit un compte " +
         "et une invitation. Les autres ne peuvent toujours pas se connecter ni recevoir d'email. " +
-        "Les envois ont lieu entre 8 h et 20 h.",
+        "Les envois ont lieu entre 8\u00a0h et 20\u00a0h.",
       openHint: "Le site est ouvert à toute la famille : chacun peut se connecter et recevoir ses emails.",
     },
     settings: {
@@ -393,7 +393,7 @@ export const fr = {
         "Ils seront activés par l'Action GitHub « Open the site to the family ».",
       emailsOn: "Activés depuis le {date}.",
       sendingTitle: "Envoi des emails",
-      sendingOn: "Les emails partent normalement, entre 8 h et 20 h. Emails en attente : {count}.",
+      sendingOn: "Les emails partent normalement, entre 8\u00a0h et 20\u00a0h. Emails en attente : {count}.",
       pause: "Suspendre tous les envois",
       pauseConfirm: "Confirmer la suspension",
       paused: "Envois suspendus depuis le {date}. Emails en attente : {count}.",
@@ -402,6 +402,8 @@ export const fr = {
       resumeCancel: "Reprendre et annuler les emails en attente",
       resumeCancelConfirm: "Annuler {count} email(s) et reprendre ?",
       cancelled: "{count} email(s) annulé(s). Les envois ont repris.",
+      pausedDone: "Envois suspendus. Aucun email ne partira jusqu'à la reprise.",
+      resumedDone: "Les envois ont repris.",
       pauseHint:
         "La suspension arrête tous les emails envoyés par le site : rappels, messages, invitations. " +
         "Les notifications restent visibles sur le site et les emails attendent la reprise ; " +

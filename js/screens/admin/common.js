@@ -2,10 +2,10 @@
 // the emails are paused (a pause forgotten in December would silently stop all mail).
 // The guard is only for display: every admin action is also checked by the database.
 
-import { h, fill } from "../../dom.js?v=adc93c1";
-import { t } from "../../i18n.js?v=adc93c1";
-import { getMe, select } from "../../api.js?v=adc93c1";
-import { formatDate } from "../../ui.js?v=adc93c1";
+import { h, fill } from "../../dom.js?v=f63197d";
+import { t } from "../../i18n.js?v=f63197d";
+import { getMe, select } from "../../api.js?v=f63197d";
+import { formatDate } from "../../ui.js?v=f63197d";
 
 export const ADMIN_TABS = [
   { path: "/admin", key: "events" },
@@ -35,7 +35,7 @@ export function adminShell(activePath, ...content) {
           { class: "form-message paused-banner", "data-kind": "error" },
           t("admin.pausedBanner", { date: formatDate(settings.emails_paused_at) }),
           " ",
-          h("a", { href: "#/admin/settings" }, t("admin.pausedBannerLink")),
+          h("a", { href: "#/admin/settings?to=sending" }, t("admin.pausedBannerLink")),
         ),
       );
     })
