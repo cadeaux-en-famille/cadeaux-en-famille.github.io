@@ -632,3 +632,13 @@ code { font-size: 0.9em; padding: 0.05rem 0.3rem; margin-right: 0.3rem; backgrou
 .confirm-question { margin: 0 0 0.5rem; font-weight: 600; }
 .confirm-box .button-row { margin: 0; }
 .button-primary.danger-fill { background: var(--error); border-color: var(--error); }
+
+/* Asking for ideas (screens/ideas.js), the banner on « Ma liste », a birthday's secrecy */
+.ask-ideas { margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+.ask-ideas-last { margin: 0 0 0.5rem; color: var(--text-muted); font-size: 0.95rem; }
+.ideas-banner { border: 2px solid var(--accent); background: var(--accent-soft); }
+.ideas-banner p { margin: 0 0 0.5rem; }
+.ideas-banner p:last-child { margin-bottom: 0; }
+.secret-card { margin: 1rem 0; }
+.secret-card p { margin: 0 0 0.25rem; }
+.secret-card.is-secret { border-color: var(--accent); }

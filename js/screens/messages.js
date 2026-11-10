@@ -4,24 +4,34 @@
 //   - with the whole family  (signed, shown as "À toute la famille")
 // Opening the screen marks the messages and their notifications as read.
 
-import { h } from "../dom.js?v=71d0cc9";
-import { t, errorText } from "../i18n.js?v=71d0cc9";
-import { getMe, select, rpc, insert, update } from "../api.js?v=71d0cc9";
-import { statusLine, whileBusy, formatDateTime } from "../ui.js?v=71d0cc9";
-import { renderNotMember } from "./not-member.js?v=71d0cc9";
+import { h } from "../dom.js?v=420da35";
+import { t, errorText } from "../i18n.js?v=420da35";
+import { getMe, select, rpc, insert, update } from "../api.js?v=420da35";
+import { statusLine, whileBusy, formatDateTime } from "../ui.js?v=420da35";
+import { renderNotMember } from "./not-member.js?v=420da35";
 
 export async function renderMessages({ navigate }) {
   const me = await getMe();
   if (!me) return renderNotMember();
 
-  const [events, statuses] = await Promise.all([
+  const [events, statuses, familyQuestions] = await Promise.all([
     select("events", "select=id,title,status&status=neq.closed&kind=eq.christmas&order=year.desc"),
     rpc("my_draw_status"),
+    rpc("my_family_questions"),
   ]);
   const statusByEvent = new Map(statuses.map((s) => [s.event_id, s]));
   const event = events.find((e) => statusByEvent.has(e.id));
+  // Questions the family asks me for my birthday, whoever asked: answered here.
+  const questionThreads = familyQuestionThreads(familyQuestions, () => navigate("/messages"));
+  if (questionThreads.length > 0) markQuestionsRead();
   if (!event) {
-    return h("section", { class: "card" }, h("h1", {}, t("messages.title")), h("p", {}, t("messages.noEvent")));
+    return h(
+      "section",
+      { class: "messages" },
+      h("h1", {}, t("messages.title")),
+      questionThreads,
+      h("p", { class: "card" }, t("messages.noEvent")),
+    );
   }
   const drawStatus = statusByEvent.get(event.id);
 
@@ -45,6 +55,7 @@ export async function renderMessages({ navigate }) {
     { class: "messages" },
     h("h1", {}, t("messages.title")),
     h("p", { class: "lead" }, t("messages.intro", { event: event.title })),
+    questionThreads,
     // Both conversations are two-way and anonymous for the giver: whoever writes
     // first, the other can answer. They only open once the draw gives them two ends.
     drawStatus.has_giver
@@ -89,6 +100,34 @@ function anonymousThread({ title, hint, messages, theirLabel, send, reload }) {
     }))),
     composer(send, reload),
   );
+}
+
+/** One thread per birthday being prepared for me; the title only when it is not secret. */
+function familyQuestionThreads(rows, reload) {
+  const threads = new Map();
+  for (const row of rows) {
+    if (!threads.has(row.thread_id)) threads.set(row.thread_id, { title: row.title, rows: [] });
+    threads.get(row.thread_id).rows.push(row);
+  }
+  return [...threads].map(([threadId, thread]) =>
+    anonymousThread({
+      title: thread.title ? t("messages.questionsForTitle", { title: thread.title }) : t("messages.questionsTitle"),
+      hint: t("messages.questionsHint"),
+      messages: thread.rows.map((r) => ({ mine: r.from_me, body: r.body, created_at: r.created_at, read_at: true })),
+      theirLabel: t("messages.familyMember"),
+      send: (body) => rpc("answer_family_question", { p_thread_id: threadId, p_body: body }),
+      reload,
+    }),
+  );
+}
+
+async function markQuestionsRead() {
+  try {
+    await update("notifications", "kind=eq.family_question&read_at=is.null", { read_at: new Date().toISOString() });
+    document.dispatchEvent(new CustomEvent("notifications-changed"));
+  } catch {
+    // ignore
+  }
 }
 
 /** A conversation that cannot be opened yet: says why, instead of a box that fails. */

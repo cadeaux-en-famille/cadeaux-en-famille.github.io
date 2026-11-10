@@ -8,11 +8,11 @@
 // (scripts/sync-accounts.mjs): the site never holds the key needed to change it.
 // Every rule (couples, nobody leaving during a draw...) is checked by the database.
 
-import { h, fill } from "../../dom.js?v=71d0cc9";
-import { t, errorText } from "../../i18n.js?v=71d0cc9";
-import { select, insert, update, rpc } from "../../api.js?v=71d0cc9";
-import { field, statusLine, confirmButton, whileBusy, formatDate, formatBirthday, textOrNull } from "../../ui.js?v=71d0cc9";
-import { requireAdmin, adminShell } from "./common.js?v=71d0cc9";
+import { h, fill } from "../../dom.js?v=420da35";
+import { t, errorText } from "../../i18n.js?v=420da35";
+import { select, insert, update, rpc } from "../../api.js?v=420da35";
+import { field, statusLine, confirmButton, whileBusy, formatDate, formatBirthday, textOrNull } from "../../ui.js?v=420da35";
+import { requireAdmin, adminShell } from "./common.js?v=420da35";
 
 const NEW_HOUSEHOLD = "new";
 

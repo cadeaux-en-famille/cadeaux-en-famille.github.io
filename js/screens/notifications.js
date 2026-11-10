@@ -1,10 +1,10 @@
 // "Notifications" (route "#/notifications"): what the bell counts. Texts come from
 // i18n/fr.js (notifications.<kind>.text); a click opens the matching screen.
 
-import { h } from "../dom.js?v=71d0cc9";
-import { t, errorText } from "../i18n.js?v=71d0cc9";
-import { select, update } from "../api.js?v=71d0cc9";
-import { statusLine, formatDateTime } from "../ui.js?v=71d0cc9";
+import { h } from "../dom.js?v=420da35";
+import { t, errorText } from "../i18n.js?v=420da35";
+import { select, update } from "../api.js?v=420da35";
+import { statusLine, formatDateTime } from "../ui.js?v=420da35";
 
 const LINKS = {
   private_message: "/messages",
@@ -14,6 +14,9 @@ const LINKS = {
   wishlist_reminder: "/my-list",
   event_reminder: "/home",
   weekly_digest: "/home",
+  ideas_requested: "/my-list",
+  ideas_requested_secret: "/my-list",
+  family_question: "/messages",
 };
 
 /** Screen a notification opens: a birthday's own page for anything about a birthday. */

@@ -4,11 +4,11 @@
 // being prepared or past: change their date or contribution, cancel one, open its page to choose the
 // participants. The database hides the administrator's own birthday and his partner's.
 
-import { h, fill } from "../../dom.js?v=71d0cc9";
-import { t, errorText } from "../../i18n.js?v=71d0cc9";
-import { select, update, remove } from "../../api.js?v=71d0cc9";
-import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount } from "../../ui.js?v=71d0cc9";
-import { requireAdmin, adminShell } from "./common.js?v=71d0cc9";
+import { h, fill } from "../../dom.js?v=420da35";
+import { t, errorText } from "../../i18n.js?v=420da35";
+import { select, update, remove, rpc } from "../../api.js?v=420da35";
+import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount } from "../../ui.js?v=420da35";
+import { requireAdmin, adminShell } from "./common.js?v=420da35";
 
 let flash = null;
 
@@ -20,7 +20,7 @@ export async function renderAdminBirthdays({ navigate }) {
   if (denied) return denied;
 
   const [[settings], members, events, participants] = await Promise.all([
-    select("settings", "select=birthday_contribution_eur,birthday_open_amount,birthday_open_unit"),
+    select("settings", "select=birthday_contribution_eur,birthday_open_amount,birthday_open_unit,birthday_secret_default"),
     select("members", "select=id,display_name,is_active,in_birthdays,birthday_day&is_active=is.true&order=display_name"),
     select("events", "select=*&kind=eq.birthday&order=event_date.desc"),
     select("participants", "select=event_id,member_id"),
@@ -60,6 +60,7 @@ export async function renderAdminBirthdays({ navigate }) {
       { value: "months", label: t("admin.birthdays.months") },
     ],
   });
+  const secretDefault = h("input", { type: "checkbox", checked: settings?.birthday_secret_default !== false });
   const boxes = members.map((m) => ({ member: m, box: h("input", { type: "checkbox", checked: m.in_birthdays, value: m.id }) }));
   const submit = h("button", { type: "submit", class: "button-primary" }, t("admin.birthdays.save"));
   const defaults = h(
@@ -88,6 +89,7 @@ export async function renderAdminBirthdays({ navigate }) {
               birthday_contribution_eur: amount,
               birthday_open_amount: opening.amount,
               birthday_open_unit: opening.unit,
+              birthday_secret_default: secretDefault.checked,
             });
             if (ticked.length > 0) await update("members", `id=in.(${ticked.join(",")})`, { in_birthdays: true });
             if (unticked.length > 0) await update("members", `id=in.(${unticked.join(",")})`, { in_birthdays: false });
@@ -99,6 +101,12 @@ export async function renderAdminBirthdays({ navigate }) {
       },
     },
     contribution.element,
+    h(
+      "div",
+      { class: "field" },
+      h("label", { class: "check" }, secretDefault, t("admin.birthdays.secretDefault")),
+      h("p", { class: "field-hint" }, t("admin.birthdays.secretDefaultHint")),
+    ),
     h(
       "fieldset",
       { class: "opening" },
@@ -155,6 +163,7 @@ function birthdayCard(event, { names, participants, done }) {
         h("li", {}, t("admin.events.dateLine", { date: formatDate(event.event_date) })),
         h("li", {}, t("admin.birthdays.contributionLine", { amount: formatEuro(event.budget_eur) })),
         h("li", {}, t("admin.birthdays.participantsLine", { count })),
+        h("li", {}, t(event.birthday_secret ? "admin.birthdays.secretLine" : "admin.birthdays.publicLine")),
         h("li", {}, event.launched_by
           ? t("admin.birthdays.launchedBy", { name: names.get(event.launched_by) ?? "?" })
           : t("admin.birthdays.automatic")),
@@ -164,6 +173,23 @@ function birthdayCard(event, { names, participants, done }) {
         { class: "button-row" },
         h("a", { class: "button-secondary link-button", href: `#/birthday?id=${event.id}` }, t("admin.birthdays.openPage")),
         open ? h("button", { type: "button", class: "button-secondary", onclick: showEdit }, t("admin.events.edit")) : null,
+        open
+          ? confirmButton({
+              label: t(event.birthday_secret ? "birthday.makePublic" : "birthday.makeSecret"),
+              question: t(event.birthday_secret ? "birthday.makePublicQuestion" : "birthday.makeSecretQuestion",
+                { name: names.get(event.celebrated_id) ?? "?" }),
+              confirmLabel: t(event.birthday_secret ? "birthday.makePublicConfirm" : "birthday.makeSecretConfirm"),
+              className: "button-secondary",
+              onConfirm: async () => {
+                try {
+                  await rpc("set_birthday_secret", { p_event_id: event.id, p_secret: !event.birthday_secret });
+                  done(t(event.birthday_secret ? "birthday.madePublic" : "birthday.madeSecret"));
+                } catch (error) {
+                  cardStatus.show(errorText(error), "error");
+                }
+              },
+            })
+          : null,
         open
           ? confirmButton({
               label: t("admin.birthdays.cancel"),

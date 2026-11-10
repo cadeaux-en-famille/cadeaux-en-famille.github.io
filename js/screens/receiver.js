@@ -2,13 +2,14 @@
 // I give to in the current event (read-only, allowed by RLS only to their giver), and my
 // private purchase tracking, which the receiver can never see.
 
-import { h, fill } from "../dom.js?v=71d0cc9";
-import { t, errorText } from "../i18n.js?v=71d0cc9";
-import { getMe, select, rpc, insert, update, remove } from "../api.js?v=71d0cc9";
-import { field, statusLine, whileBusy, confirmButton, formatEuro, textOrNull } from "../ui.js?v=71d0cc9";
-import { renderNotMember } from "./not-member.js?v=71d0cc9";
+import { h, fill } from "../dom.js?v=420da35";
+import { t, errorText } from "../i18n.js?v=420da35";
+import { getMe, select, rpc, insert, update, remove } from "../api.js?v=420da35";
+import { field, statusLine, whileBusy, confirmButton, formatEuro, textOrNull } from "../ui.js?v=420da35";
+import { renderNotMember } from "./not-member.js?v=420da35";
+import { askIdeasBlock } from "./ideas.js?v=420da35";
 
-const PROFILE_FIELDS = ["interests", "sizes", "colors", "dislikes", "favorite_shops"];
+const PROFILE_FIELDS = ["current_wishes", "interests", "sizes", "colors", "dislikes", "favorite_shops"];
 const PURCHASE_STATUSES = ["idea", "bought", "wrapped"];
 
 export async function renderReceiver() {
@@ -27,15 +28,33 @@ export async function renderReceiver() {
     );
   }
 
-  const [events, wishes, profiles, purchases] = await Promise.all([
+  const [events, wishes, profiles, purchases, requests] = await Promise.all([
     select("events", `select=budget_eur&id=eq.${draw.event_id}`),
     select("wishes", `select=*&member_id=eq.${draw.receiver_id}&archived=is.false&order=priority.asc,created_at.asc`),
     select("profiles", `select=*&member_id=eq.${draw.receiver_id}`),
     select("purchase_tracking", `select=*&event_id=eq.${draw.event_id}&giver_id=eq.${me.id}&order=created_at.asc`),
+    select("idea_requests", `select=created_at&event_id=eq.${draw.event_id}&member_id=eq.${draw.receiver_id}&order=created_at.desc&limit=1`),
   ]);
   const budget = events[0]?.budget_eur;
   const profile = profiles[0] ?? {};
   const status = statusLine();
+
+  // « Lui demander des idées » (anonymous, at most once a week).
+  const askSlot = h("div");
+  const drawAsk = (lastRequest) => fill(askSlot, askIdeasBlock({
+    eventId: draw.event_id,
+    memberId: draw.receiver_id,
+    name: draw.receiver_name,
+    lastRequest,
+    mention: "christmas",
+    status,
+    onSent: (message) => {
+      status.show(message, "success");
+      drawAsk(new Date().toISOString());
+    },
+  }));
+  drawAsk(requests[0]?.created_at ?? null);
+
   const purchaseList = h("ul", { class: "purchase-list" });
   const chooseButtons = new Map();   // wish id -> "J'ai choisi cette idée" button
 
@@ -181,6 +200,7 @@ export async function renderReceiver() {
     wishes.length === 0
       ? h("p", { class: "empty" }, t("receiver.wishesEmpty", { name: draw.receiver_name }))
       : h("ul", { class: "wish-list" }, wishItems),
+    askSlot,
     h("h2", { class: "section-title" }, t("receiver.tastesTitle")),
     tastes.length === 0
       ? h("p", { class: "empty" }, t("receiver.tastesEmpty"))

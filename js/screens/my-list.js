@@ -2,26 +2,37 @@
 // Visible only to the member and, while an event runs, to the person who gives to them
 // (enforced by RLS in the database, not here).
 
-import { h, fill } from "../dom.js?v=71d0cc9";
-import { t, errorText } from "../i18n.js?v=71d0cc9";
-import { getMe, select, insert, update, remove, upsert } from "../api.js?v=71d0cc9";
+import { h, fill } from "../dom.js?v=420da35";
+import { t, errorText } from "../i18n.js?v=420da35";
+import { getMe, select, insert, update, remove, upsert, rpc } from "../api.js?v=420da35";
 import {
   field, statusLine, whileBusy, confirmButton,
-  formatEuro, parseAmount, normaliseUrl, textOrNull,
-} from "../ui.js?v=71d0cc9";
-import { renderNotMember } from "./not-member.js?v=71d0cc9";
+  formatEuro, formatDate, parseAmount, normaliseUrl, textOrNull,
+} from "../ui.js?v=420da35";
+import { renderNotMember } from "./not-member.js?v=420da35";
 
 const PRIORITIES = [1, 2, 3];
-const PROFILE_FIELDS = ["interests", "sizes", "colors", "dislikes", "favorite_shops"];
+const PROFILE_FIELDS = ["current_wishes", "interests", "sizes", "colors", "dislikes", "favorite_shops"];
 
 export async function renderMyList() {
   const me = await getMe();
   if (!me) return renderNotMember();
 
-  const [wishes, profiles] = await Promise.all([
+  const [wishes, profiles, ideaRequests] = await Promise.all([
     select("wishes", `select=*&member_id=eq.${me.id}&order=priority.asc,created_at.asc`),
     select("profiles", `select=*&member_id=eq.${me.id}`),
+    rpc("my_idea_requests"),
   ]);
+  // Somebody would like ideas and the list has not changed since: say so at the top.
+  const asked = ideaRequests.filter((r) => r.pending);
+  const askedBanner = asked.length > 0
+    ? h(
+        "div",
+        { class: "card ideas-banner" },
+        asked.map((r) => h("p", {}, t(`ideas.banner.${r.occasion}`, { title: r.title ?? "", date: formatDate(r.requested_at) }))),
+        h("p", { class: "field-hint" }, t("ideas.bannerHint")),
+      )
+    : null;
 
   const status = statusLine();
   const formSlot = h("div");
@@ -180,7 +191,7 @@ export async function renderMyList() {
         hint: t(`myList.profile.${name}Hint`),
         kind: "textarea",
         value: profile[name] ?? "",
-        maxlength: name === "interests" ? 2000 : 1000,
+        maxlength: { interests: 2000, current_wishes: 500 }[name] ?? 1000,
       });
       profileInputs[name] = f.input;
       return f.element;
@@ -206,6 +217,7 @@ export async function renderMyList() {
     { class: "my-list" },
     h("h1", {}, t("myList.title")),
     h("p", { class: "lead" }, t("myList.intro")),
+    askedBanner,
     status.element,
     addButton,
     formSlot,

@@ -4,16 +4,17 @@
 // discussion between participants, and who takes part (chosen by the organiser).
 // The celebrated member never reaches this screen: the database hides the event from them.
 
-import { h, fill } from "../dom.js?v=71d0cc9";
-import { t, errorText } from "../i18n.js?v=71d0cc9";
-import { getMe, select, rpc, insert, update } from "../api.js?v=71d0cc9";
+import { h, fill } from "../dom.js?v=420da35";
+import { t, errorText } from "../i18n.js?v=420da35";
+import { getMe, select, rpc, insert, update } from "../api.js?v=420da35";
 import {
   field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount, normaliseUrl, textOrNull,
-} from "../ui.js?v=71d0cc9";
-import { bubbles, composer } from "./messages.js?v=71d0cc9";
-import { renderNotMember } from "./not-member.js?v=71d0cc9";
+} from "../ui.js?v=420da35";
+import { bubbles, composer } from "./messages.js?v=420da35";
+import { renderNotMember } from "./not-member.js?v=420da35";
+import { askIdeasBlock } from "./ideas.js?v=420da35";
 
-const PROFILE_FIELDS = ["interests", "sizes", "colors", "dislikes", "favorite_shops"];
+const PROFILE_FIELDS = ["current_wishes", "interests", "sizes", "colors", "dislikes", "favorite_shops"];
 
 // Message kept across the redraw that follows a change.
 let flash = null;
@@ -36,7 +37,7 @@ export async function renderBirthday({ navigate, params }) {
     );
   }
 
-  const [participants, members, wishes, profiles, gifts, contributions, messages] = await Promise.all([
+  const [participants, members, wishes, profiles, gifts, contributions, messages, questions, requests, organises] = await Promise.all([
     select("participants", `select=member_id&event_id=eq.${event.id}`),
     select("members", "select=id,display_name,is_active&order=display_name"),
     select("wishes", `select=*&member_id=eq.${event.celebrated_id}&archived=is.false&order=priority.asc,created_at.asc`),
@@ -44,6 +45,9 @@ export async function renderBirthday({ navigate, params }) {
     select("birthday_gifts", `select=*&event_id=eq.${event.id}&order=created_at.asc`),
     select("birthday_contributions", `select=*&event_id=eq.${event.id}&order=created_at.asc`),
     select("family_messages", `select=id,author_id,body,created_at&event_id=eq.${event.id}&order=created_at.asc`),
+    select("birthday_questions", `select=*&event_id=eq.${event.id}&order=created_at.asc`),
+    select("idea_requests", `select=created_at,requested_by&event_id=eq.${event.id}&order=created_at.desc&limit=1`),
+    rpc("can_organise_birthday", { p_event_id: event.id }),
   ]);
   const names = new Map(members.map((m) => [m.id, m.display_name]));
   const celebrated = names.get(event.celebrated_id) ?? "?";
@@ -51,7 +55,8 @@ export async function renderBirthday({ navigate, params }) {
   const takingPart = participantIds.has(me.id);
   const open = event.status !== "closed";
   const canEdit = open && takingPart;
-  const organiser = open && (event.launched_by === me.id || me.is_admin);
+  // The database decides: whoever launched it, the administrator, or anybody when neither can.
+  const organiser = open && organises === true;
 
   const status = statusLine();
   if (flash) {
@@ -85,6 +90,7 @@ export async function renderBirthday({ navigate, params }) {
       h("h1", {}, event.title),
       h("ul", { class: "event-meta" }, h("li", {}, t("birthday.dateLine", { date: formatDate(event.event_date) }))),
       h("p", { class: "lead" }, t("birthday.notTakingPart", { name: celebrated })),
+      secretCard({ event, celebrated, organiser, done, failed }),
       status.element,
       h("h2", { class: "section-title" }, t("birthday.participantsTitle", { count: participantIds.size })),
       participantsCard({ event, members, participantIds, names, organiser, done, failed }),
@@ -103,6 +109,7 @@ export async function renderBirthday({ navigate, params }) {
       total > 0 ? h("li", {}, t("birthday.totalLine", { amount: formatEuro(total) })) : null,
     ),
     h("p", { class: "lead" }, t(open ? "birthday.intro" : "birthday.closedIntro", { name: celebrated })),
+    secretCard({ event, celebrated, organiser, done, failed }),
     status.element,
 
     h("h2", { class: "section-title first" }, t("birthday.wishesTitle", { name: celebrated })),
@@ -119,6 +126,38 @@ export async function renderBirthday({ navigate, params }) {
     tastes.length === 0
       ? h("p", { class: "empty" }, t("birthday.tastesEmpty"))
       : h("dl", { class: "card tastes" }, tastes),
+
+    h("h2", { class: "section-title" }, t("birthday.questionsTitle", { name: celebrated })),
+    h(
+      "article",
+      { class: "card thread questions" },
+      h("p", { class: "field-hint" }, t("birthday.questionsHint", { name: celebrated })),
+      questions.length === 0
+        ? h("p", { class: "empty" }, t("birthday.questionsEmpty"))
+        : bubbles(questions.map((q) => ({
+            mine: !q.from_celebrated && q.author_id === me.id,
+            author: q.from_celebrated ? celebrated : q.author_id === me.id ? t("messages.me") : names.get(q.author_id) ?? "?",
+            body: q.body,
+            date: q.created_at,
+          }))),
+      canEdit ? composer((body) => rpc("ask_celebrated", { p_event_id: event.id, p_body: body }), () => navigate(here)) : null,
+      canEdit
+        ? askIdeasBlock({
+            eventId: event.id,
+            memberId: event.celebrated_id,
+            name: celebrated,
+            lastRequest: requests[0]?.created_at ?? null,
+            mention: event.birthday_secret ? "secret" : "birthday",
+            status,
+            onSent: done,
+          })
+        : null,
+      requests[0]
+        ? h("p", { class: "field-hint" }, requests[0].requested_by
+            ? t("birthday.lastRequestBy", { name: requests[0].requested_by === me.id ? t("birthday.you") : names.get(requests[0].requested_by) ?? "?" })
+            : t("birthday.lastRequestAuto"))
+        : null,
+    ),
 
     h("h2", { class: "section-title" }, t("birthday.discussionTitle")),
     h(
@@ -392,10 +431,37 @@ function participantsCard({ event, members, participantIds, names, organiser, do
 // Best effort: the bell forgets this birthday's messages and announcements.
 async function markRead(event) {
   try {
-    await update("notifications", `event_id=eq.${event.id}&read_at=is.null&kind=in.(family_message,birthday_opened,birthday_reminder)`,
+    await update("notifications", `event_id=eq.${event.id}&read_at=is.null&kind=in.(family_message,birthday_opened,birthday_reminder,family_answer,receiver_list_changed)`,
       { read_at: new Date().toISOString() });
     document.dispatchEvent(new CustomEvent("notifications-changed"));
   } catch {
     // ignore
   }
+}
+
+// Secret or not: everybody sees which; the organiser can change it.
+function secretCard({ event, celebrated, organiser, done, failed }) {
+  const secret = event.birthday_secret;
+  return h(
+    "div",
+    { class: `card secret-card${secret ? " is-secret" : ""}` },
+    h("p", {}, h("strong", {}, t(secret ? "birthday.secretOn" : "birthday.secretOff")), " ",
+      t(secret ? "birthday.secretOnText" : "birthday.secretOffText", { name: celebrated })),
+    organiser && event.status !== "closed"
+      ? confirmButton({
+          label: t(secret ? "birthday.makePublic" : "birthday.makeSecret"),
+          question: t(secret ? "birthday.makePublicQuestion" : "birthday.makeSecretQuestion", { name: celebrated }),
+          confirmLabel: t(secret ? "birthday.makePublicConfirm" : "birthday.makeSecretConfirm"),
+          className: "button-link",
+          onConfirm: async () => {
+            try {
+              await rpc("set_birthday_secret", { p_event_id: event.id, p_secret: !secret });
+              done(t(secret ? "birthday.madePublic" : "birthday.madeSecret"));
+            } catch (error) {
+              failed(error);
+            }
+          },
+        })
+      : null,
+  );
 }

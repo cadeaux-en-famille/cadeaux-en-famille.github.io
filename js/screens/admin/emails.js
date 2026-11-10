@@ -3,12 +3,12 @@
 // texts of i18n/fr.js (emailDefaults) are used.
 // Templates only accept the variables below: none of them gives access to draw results.
 
-import { h } from "../../dom.js?v=71d0cc9";
-import { t, errorText } from "../../i18n.js?v=71d0cc9";
-import { select, insert, update, remove, rpc } from "../../api.js?v=71d0cc9";
-import { field, statusLine, whileBusy, confirmButton } from "../../ui.js?v=71d0cc9";
-import { requireAdmin, adminShell } from "./common.js?v=71d0cc9";
-import { TEMPLATE_VARIABLES, renderTemplate } from "../../email-template.js?v=71d0cc9";
+import { h } from "../../dom.js?v=420da35";
+import { t, errorText } from "../../i18n.js?v=420da35";
+import { select, insert, update, remove, rpc } from "../../api.js?v=420da35";
+import { field, statusLine, whileBusy, confirmButton } from "../../ui.js?v=420da35";
+import { requireAdmin, adminShell } from "./common.js?v=420da35";
+import { TEMPLATE_VARIABLES, renderTemplate } from "../../email-template.js?v=420da35";
 
 
 export async function renderAdminEmails() {

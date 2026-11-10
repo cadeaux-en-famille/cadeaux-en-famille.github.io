@@ -165,6 +165,10 @@ export const fr = {
     profile: {
       title: "Mes goûts",
       intro: "Des repères pour les personnes qui vous offrent un cadeau, en plus de votre liste.",
+      current_wishes: "Envies du moment",
+      current_wishesHint:
+        "En une phrase, ce qui vous ferait plaisir en ce moment (« plutôt des sorties cette année », " +
+        "« tout pour le jardin »…). Lu par les personnes qui vous préparent un cadeau.",
       interests: "Centres d'intérêt",
       interestsHint: "Loisirs, passions, auteurs, séries…",
       sizes: "Tailles",
@@ -205,6 +209,12 @@ export const fr = {
 
   messages: {
     title: "Messages",
+    questionsTitle: "Questions de la famille",
+    questionsForTitle: "Questions de la famille : {title}",
+    questionsHint:
+      "Des membres de la famille vous posent des questions pour vous faire plaisir. Vous ne saurez pas qui ; " +
+      "vos réponses sont lues par ceux qui vous préparent un cadeau.",
+    familyMember: "Un membre de la famille",
     intro: "{event} : écrivez à votre Père Noël secret, à la personne à qui vous offrez, ou à toute la famille.",
     noEvent: "Aucun événement en cours : les messages s'ouvrent avec le prochain tirage.",
     withGiverTitle: "Avec mon Père Noël secret",
@@ -304,6 +314,26 @@ export const fr = {
       hint: "Deux semaines puis trois jours avant, tant que je n'ai rien choisi.",
       text: "L'anniversaire approche (dans {days} jours) et vous n'avez encore rien choisi.",
     },
+    ideas_requested: {
+      label: "Demande d'idées",
+      hint: "Quelqu'un qui me prépare un cadeau aimerait des idées.",
+      text: "Quelqu'un qui vous prépare un cadeau aimerait quelques idées : complétez votre liste.",
+    },
+    ideas_requested_secret: {
+      label: "Demande d'idées (sans précision)",
+      hint: "Un membre de la famille aimerait des idées, sans dire pour quelle occasion.",
+      text: "Un membre de la famille aimerait quelques idées : pensez à mettre à jour votre liste.",
+    },
+    family_question: {
+      label: "Question de la famille",
+      hint: "On me pose une question anonyme pour trouver mon cadeau.",
+      text: "Un membre de la famille vous pose une question.",
+    },
+    family_answer: {
+      label: "Réponse de la personne fêtée",
+      hint: "La personne dont je prépare l'anniversaire a répondu à une question.",
+      text: "La personne fêtée a répondu à une question.",
+    },
     weekly_digest: {
       label: "Récapitulatif hebdomadaire",
       hint: "Un seul email par semaine au lieu d'emails séparés.", text: "Votre récapitulatif de la semaine est disponible."
@@ -354,6 +384,8 @@ export const fr = {
           "Dans « Ma liste », touchez « Ajouter une envie » : un titre suffit.",
           "Vous pouvez ajouter un lien vers un site marchand, un prix, une boutique et une priorité.",
           "Indiquez aussi vos goûts (tailles, couleurs, ce que vous n'aimez pas) : ça aide beaucoup.",
+          "« Envies du moment » : une phrase sur ce qui vous ferait plaisir en ce moment (« plutôt des sorties " +
+            "cette année »). Si quelqu'un vous demande des idées, un bandeau vous le rappelle en haut de la liste.",
         ],
         alt: ["« Ma liste d'envies » avec quelques idées et le bouton pour en ajouter."],
         tip:
@@ -369,6 +401,8 @@ export const fr = {
           "Les années suivantes, le site fait le tirage et vous prévient par email. Sur l'accueil, touchez " +
             "« Découvrir à qui j'offre ».",
           "Vous découvrez le prénom de la personne à qui vous offrez, sa liste d'envies et ses goûts.",
+          "Sa liste ne vous inspire pas ? Touchez « Lui demander des idées » : la personne reçoit une demande " +
+            "anonyme (une fois par semaine au plus).",
           "Touchez « Je prends cette idée », puis notez où vous en êtes (idée, acheté, emballé) : " +
             "le rappel d'avant Noël ne vous concerne plus quand c'est emballé.",
         ],
@@ -406,12 +440,17 @@ export const fr = {
           "Sur une idée de sa liste, touchez « Je m'en occupe » (vous l'achetez) ou « Je participe » " +
             "(vous donnez une somme pour un cadeau commun).",
           "Vous pouvez aussi proposer un cadeau commun et discuter avec les autres participants.",
+          "« Questions à … » : posez une question à la personne fêtée (pointure, couleur…). Elle répond sans " +
+            "savoir qui demande, et tous les participants lisent la réponse. « Lui demander des idées » lui " +
+            "demande de compléter sa liste.",
         ],
         alt: [
           "Après « Lancer la préparation », le site demande de confirmer : touchez « Oui, lancer ».",
           "La page d'un anniversaire : qui s'occupe de quoi, et le bouton « Je participe ».",
         ],
-        tip: "La personne fêtée ne voit rien de tout cela : c'est une surprise jusqu'au bout.",
+        tip:
+            "La personne fêtée ne voit ni les participants, ni les cadeaux, ni votre discussion. Si l'anniversaire " +
+            "est « secret », les demandes d'idées et les questions ne parlent même pas de son anniversaire.",
       },
       notifications: {
         title: "Mes emails et notifications",
@@ -439,6 +478,12 @@ export const fr = {
             "prévenez l'organisateur.",
       },
       {
+        q: "On me pose des questions anonymes : qui les lit ?",
+        a:
+            "Les personnes qui vous préparent un cadeau. Vous ne saurez pas qui a posé la question ; répondez dans " +
+            "« Messages », votre réponse les aide à trouver une idée.",
+      },
+      {
         q: "J'ai changé d'adresse email.",
         a: "Prévenez l'organisateur : il la change pour vous, et vous recevez une nouvelle invitation.",
       },
@@ -457,6 +502,31 @@ export const fr = {
             "(menu du navigateur, « Ajouter à l'écran d'accueil ») pour le retrouver comme une application.",
       },
     ],
+  },
+
+  // « Lui demander des idées » (screens/ideas.js) and the banner on « Ma liste ».
+  ideas: {
+    ask: "Lui demander des idées",
+    confirm: "Oui, envoyer la demande",
+    explain: {
+      christmas: "Sa liste ne vous inspire pas ? Demandez des idées à {name}, sans dire que c'est vous.",
+      birthday: "Demandez à {name} de compléter sa liste, sans dire qui demande.",
+      secret: "Demandez à {name} de compléter sa liste : la demande ne parle pas de son anniversaire.",
+    },
+    question: {
+      christmas: "Envoyer à {name} une demande anonyme : « Votre Père Noël secret aimerait quelques idées » ?",
+      birthday: "Envoyer à {name} une demande anonyme d'idées pour son anniversaire ?",
+      secret: "Envoyer à {name} une demande anonyme, sans parler de son anniversaire, de mettre à jour sa liste ?",
+    },
+    sent: "Demande envoyée à {name}.",
+    last: "Dernière demande le {date}.",
+    lastWaiting: "Demande envoyée le {date} : prochaine demande possible le {next}.",
+    banner: {
+      christmas: "{title} : la personne qui vous offre un cadeau aimerait quelques idées (demande du {date}).",
+      birthday: "{title} : un membre de la famille aimerait quelques idées (demande du {date}).",
+      secret: "Un membre de la famille aimerait quelques idées de cadeaux pour vous (demande du {date}).",
+    },
+    bannerHint: "Ajoutez des envies ci-dessous, ou dites en une phrase ce qui vous ferait plaisir dans « Envies du moment ».",
   },
 
   // Birthday events (scripts/birthdays.mjs reads titleDefault for the automatic ones).
@@ -520,6 +590,28 @@ export const fr = {
         "Les nouveaux participants sont prévenus. Une personne retirée perd ce qu'elle avait choisi.",
     saveParticipants: "Enregistrer les participants",
     participantsSaved: "Participants enregistrés.",
+    questionsTitle: "Questions à {name}",
+    questionsHint:
+      "Posez une question à {name} (taille, couleur, envie…) : {name} ne sait pas qui la pose, et tous les " +
+      "participants lisent les questions et les réponses.",
+    questionsEmpty: "Aucune question pour l'instant.",
+    lastRequestBy: "Dernière demande d'idées envoyée par {name}.",
+    lastRequestAuto: "Une demande d'idées est partie automatiquement à l'ouverture : sa liste était vide.",
+    secretOn: "Anniversaire secret :",
+    secretOnText:
+      "{name} ne sait pas qu'il se prépare. Les demandes d'idées et les questions ne parlent pas de son anniversaire.",
+    secretOff: "Anniversaire non secret :",
+    secretOffText:
+      "{name} sait que son anniversaire se prépare (sans savoir qui participe ni ce qui est prévu). Les demandes " +
+      "d'idées le mentionnent.",
+    makePublic: "Ne plus le garder secret",
+    makePublicQuestion: "{name} pourra savoir que son anniversaire se prépare. Continuer ?",
+    makePublicConfirm: "Oui, ne plus le garder secret",
+    makeSecret: "Le rendre secret",
+    makeSecretQuestion: "Les prochaines demandes d'idées ne parleront plus de l'anniversaire de {name}. Continuer ?",
+    makeSecretConfirm: "Oui, le rendre secret",
+    madePublic: "L'anniversaire n'est plus secret.",
+    madeSecret: "L'anniversaire est maintenant secret.",
   },
 
   admin: {
@@ -693,6 +785,12 @@ export const fr = {
       cancel: "Annuler l'anniversaire",
       cancelConfirm: "Confirmer l'annulation",
       cancelled: "{title} est annulé.",
+      secretDefault: "Anniversaires secrets par défaut",
+      secretDefaultHint:
+        "Secret : la personne fêtée ne sait pas que son anniversaire se prépare, et les demandes d'idées restent " +
+        "neutres. Modifiable ensuite pour chaque anniversaire.",
+      secretLine: "Secret",
+      publicLine: "Non secret",
     },
     settings: {
       intro:
@@ -833,6 +931,31 @@ export const fr = {
         "Il est encore temps de prendre une idée en charge ou de participer à un cadeau commun " +
         "(contribution indicative : {budget}).\n\n{lien}",
     },
+    ideas_requested: {
+      subject: "{evenement} : on aimerait quelques idées",
+      body:
+        "Bonjour {prenom},\n\nQuelqu'un qui vous prépare un cadeau pour {evenement} aimerait quelques idées. " +
+        "Ajoutez des envies à votre liste, ou dites en une phrase ce qui vous ferait plaisir en ce moment " +
+        "(« Mes envies du moment »).\n\n{lien}",
+    },
+    ideas_requested_secret: {
+      subject: "Votre liste d'envies vous attend",
+      body:
+        "Bonjour {prenom},\n\nUn membre de la famille aimerait quelques idées de cadeaux pour vous. " +
+        "Pensez à mettre à jour votre liste d'envies, ou à dire en une phrase ce qui vous ferait plaisir " +
+        "en ce moment (« Mes envies du moment »).\n\n{lien}",
+    },
+    family_question: {
+      subject: "Une question de la famille",
+      body:
+        "Bonjour {prenom},\n\nUn membre de la famille vous pose une question, sans dire qui il est. " +
+        "Vous pouvez lui répondre sur le site, dans « Messages ».\n\n{lien}",
+    },
+    family_answer: {
+      subject: "{evenement} : une réponse à vos questions",
+      body:
+        "Bonjour {prenom},\n\nLa personne fêtée a répondu à une question sur la page de l'anniversaire.\n\n{lien}",
+    },
     weekly_digest: {
       subject: "Votre récapitulatif de la semaine",
       body: "Bonjour {prenom},\n\nVoici les nouveautés de la semaine pour {evenement} :\n\n{resume}\n\n{lien}",
@@ -845,6 +968,13 @@ export const fr = {
       disabled: "Les emails aux membres ne sont pas encore activés : le site n'est pas ouvert.",
       cannot_sign_in: "Ce membre n'a pas encore d'adresse de connexion.",
       empty: "L'objet et le texte sont obligatoires.",
+    },
+    ideas: {
+      too_soon: "Une demande a déjà été envoyée il y a moins de 7 jours. Réessayez plus tard.",
+      not_your_receiver: "Vous ne pouvez demander des idées qu'à la personne à qui vous offrez.",
+      note_birthday_only: "Pour ajouter un mot, utilisez les messages anonymes.",
+      invalid_question: "Écrivez votre message (1 000 caractères au plus).",
+      no_question: "Cette conversation n'existe plus. Rechargez la page.",
     },
     birthday: {
       not_allowed: "On ne prépare pas son propre anniversaire, ni celui de son conjoint.",
