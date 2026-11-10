@@ -13,6 +13,7 @@ export const fr = {
     signOut: "Se déconnecter",
     saving: "Enregistrement…",
     cancel: "Annuler",
+    confirmQuestion: "Vous confirmez ?",
     months: [
       "janvier", "février", "mars", "avril", "mai", "juin",
       "juillet", "août", "septembre", "octobre", "novembre", "décembre",
@@ -90,7 +91,8 @@ export const fr = {
     declareLabel: "J'offre un cadeau à",
     declareChoose: "Choisir…",
     declareSubmit: "Valider mon choix",
-    declareConfirm: "Confirmer : c'est bien cette personne",
+    declareQuestion: "Vous offrez un cadeau à {name} : c'est bien ça ?",
+    declareConfirm: "Oui, j'offre à {name}",
     declareMissing: "Choisissez une personne dans la liste.",
     declareHint: "En cas d'erreur, demandez à l'organisateur d'effacer votre choix (il ne le verra pas).",
     birthdaysTitle: "Anniversaires à venir",
@@ -98,7 +100,10 @@ export const fr = {
     birthdayOpen: "Voir la préparation",
     birthdayElsewhere: "En préparation",
     birthdayLaunch: "Lancer la préparation",
-    birthdayLaunchConfirm: "Lancer pour {name} ?",
+    birthdayLaunchQuestion:
+      "Lancer la préparation de l'anniversaire de {name} ? Les participants prévus recevront un email ; " +
+      "{name} ne verra rien.",
+    birthdayLaunchConfirm: "Oui, lancer",
     birthdaySeparator: "\u00a0: ",
     birthdayToday: "aujourd'hui ! 🎂",
     birthdayTomorrow: "demain, le {date}",
@@ -138,7 +143,7 @@ export const fr = {
     deleteConfirm: "Confirmer la suppression",
     deleted: "Envie supprimée.",
     clear: "Vider toute ma liste",
-    clearConfirm: "Confirmer : tout supprimer, archives comprises",
+    clearConfirm: "Oui, tout supprimer, archives comprises",
     cleared: "Votre liste a été vidée.",
     archivedTitle: "Envies archivées ({count})",
     openLink: "Voir le produit",
@@ -358,12 +363,19 @@ export const fr = {
       tirage: {
         title: "À qui j'offre à Noël",
         steps: [
-          "Le jour du tirage, vous recevez un email. Sur l'accueil, touchez « Découvrir à qui j'offre ».",
+          "Cette année, le tirage a déjà eu lieu : sur l'accueil, choisissez dans la liste la personne à qui " +
+            "vous offrez et touchez « Valider mon choix ». Le site vous demande alors « … c'est bien ça ? » : " +
+            "touchez « Oui, j'offre à … » pour enregistrer (rien n'est enregistré avant).",
+          "Les années suivantes, le site fait le tirage et vous prévient par email. Sur l'accueil, touchez " +
+            "« Découvrir à qui j'offre ».",
           "Vous découvrez le prénom de la personne à qui vous offrez, sa liste d'envies et ses goûts.",
           "Touchez « Je prends cette idée », puis notez où vous en êtes (idée, acheté, emballé) : " +
             "le rappel d'avant Noël ne vous concerne plus quand c'est emballé.",
         ],
-        alt: ["La page de la personne tirée au sort : sa liste d'envies et le suivi de votre achat."],
+        alt: [
+          "Après « Valider mon choix », le site demande de confirmer : touchez « Oui, j'offre à … ».",
+          "La page de la personne à qui vous offrez : sa liste d'envies et le suivi de votre achat.",
+        ],
         rulesTitle: "Les règles du tirage",
         rules: [
           "On ne se tire jamais soi-même.",
@@ -389,13 +401,14 @@ export const fr = {
         steps: [
           "Quelques semaines avant un anniversaire, les participants reçoivent un email.",
           "Sur l'accueil, « Voir la préparation » ouvre la page de l'anniversaire. Pour un anniversaire " +
-            "pas encore ouvert, « Lancer la préparation » le démarre.",
+            "pas encore ouvert, touchez « Lancer la préparation », puis « Oui, lancer » dans la question qui " +
+            "s'affiche juste en dessous.",
           "Sur une idée de sa liste, touchez « Je m'en occupe » (vous l'achetez) ou « Je participe » " +
             "(vous donnez une somme pour un cadeau commun).",
           "Vous pouvez aussi proposer un cadeau commun et discuter avec les autres participants.",
         ],
         alt: [
-          "Les anniversaires à venir sur l'accueil, avec « Voir la préparation » et « Lancer la préparation ».",
+          "Après « Lancer la préparation », le site demande de confirmer : touchez « Oui, lancer ».",
           "La page d'un anniversaire : qui s'occupe de quoi, et le bouton « Je participe ».",
         ],
         tip: "La personne fêtée ne voit rien de tout cela : c'est une surprise jusqu'au bout.",
@@ -411,6 +424,13 @@ export const fr = {
       },
     },
     faq: [
+      {
+        q: "J'ai touché un bouton et rien ne s'est passé.",
+        a:
+            "Pour les actions importantes (dire à qui vous offrez, lancer un anniversaire, supprimer quelque " +
+            "chose), le site pose d'abord une question juste en dessous du bouton. Touchez la réponse « Oui, … » " +
+            "pour confirmer, ou « Annuler ». Tant que vous n'avez pas répondu, rien n'est enregistré.",
+      },
       {
         q: "Je n'ai pas reçu de code.",
         a:
@@ -553,7 +573,7 @@ export const fr = {
       participantsLocked: "Les participants ne peuvent plus être modifiés une fois le tirage fait.",
       participantSaved: "Participants mis à jour.",
       runDraw: "Lancer le tirage",
-      runDrawConfirm: "Confirmer : lancer le tirage maintenant",
+      runDrawConfirm: "Oui, lancer le tirage maintenant",
       drawDone: "Tirage effectué : {count} participants ont leur personne. Vous ne voyez pas les résultats.",
       resetDraw: "Annuler le tirage",
       resetDrawConfirm: "Confirmer l'annulation",
@@ -614,10 +634,10 @@ export const fr = {
       accountSoon: "Compte créé à la prochaine distribution des emails",
       left: "Ne fait plus partie de la famille",
       leave: "Retirer de la famille",
-      leaveConfirm: "Retirer {name} ?",
+      leaveConfirm: "Oui, retirer {name}",
       leftDone: "{name} ne fait plus partie de la famille. Son historique est conservé.",
       comeBack: "Réintégrer",
-      comeBackConfirm: "Réintégrer {name} ?",
+      comeBackConfirm: "Oui, réintégrer {name}",
       cameBack: "{name} fait de nouveau partie de la famille.",
       householdHint: "Les deux membres d'un couple partagent le même foyer : ils ne se tirent jamais au sort.",
       emailHint:
@@ -627,7 +647,7 @@ export const fr = {
       resendConfirm: "Confirmer l'envoi",
       resent: "Invitation de {name} prête : elle partira à la prochaine distribution.",
       invite: "Ouvrir l'accès",
-      inviteConfirm: "Ouvrir pour {name} ?",
+      inviteConfirm: "Oui, ouvrir l'accès à {name}",
       invited: "{name} est invité : son compte et son invitation partent à la prochaine distribution.",
       invitedOn: "invité le {date}",
       inviteHint:
@@ -707,7 +727,7 @@ export const fr = {
       resume: "Reprendre les envois",
       resumeConfirm: "Confirmer la reprise",
       resumeCancel: "Reprendre et annuler les emails en attente",
-      resumeCancelConfirm: "Annuler {count} email(s) et reprendre ?",
+      resumeCancelConfirm: "Oui, annuler {count} email(s) et reprendre",
       cancelled: "{count} email(s) annulé(s). Les envois ont repris.",
       pausedDone: "Envois suspendus. Aucun email ne partira jusqu'à la reprise.",
       resumedDone: "Les envois ont repris.",

@@ -1,7 +1,8 @@
 // Small building blocks shared by the screens: form fields, status messages,
-// busy buttons, two-step confirmation and French number formatting.
+// busy buttons, confirmation questions and French number formatting.
 
-import { h } from "./dom.js?v=8f2143a";
+import { h } from "./dom.js?v=71d0cc9";
+import { t } from "./i18n.js?v=71d0cc9";
 
 let fieldCounter = 0;
 
@@ -61,31 +62,62 @@ export async function whileBusy(button, busyLabel, task) {
 }
 
 /**
- * A button that asks for confirmation in place (no browser dialog): first click shows
- * "confirmLabel", second click within 5 seconds runs onConfirm.
+ * A button for an action worth a second thought. The first tap does nothing yet: it
+ * opens, right under the button, a question with two plain answers, « confirmLabel »
+ * and « Annuler ». Nothing happens until the first one is tapped, and the question stays
+ * until answered (no timer).
+ *
+ * The first members did not understand the former version, which only relabelled the
+ * button for five seconds and wanted a second tap on it.
+ *
+ *   question:   the question shown (a string, or a function called when it opens, for a
+ *               question naming what is selected); "Vous confirmez ?" by default.
+ *   confirmLabel: the answer that acts ("Oui, lancer"); a string or a function.
+ *   beforeAsk:  optional; return false to not open (after showing why, e.g. an empty choice).
+ *
+ * Returns an element holding the button and its question: put it where the button goes
+ * (setting .hidden on it hides both).
  */
-export function confirmButton({ label, confirmLabel, onConfirm, className = "button-link danger" }) {
-  let armed = false;
-  let timer = null;
-  const button = h("button", { type: "button", class: className }, label);
-  button.addEventListener("click", async () => {
-    if (!armed) {
-      armed = true;
-      button.textContent = confirmLabel;
-      button.classList.add("armed");
-      timer = setTimeout(reset, 5000);
-      return;
-    }
-    clearTimeout(timer);
-    reset();
-    await onConfirm();
+export function confirmButton({ label, confirmLabel, question, onConfirm, beforeAsk, className = "button-link danger" }) {
+  const value = (text) => (typeof text === "function" ? text() : text);
+  const danger = className.includes("danger");
+  const button = h("button", { type: "button", class: className, "aria-expanded": "false" }, label);
+  const questionText = h("p", { class: "confirm-question" });
+  const yes = h("button", { type: "button", class: danger ? "button-primary danger-fill" : "button-primary" });
+  const no = h("button", { type: "button", class: "button-link" }, t("common.cancel"));
+  const box = h("div", { class: "confirm-box", role: "group", hidden: true }, questionText, h("div", { class: "button-row" }, yes, no));
+  const wrapper = h("span", { class: "confirm" }, button, box);
+
+  const close = () => {
+    box.hidden = true;
+    button.hidden = false;
+    button.setAttribute("aria-expanded", "false");
+  };
+  button.addEventListener("click", () => {
+    if (beforeAsk && beforeAsk() === false) return;
+    questionText.textContent = value(question) ?? t("common.confirmQuestion");
+    yes.textContent = value(confirmLabel);
+    button.hidden = true;
+    button.setAttribute("aria-expanded", "true");
+    box.hidden = false;
+    yes.focus();
   });
-  function reset() {
-    armed = false;
-    button.textContent = label;
-    button.classList.remove("armed");
-  }
-  return button;
+  no.addEventListener("click", () => {
+    close();
+    button.focus();
+  });
+  yes.addEventListener("click", async () => {
+    yes.disabled = true;
+    no.disabled = true;
+    try {
+      await onConfirm();
+    } finally {
+      yes.disabled = false;
+      no.disabled = false;
+      if (wrapper.isConnected) close();
+    }
+  });
+  return wrapper;
 }
 
 const euro = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });

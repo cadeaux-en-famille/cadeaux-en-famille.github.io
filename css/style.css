@@ -301,7 +301,6 @@ select { appearance: auto; }
 .form-message[data-kind="success"] { color: var(--success); }
 
 .danger { color: var(--error); }
-.danger.armed { font-weight: 600; }
 
 .section-title { margin-top: 2.5rem; }
 .empty { color: var(--text-muted); }
@@ -523,7 +522,6 @@ fieldset.checklist legend { font-weight: 600; padding: 0; margin-bottom: 0.2rem;
 .switch { font-weight: 600; margin-bottom: 0.75rem; }
 
 .button-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
-.button-secondary.armed { color: var(--accent-text); background: var(--error); border-color: var(--error); }
 .reset-declaration { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
 
 /* Admin > Membres */
@@ -623,3 +621,14 @@ code { font-size: 0.9em; padding: 0.05rem 0.3rem; margin-right: 0.3rem; backgrou
   .help-figure figcaption { font-size: 8pt; }
   #questions { display: block; }
 }
+
+/* Confirmation question under a button (ui.js confirmButton) */
+.confirm { display: contents; }
+.confirm[hidden], .confirm-box[hidden], .confirm > button[hidden] { display: none; }
+.confirm-box {
+  flex-basis: 100%; width: 100%; margin: 0.5rem 0; padding: 0.75rem 1rem;
+  border: 2px solid var(--accent); border-radius: 10px; background: var(--accent-soft);
+}
+.confirm-question { margin: 0 0 0.5rem; font-weight: 600; }
+.confirm-box .button-row { margin: 0; }
+.button-primary.danger-fill { background: var(--error); border-color: var(--error); }

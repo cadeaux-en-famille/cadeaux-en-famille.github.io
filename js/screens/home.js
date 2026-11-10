@@ -9,11 +9,11 @@
 //   - draw already seen                -> receiver's name and link to their list
 // The receiver is only fetched (get_my_draws) when the member asks to see it.
 
-import { h, fill } from "../dom.js?v=8f2143a";
-import { t, errorText } from "../i18n.js?v=8f2143a";
-import { getMe, select, rpc } from "../api.js?v=8f2143a";
-import { field, statusLine, confirmButton, formatEuro, formatDate, formatBirthday } from "../ui.js?v=8f2143a";
-import { renderNotMember } from "./not-member.js?v=8f2143a";
+import { h, fill } from "../dom.js?v=71d0cc9";
+import { t, errorText } from "../i18n.js?v=71d0cc9";
+import { getMe, select, rpc } from "../api.js?v=71d0cc9";
+import { field, statusLine, confirmButton, formatEuro, formatDate, formatBirthday } from "../ui.js?v=71d0cc9";
+import { renderNotMember } from "./not-member.js?v=71d0cc9";
 
 export async function renderHome({ navigate }) {
   const me = await getMe();
@@ -132,15 +132,21 @@ async function declarationForm(me, event, navigate) {
     options: [{ value: "", label: t("home.declareChoose") }, ...candidates.map((m) => ({ value: m.id, label: m.display_name }))],
   });
 
+  const chosenName = () => candidates.find((m) => m.id === receiver.input.value)?.display_name ?? "";
   const submit = confirmButton({
     label: t("home.declareSubmit"),
-    confirmLabel: t("home.declareConfirm"),
+    question: () => t("home.declareQuestion", { name: chosenName() }),
+    confirmLabel: () => t("home.declareConfirm", { name: chosenName() }),
     className: "button-primary",
-    onConfirm: async () => {
-      if (!receiver.input.value) {
-        status.show(t("home.declareMissing"), "error");
-        return;
+    beforeAsk: () => {
+      if (receiver.input.value) {
+        status.clear();
+        return true;
       }
+      status.show(t("home.declareMissing"), "error");
+      return false;
+    },
+    onConfirm: async () => {
       try {
         await rpc("declare_my_draw", { p_event_id: event.id, p_receiver_id: receiver.input.value });
         navigate("/home");
@@ -206,7 +212,8 @@ function birthdayLine(b, status, navigate) {
   } else if (b.state === "to_launch") {
     action = confirmButton({
       label: t("home.birthdayLaunch"),
-      confirmLabel: t("home.birthdayLaunchConfirm", { name: b.display_name }),
+      question: t("home.birthdayLaunchQuestion", { name: b.display_name }),
+      confirmLabel: t("home.birthdayLaunchConfirm"),
       className: "button-link",
       onConfirm: async () => {
         try {
