@@ -806,7 +806,7 @@ export const fr = {
       invalid: "Vérifiez les valeurs saisies.",
       next: "Prochain tirage automatique : le {date}.",
       nextDue: "Le tirage automatique est attendu : il se fera cette nuit.",
-      nextOff: "Tirage automatique désactivé : créez l'événement vous-même depuis « Événements ».",
+      nextOff: "Tirage automatique désactivé : créez l'événement vous-même depuis « Noël ».",
       lastDone: "Dernière année déjà traitée automatiquement : {year}.",
       months: [
         "janvier", "février", "mars", "avril", "mai", "juin",
@@ -880,9 +880,11 @@ export const fr = {
       subject: "Le site du tirage des cadeaux est ouvert !",
       body:
         "Bonjour {prenom},\n\nLa famille a maintenant son site pour le tirage des cadeaux : vous y trouverez " +
-        "la personne à qui vous offrez un cadeau, sa liste d'envies, et vous pourrez remplir la vôtre.\n\n" +
+        "la personne à qui vous offrez un cadeau, sa liste d'envies, et vous pourrez remplir la vôtre. On y " +
+        "prépare aussi les anniversaires.\n\n" +
         "Pour vous connecter, ouvrez le lien ci-dessous et saisissez cette adresse email : vous recevrez " +
-        "un code à 6 chiffres, sans mot de passe.\n\n{lien}\n\nÀ très bientôt !",
+        "un code à 6 chiffres, sans mot de passe.\n\n{lien}\n\n" +
+        "Un mode d'emploi illustré, en quelques minutes : {lien}/#/help\n\nÀ très bientôt !",
     },
     draw_opened: {
       subject: "{evenement} : le tirage est fait !",
@@ -934,7 +936,7 @@ export const fr = {
     ideas_requested: {
       subject: "{evenement} : on aimerait quelques idées",
       body:
-        "Bonjour {prenom},\n\nQuelqu'un qui vous prépare un cadeau pour {evenement} aimerait quelques idées. " +
+        "Bonjour {prenom},\n\nQuelqu'un qui vous prépare un cadeau ({evenement}) aimerait quelques idées. " +
         "Ajoutez des envies à votre liste, ou dites en une phrase ce qui vous ferait plaisir en ce moment " +
         "(« Mes envies du moment »).\n\n{lien}",
     },
