@@ -98,11 +98,23 @@ export const fr = {
     birthdaysTitle: "Anniversaires à venir",
     birthdayMe: "Vous",
     birthdayOpen: "Voir la préparation",
-    birthdayElsewhere: "En préparation",
+    birthdayElsewhere: "En préparation (sans vous)",
+    birthdaysPreparing: "En préparation",
+    birthdaysComing: "À venir",
+    birthdayFacts: "{count} participant(s)",
+    birthdayFactsMoney: "{count} participant(s) · {amount} réunis",
+    birthdayYouChose: "Vous participez : {gifts}",
+    birthdayNothingChosen: "Vous n'avez encore rien choisi",
+    birthdayAutoOpen: "S'ouvrira automatiquement le {date}",
+    birthdayAutoOpenSoon: "S'ouvrira automatiquement dans les prochaines heures",
+    birthdayParticipantsLink: "Voir les participants",
     birthdayLaunch: "Lancer la préparation",
-    birthdayLaunchQuestion:
-      "Lancer la préparation de l'anniversaire de {name} ? Les participants prévus recevront un email ; " +
-      "{name} ne verra rien.",
+    birthdayLaunchQuestionAuto:
+      "Lancer dès maintenant la préparation de l'anniversaire de {name} ? Sinon, elle s'ouvrira toute seule " +
+      "le {date}. Les participants prévus recevront un email ; {name} ne verra rien.",
+    birthdayLaunchQuestionManual:
+      "Lancer la préparation de l'anniversaire de {name} ? Elle ne s'ouvrira pas toute seule. Les participants " +
+      "prévus recevront un email ; {name} ne verra rien.",
     birthdayLaunchConfirm: "Oui, lancer",
     birthdaySeparator: "\u00a0: ",
     birthdayToday: "aujourd'hui ! 🎂",
@@ -435,9 +447,9 @@ export const fr = {
         title: "Les anniversaires",
         steps: [
           "Quelques semaines avant un anniversaire, les participants reçoivent un email.",
-          "Sur l'accueil, « Voir la préparation » ouvre la page de l'anniversaire. Pour un anniversaire " +
-            "pas encore ouvert, touchez « Lancer la préparation », puis « Oui, lancer » dans la question qui " +
-            "s'affiche juste en dessous.",
+          "Sur l'accueil, les anniversaires que vous préparez sont en haut, encadrés, sous « En préparation » : " +
+            "touchez-en un pour ouvrir sa page. « À venir » liste les autres ; « Lancer la préparation » ouvre " +
+            "un anniversaire plus tôt (ou tout court, quand il ne s'ouvre pas tout seul), puis « Oui, lancer ».",
           "Sur une idée de sa liste, touchez « Je m'en occupe » (vous l'achetez) ou « Je participe » " +
             "(vous donnez une somme pour un cadeau commun).",
           "Vous pouvez aussi proposer un cadeau commun et discuter avec les autres participants.",

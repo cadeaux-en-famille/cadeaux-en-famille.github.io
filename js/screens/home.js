@@ -9,11 +9,11 @@
 //   - draw already seen                -> receiver's name and link to their list
 // The receiver is only fetched (get_my_draws) when the member asks to see it.
 
-import { h, fill } from "../dom.js?v=5160ad0";
-import { t, errorText } from "../i18n.js?v=5160ad0";
-import { getMe, select, rpc } from "../api.js?v=5160ad0";
-import { field, statusLine, confirmButton, formatEuro, formatDate, formatBirthday } from "../ui.js?v=5160ad0";
-import { renderNotMember } from "./not-member.js?v=5160ad0";
+import { h, fill } from "../dom.js?v=3bb9c56";
+import { t, errorText } from "../i18n.js?v=3bb9c56";
+import { getMe, select, rpc } from "../api.js?v=3bb9c56";
+import { field, statusLine, confirmButton, formatEuro, formatDate, formatBirthday } from "../ui.js?v=3bb9c56";
+import { renderNotMember } from "./not-member.js?v=3bb9c56";
 
 export async function renderHome({ navigate }) {
   const me = await getMe();
@@ -43,7 +43,7 @@ export async function renderHome({ navigate }) {
     ),
     h("p", { class: "lead" }, t("home.intro")),
     await drawCard(me, event, event ? statusByEvent.get(event.id) : null, navigate),
-    birthdayCard(birthdays, navigate),
+    await birthdayCard(me, birthdays, navigate),
     h(
       "div",
       { class: "shortcuts" },
@@ -183,38 +183,101 @@ function countdown(eventDate) {
 const BIRTHDAY_DAYS = 180;
 const SHOWN_WITHOUT_ACTION = 30;   // further away, only the ones somebody can act on
 
-function birthdayCard(birthdays, navigate) {
+// Two groups, so a birthday being prepared never looks like one to launch:
+//   « En préparation »: the open birthdays I take part in, as highlighted cards with where
+//   things stand (participants, money gathered, what I chose or « rien choisi »);
+//   « À venir »: the others, plain, with « Lancer la préparation » when I may, and when it
+//   will open by itself.
+async function birthdayCard(me, birthdays, navigate) {
   const status = statusLine();
-  const coming = birthdays.filter((b) => b.days <= SHOWN_WITHOUT_ACTION || b.state === "open" || b.state === "to_launch");
-  if (coming.length === 0) return null;
+  const mine = birthdays.filter((b) => b.state === "open" && b.taking_part);
+  const coming = birthdays.filter((b) => !(b.state === "open" && b.taking_part)
+    && (b.days <= SHOWN_WITHOUT_ACTION || b.state === "to_launch" || b.state === "open"));
+  if (mine.length === 0 && coming.length === 0) return null;
+
+  // Where the birthdays I prepare stand.
+  const ids = mine.map((b) => b.event_id);
+  const [participants, contributions, gifts] = ids.length === 0 ? [[], [], []] : await Promise.all([
+    select("participants", `select=event_id&event_id=in.(${ids.join(",")})`),
+    select("birthday_contributions", `select=event_id,gift_id,member_id,amount_eur&event_id=in.(${ids.join(",")})`),
+    select("birthday_gifts", `select=id,title&event_id=in.(${ids.join(",")})`),
+  ]);
+  const giftTitle = new Map(gifts.map((g) => [g.id, g.title]));
+
   return h(
     "article",
     { class: "card birthdays" },
     h("h2", {}, t("home.birthdaysTitle")),
     status.element,
-    h("ul", { class: "birthday-list" }, coming.map((b) => birthdayLine(b, status, navigate))),
+    mine.length > 0
+      ? [
+          h("h3", { class: "birthday-group" }, t("home.birthdaysPreparing")),
+          h("ul", { class: "birthday-open-list" }, mine.map((b) => {
+            const count = participants.filter((p) => p.event_id === b.event_id).length;
+            const onIt = contributions.filter((c) => c.event_id === b.event_id);
+            const total = onIt.reduce((sum, c) => sum + Number(c.amount_eur ?? 0), 0);
+            const chosen = onIt.filter((c) => c.member_id === me.id).map((c) => giftTitle.get(c.gift_id)).filter(Boolean);
+            return h(
+              "li",
+              {},
+              h(
+                "a",
+                { class: "birthday-open", href: `#/birthday?id=${b.event_id}` },
+                h("span", { class: "birthday-open-title" }, "🎁 ", b.display_name, t("home.birthdaySeparator"), whenText(b)),
+                h("span", { class: "birthday-open-facts" },
+                  total > 0
+                    ? t("home.birthdayFactsMoney", { count, amount: formatEuro(total) })
+                    : t("home.birthdayFacts", { count })),
+                chosen.length > 0
+                  ? h("span", { class: "birthday-open-mine" }, t("home.birthdayYouChose", { gifts: chosen.join(", ") }))
+                  : h("span", { class: "birthday-open-todo" }, t("home.birthdayNothingChosen")),
+                h("span", { class: "button-primary birthday-open-button" }, t("home.birthdayOpen")),
+              ),
+            );
+          })),
+        ]
+      : null,
+    coming.length > 0
+      ? [
+          mine.length > 0 ? h("h3", { class: "birthday-group" }, t("home.birthdaysComing")) : null,
+          h("ul", { class: "birthday-list" }, coming.map((b) => birthdayLine(b, status, navigate))),
+        ]
+      : null,
   );
 }
 
-function birthdayLine(b, status, navigate) {
+function whenText(b) {
   const date = formatBirthday(b.birthday_day, b.birthday_month);
-  const when = b.days === 0
+  return b.days === 0
     ? t("home.birthdayToday")
     : b.days === 1
       ? t("home.birthdayTomorrow", { date })
       : t("home.birthdayIn", { date, days: b.days });
+}
+
+function birthdayLine(b, status, navigate) {
+  // Opens by itself: say when, and that launching only opens it earlier.
+  const autoOpen = b.state === "to_launch" && b.auto_open_date
+    ? new Date(`${b.auto_open_date}T00:00:00`) > new Date()
+      ? t("home.birthdayAutoOpen", { date: formatDate(b.auto_open_date) })
+      : t("home.birthdayAutoOpenSoon")
+    : null;
 
   let action = null;
   if (b.state === "open") {
-    action = h("a", { class: "button-link", href: `#/birthday?id=${b.event_id}` }, t("home.birthdayOpen"));
+    // The administrator or the organiser, not taking part.
+    action = h("a", { class: "button-link", href: `#/birthday?id=${b.event_id}` }, t("home.birthdayParticipantsLink"));
   } else if (b.state === "elsewhere") {
     action = h("span", { class: "birthday-state" }, t("home.birthdayElsewhere"));
   } else if (b.state === "to_launch") {
     action = confirmButton({
       label: t("home.birthdayLaunch"),
-      question: t("home.birthdayLaunchQuestion", { name: b.display_name }),
+      question: t(b.auto_open_date ? "home.birthdayLaunchQuestionAuto" : "home.birthdayLaunchQuestionManual", {
+        name: b.display_name,
+        date: formatDate(b.auto_open_date),
+      }),
       confirmLabel: t("home.birthdayLaunchConfirm"),
-      className: "button-link",
+      className: "button-secondary birthday-launch",
       onConfirm: async () => {
         try {
           const eventId = await rpc("launch_birthday", {
@@ -237,8 +300,9 @@ function birthdayLine(b, status, navigate) {
       { class: "birthday-line" },
       h("span", { class: "birthday-name" }, b.state === "mine" ? t("home.birthdayMe") : b.display_name),
       t("home.birthdaySeparator"),
-      h("span", { class: "birthday-when" }, when),
+      h("span", { class: "birthday-when" }, whenText(b)),
     ),
+    autoOpen ? h("p", { class: "birthday-auto" }, autoOpen) : null,
     action,
   );
 }

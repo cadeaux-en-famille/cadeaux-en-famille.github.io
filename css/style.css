@@ -540,7 +540,7 @@ fieldset.birthday legend, fieldset.opening legend { font-weight: 600; padding: 0
 
 /* Accueil : anniversaires */
 .card.birthdays { margin-top: 1rem; }
-.birthday-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+.birthday-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
 .birthday-name { font-weight: 600; }
 .birthday-when { color: var(--text-muted); }
 .birthday-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 0.75rem; }
@@ -657,3 +657,20 @@ code { font-size: 0.9em; padding: 0.05rem 0.3rem; margin-right: 0.3rem; backgrou
 .follow-yes { color: var(--success); }
 .follow-no { color: var(--error); }
 .follow-up summary { min-height: 48px; display: flex; align-items: center; cursor: pointer; }
+
+/* Home: birthdays being prepared stand out from the others */
+.birthday-group { margin: 1rem 0 0.5rem; font-size: 0.95rem; color: var(--text-muted); }
+.birthday-group:first-of-type { margin-top: 0.25rem; }
+.birthday-open-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+.birthday-open {
+  display: grid; gap: 0.35rem; padding: 0.9rem 1rem; border-radius: 12px; text-decoration: none; color: inherit;
+  border: 2px solid var(--accent); background: var(--accent-soft);
+}
+.birthday-open:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.birthday-open-title { font-weight: 700; font-size: 1.05rem; }
+.birthday-open-facts { color: var(--text-muted); font-size: 0.95rem; }
+.birthday-open-mine { color: var(--success); font-weight: 600; }
+.birthday-open-todo { color: var(--error); font-weight: 600; }
+.birthday-open-button { justify-self: start; margin-top: 0.25rem; pointer-events: none; }
+.birthday-auto { margin: 0; width: 100%; font-size: 0.9rem; color: var(--text-muted); }
+.birthday-list .birthday-launch { min-height: 48px; padding: 0.4rem 0.9rem; font-size: 0.95rem; }

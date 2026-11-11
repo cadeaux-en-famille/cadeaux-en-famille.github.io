@@ -3,11 +3,11 @@
 // active wishes and tastes (20261125000100_household_lists.sql), nothing more: not what
 // anybody plans to give them.
 
-import { h } from "../dom.js?v=5160ad0";
-import { t } from "../i18n.js?v=5160ad0";
-import { getMe, select } from "../api.js?v=5160ad0";
-import { formatEuro } from "../ui.js?v=5160ad0";
-import { renderNotMember } from "./not-member.js?v=5160ad0";
+import { h } from "../dom.js?v=3bb9c56";
+import { t } from "../i18n.js?v=3bb9c56";
+import { getMe, select } from "../api.js?v=3bb9c56";
+import { formatEuro } from "../ui.js?v=3bb9c56";
+import { renderNotMember } from "./not-member.js?v=3bb9c56";
 
 const PROFILE_FIELDS = ["current_wishes", "interests", "sizes", "colors", "dislikes", "favorite_shops"];
 
