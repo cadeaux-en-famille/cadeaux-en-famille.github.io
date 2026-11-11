@@ -758,6 +758,14 @@ export const fr = {
       inviteConfirm: "Oui, ouvrir l'accès à {name}",
       invited: "{name} est invité : son compte et son invitation partent à la prochaine distribution.",
       invitedOn: "invité le {date}",
+      addressPending: "Nouvelle adresse pas encore prise en compte : elle le sera au prochain envoi automatique.",
+      invitation: {
+        to_prepare: "Invitation demandée le {date} : elle partira au prochain envoi automatique.",
+        queued: "Invitation prête depuis le {date} : en attente d'envoi (entre 8 h et 20 h, ou envois suspendus).",
+        sent: "Invitation envoyée le {date} (acceptée par le serveur d'envoi).",
+        failed: "L'envoi de l'invitation a échoué le {date} : {error}. Vérifiez l'adresse.",
+        cancelled: "Invitation annulée le {date}.",
+      },
       inviteHint:
         "Vous pouvez ouvrir le site à une personne à la fois pour l'essayer : elle seule reçoit un compte " +
         "et une invitation. Les autres ne peuvent toujours pas se connecter ni recevoir d'email. " +

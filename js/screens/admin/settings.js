@@ -2,11 +2,11 @@
 // automatic draw, the (read-only) status of the email gate, and the pause switch that
 // stops every email the site sends.
 
-import { h } from "../../dom.js?v=b403f9e";
-import { t, errorText } from "../../i18n.js?v=b403f9e";
-import { select, update, rpc } from "../../api.js?v=b403f9e";
-import { field, statusLine, whileBusy, parseAmount, formatDate, confirmButton } from "../../ui.js?v=b403f9e";
-import { requireAdmin, adminShell } from "./common.js?v=b403f9e";
+import { h } from "../../dom.js?v=1815b38";
+import { t, errorText } from "../../i18n.js?v=1815b38";
+import { select, update, rpc } from "../../api.js?v=1815b38";
+import { field, statusLine, whileBusy, parseAmount, formatDate, confirmButton } from "../../ui.js?v=1815b38";
+import { requireAdmin, adminShell } from "./common.js?v=1815b38";
 
 // Message to show once the screen is redrawn after pausing or resuming the emails.
 let flash = null;

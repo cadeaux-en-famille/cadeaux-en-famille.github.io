@@ -8,11 +8,13 @@
 // (scripts/sync-accounts.mjs): the site never holds the key needed to change it.
 // Every rule (couples, nobody leaving during a draw...) is checked by the database.
 
-import { h, fill } from "../../dom.js?v=b403f9e";
-import { t, errorText } from "../../i18n.js?v=b403f9e";
-import { select, insert, update, rpc } from "../../api.js?v=b403f9e";
-import { field, statusLine, confirmButton, whileBusy, formatDate, formatBirthday, textOrNull } from "../../ui.js?v=b403f9e";
-import { requireAdmin, adminShell } from "./common.js?v=b403f9e";
+import { h, fill } from "../../dom.js?v=1815b38";
+import { t, errorText } from "../../i18n.js?v=1815b38";
+import { select, insert, update, rpc } from "../../api.js?v=1815b38";
+import {
+  field, statusLine, confirmButton, whileBusy, formatDate, formatDateTime, formatBirthday, textOrNull,
+} from "../../ui.js?v=1815b38";
+import { requireAdmin, adminShell } from "./common.js?v=1815b38";
 
 const NEW_HOUSEHOLD = "new";
 
@@ -23,7 +25,7 @@ export async function renderAdminMembers({ navigate }) {
   const denied = await requireAdmin();
   if (denied) return denied;
 
-  const [members, households, emails, settings] = await Promise.all([
+  const [members, households, emails, settings, invitations] = await Promise.all([
     select(
       "members",
       "select=id,display_name,household_id,is_active,is_admin,user_id,invited_at,birthday_day,birthday_month",
@@ -31,7 +33,9 @@ export async function renderAdminMembers({ navigate }) {
     select("households", "select=id,label&order=label"),
     select("member_emails", "select=member_id,email"),
     select("settings", "select=emails_enabled"),
+    rpc("invitation_status"),
   ]);
+  const invitationOf = new Map(invitations.map((row) => [row.member_id, row]));
   const openToEverybody = settings[0]?.emails_enabled === true;
   const emailOf = new Map(emails.map((row) => [row.member_id, row.email]));
   const householdLabel = new Map(households.map((hh) => [hh.id, hh.label]));
@@ -56,7 +60,7 @@ export async function renderAdminMembers({ navigate }) {
   ].join("\u0000");
   members.sort((a, b) => sortKey(a).localeCompare(sortKey(b), "fr", { numeric: true }));
 
-  const context = { members, households, emailOf, householdLabel, openToEverybody, status, done };
+  const context = { members, households, emailOf, householdLabel, invitationOf, openToEverybody, status, done };
 
   const addArea = h("div", { class: "member-add" });
   const addButton = h("button", { type: "button", class: "button-secondary" }, t("admin.members.add"));
@@ -83,7 +87,7 @@ export async function renderAdminMembers({ navigate }) {
 // ---------------------------------------------------------------------------
 
 function memberCard(context, member) {
-  const { emailOf, householdLabel, openToEverybody, status, done } = context;
+  const { emailOf, householdLabel, invitationOf, openToEverybody, status, done } = context;
   const email = emailOf.get(member.id);
   const card = h("li", { class: `card member${member.is_active ? "" : " member-left"}` });
 
@@ -160,6 +164,7 @@ function memberCard(context, member) {
     ),
     details ? h("p", { class: "member-meta" }, details) : null,
     h("p", { class: "member-meta" }, email ?? t("admin.members.noEmail")),
+    member.is_active ? invitationLine(invitationOf.get(member.id)) : null,
     h(
       "p",
       { class: `member-meta ${member.user_id && member.is_active ? "ok" : "muted"}` },
@@ -341,3 +346,13 @@ function nextHouseholdLabel(households) {
   return String(next);
 }
 
+/** Where the latest invitation stands (public.invitation_status), or nothing. */
+function invitationLine(row) {
+  if (!row) return null;
+  const parts = [];
+  if (row.address_pending) parts.push(t("admin.members.addressPending"));
+  if (row.state) {
+    parts.push(t(`admin.members.invitation.${row.state}`, { date: formatDateTime(row.at), error: row.error ?? "" }));
+  }
+  return h("p", { class: `member-meta invitation-${row.state ?? "none"}` }, parts.join(" "));
+}

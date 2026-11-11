@@ -643,3 +643,7 @@ code { font-size: 0.9em; padding: 0.05rem 0.3rem; margin-right: 0.3rem; backgrou
 .secret-card { margin: 1rem 0; }
 .secret-card p { margin: 0 0 0.25rem; }
 .secret-card.is-secret { border-color: var(--accent); }
+
+/* Admin > Membres: where the invitation stands */
+.member-meta.invitation-sent { color: var(--success); }
+.member-meta.invitation-failed { color: var(--error); font-weight: 600; }
