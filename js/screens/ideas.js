@@ -2,10 +2,10 @@
 // birthday page. Shows when ideas were last asked for and, at most once every 7 days
 // (the database checks it too), sends an anonymous request to the person.
 
-import { h } from "../dom.js?v=1815b38";
-import { t, errorText } from "../i18n.js?v=1815b38";
-import { rpc } from "../api.js?v=1815b38";
-import { confirmButton, formatDate } from "../ui.js?v=1815b38";
+import { h } from "../dom.js?v=5160ad0";
+import { t, errorText } from "../i18n.js?v=5160ad0";
+import { rpc } from "../api.js?v=5160ad0";
+import { confirmButton, formatDate } from "../ui.js?v=5160ad0";
 
 const DAYS_BETWEEN = 7;
 

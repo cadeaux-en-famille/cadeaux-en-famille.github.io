@@ -647,3 +647,13 @@ code { font-size: 0.9em; padding: 0.05rem 0.3rem; margin-right: 0.3rem; backgrou
 /* Admin > Membres: where the invitation stands */
 .member-meta.invitation-sent { color: var(--success); }
 .member-meta.invitation-failed { color: var(--error); font-weight: 600; }
+
+/* Admin > Noël: who to remind */
+.follow-up { margin-top: 1rem; }
+.follow-up h3 { margin: 0 0 0.5rem; font-size: 1rem; }
+.follow-missing, .follow-people { list-style: none; margin: 0 0 0.75rem; padding: 0; display: grid; gap: 0.4rem; }
+.follow-people li { display: grid; gap: 0.15rem; }
+.follow-facts { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; font-size: 0.95rem; }
+.follow-yes { color: var(--success); }
+.follow-no { color: var(--error); }
+.follow-up summary { min-height: 48px; display: flex; align-items: center; cursor: pointer; }

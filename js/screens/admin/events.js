@@ -3,11 +3,11 @@
 // their own screen (admin/birthdays.js).
 // The admin never sees who gives to whom: the database only returns counts.
 
-import { h, fill } from "../../dom.js?v=1815b38";
-import { t, errorText } from "../../i18n.js?v=1815b38";
-import { select, insert, update, remove, rpc } from "../../api.js?v=1815b38";
-import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount, addDays } from "../../ui.js?v=1815b38";
-import { requireAdmin, adminShell } from "./common.js?v=1815b38";
+import { h, fill } from "../../dom.js?v=5160ad0";
+import { t, errorText } from "../../i18n.js?v=5160ad0";
+import { select, insert, update, remove, rpc } from "../../api.js?v=5160ad0";
+import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount, addDays } from "../../ui.js?v=5160ad0";
+import { requireAdmin, adminShell } from "./common.js?v=5160ad0";
 
 export async function renderAdminEvents() {
   const denied = await requireAdmin();
@@ -206,9 +206,10 @@ function eventCard(event, { members, participants, reload }) {
 
   async function loadProgress() {
     try {
-      const [[draw], [wishes]] = await Promise.all([
+      const [[draw], [wishes], people] = await Promise.all([
         rpc("draw_progress", { p_event_id: event.id }),
         rpc("wishlist_progress", { p_event_id: event.id }),
+        rpc("participation_status", { p_event_id: event.id }),
       ]);
       const total = draw.participant_count;
       fill(
@@ -224,12 +225,70 @@ function eventCard(event, { members, participants, reload }) {
             : null,
           h("li", {}, t("admin.events.progressWishes", { count: wishes.with_wishes_count, total })),
         ),
+        followUp(people),
       );
       renderParticipants(draw.assigned_count === 0 && event.status === "preparing");
       renderActions(draw.assigned_count);
     } catch (error) {
       fill(progressSlot, h("p", { class: "form-message", "data-kind": "error" }, errorText(error)));
     }
+  }
+
+  // Who to remind: names of those who have not signed in, said who they give to (declared
+  // mode) or opened their draw (random mode), filled their list; then person by person.
+  // Yes/no about each member only: never to whom they give.
+  function followUp(people) {
+    if (!people || people.length === 0) return null;
+    const names = (rows) => rows.map((p) => p.display_name).join(", ");
+    const declared = event.draw_mode === "declared";
+    const drawStarted = event.status !== "preparing";
+    const missing = [
+      [t("admin.events.followNeverSignedIn"), people.filter((p) => !p.signed_in_at)],
+      declared ? [t("admin.events.followNotDeclared"), people.filter((p) => !p.has_draw)] : null,
+      !declared && drawStarted ? [t("admin.events.followNotViewed"), people.filter((p) => !p.viewed)] : null,
+      [t("admin.events.followNoWishes"), people.filter((p) => !p.has_wishes)],
+    ].filter(Boolean);
+    const yes = (ok, okText, noText) => h("span", { class: ok ? "follow-yes" : "follow-no" }, ok ? okText : noText);
+    return h(
+      "div",
+      { class: "follow-up" },
+      h("h3", {}, t("admin.events.followTitle")),
+      h(
+        "ul",
+        { class: "follow-missing" },
+        missing.map(([label, rows]) =>
+          h("li", {}, h("strong", {}, label), " ", rows.length === 0 ? t("admin.events.followNobody") : names(rows))),
+      ),
+      h(
+        "details",
+        {},
+        h("summary", {}, t("admin.events.followDetails")),
+        h(
+          "ul",
+          { class: "follow-people" },
+          people.map((p) =>
+            h(
+              "li",
+              {},
+              h("strong", {}, p.display_name),
+              h(
+                "span",
+                { class: "follow-facts" },
+                yes(Boolean(p.signed_in_at),
+                  t("admin.events.followSignedIn", { date: formatDate(p.signed_in_at) }), t("admin.events.followNever")),
+                declared
+                  ? yes(p.has_draw, t("admin.events.followDeclared"), t("admin.events.followNotYetDeclared"))
+                  : drawStarted
+                    ? yes(p.viewed, t("admin.events.followViewed"), t("admin.events.followNotYetViewed"))
+                    : null,
+                yes(p.has_wishes, t("admin.events.followWishes"), t("admin.events.followNoWishesShort")),
+              ),
+            ),
+          ),
+        ),
+      ),
+      h("p", { class: "field-hint" }, t("admin.events.followHint")),
+    );
   }
 
   function renderParticipants(editable) {

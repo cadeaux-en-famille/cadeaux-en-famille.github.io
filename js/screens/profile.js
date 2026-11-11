@@ -1,11 +1,11 @@
 // "Mon profil" (route "#/profile"): display name and notification preferences.
 // Each preference is saved as soon as its box is ticked or unticked.
 
-import { h } from "../dom.js?v=1815b38";
-import { t, errorText } from "../i18n.js?v=1815b38";
-import { getMe, select, update, signOut } from "../api.js?v=1815b38";
-import { field, statusLine, whileBusy } from "../ui.js?v=1815b38";
-import { renderNotMember } from "./not-member.js?v=1815b38";
+import { h } from "../dom.js?v=5160ad0";
+import { t, errorText } from "../i18n.js?v=5160ad0";
+import { getMe, select, update, signOut } from "../api.js?v=5160ad0";
+import { field, statusLine, whileBusy } from "../ui.js?v=5160ad0";
+import { renderNotMember } from "./not-member.js?v=5160ad0";
 
 export async function renderProfile({ navigate }) {
   const me = await getMe();
