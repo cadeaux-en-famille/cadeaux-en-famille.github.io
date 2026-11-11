@@ -25,7 +25,7 @@ export class ApiError extends Error {
 /** Loads config.js (generated at deployment). Returns false if the site is not configured. */
 export async function initApi() {
   try {
-    ({ config } = await import("../config.js?v=a1074d3"));
+    ({ config } = await import("../config.js?v=b403f9e"));
   } catch {
     config = null;
     return false;
@@ -145,7 +145,7 @@ export async function getMe({ refresh = false } = {}) {
   if (me && !refresh) return me;
   const rows = await select(
     "members",
-    `select=id,display_name,is_admin&user_id=eq.${encodeURIComponent(currentUserId())}`,
+    `select=id,display_name,is_admin,household_id&user_id=eq.${encodeURIComponent(currentUserId())}`,
   );
   me = rows[0] ?? null;
   return me;

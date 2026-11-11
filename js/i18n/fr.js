@@ -56,7 +56,7 @@ export const fr = {
     helpLink: "Besoin d'aide ? Lire le mode d'emploi illustré",
     privacy:
       "Seuls les membres de la famille invités peuvent se connecter. " +
-      "Votre liste d'envies n'est visible que par les personnes qui vous préparent un cadeau.",
+      "Votre liste d'envies n'est visible que par les personnes qui vous préparent un cadeau et par votre conjoint.",
   },
 
   nav: {
@@ -126,7 +126,7 @@ export const fr = {
 
   myList: {
     title: "Ma liste d'envies",
-    intro: "Seules les personnes qui vous préparent un cadeau (à Noël ou pour votre anniversaire) voient cette liste.",
+    intro: "Seules les personnes qui vous préparent un cadeau (à Noël ou pour votre anniversaire), et votre conjoint, voient cette liste.",
     empty: "Votre liste est vide pour l'instant.",
     add: "Ajouter une envie",
     addTitle: "Nouvelle envie",
@@ -384,12 +384,13 @@ export const fr = {
           "Dans « Ma liste », touchez « Ajouter une envie » : un titre suffit.",
           "Vous pouvez ajouter un lien vers un site marchand, un prix, une boutique et une priorité.",
           "Indiquez aussi vos goûts (tailles, couleurs, ce que vous n'aimez pas) : ça aide beaucoup.",
+          "En couple ? « Voir la liste de … » montre la liste de votre conjoint, en lecture seule.",
           "« Envies du moment » : une phrase sur ce qui vous ferait plaisir en ce moment (« plutôt des sorties " +
             "cette année »). Si quelqu'un vous demande des idées, un bandeau vous le rappelle en haut de la liste.",
         ],
         alt: ["« Ma liste d'envies » avec quelques idées et le bouton pour en ajouter."],
         tip:
-            "Seules les personnes qui vous préparent un cadeau voient votre liste. Elle reste d'une année " +
+            "Seules les personnes qui vous préparent un cadeau, et votre conjoint, voient votre liste. Elle reste d'une année " +
             "sur l'autre : retirez simplement ce que vous avez reçu.",
       },
       tirage: {
@@ -502,6 +503,21 @@ export const fr = {
             "(menu du navigateur, « Ajouter à l'écran d'accueil ») pour le retrouver comme une application.",
       },
     ],
+  },
+
+  // The list of my partner (screens/partner.js).
+  partner: {
+    link: "Voir la liste de {name}",
+    title: "La liste de {name}",
+    intro:
+      "Vous voyez la liste d'envies de {name} parce que vous formez un couple sur le site. Elle est en lecture " +
+      "seule, et ne dit pas ce que les autres ont prévu de lui offrir.",
+    wishesTitle: "Ses envies",
+    wishesEmpty: "{name} n'a encore rien mis dans sa liste.",
+    tastesTitle: "Ses goûts",
+    noneTitle: "Pas de conjoint enregistré",
+    noneText: "Vous n'êtes pas en couple sur le site. L'organisateur peut l'indiquer dans l'administration.",
+    back: "Retour à ma liste",
   },
 
   // « Lui demander des idées » (screens/ideas.js) and the banner on « Ma liste ».

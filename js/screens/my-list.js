@@ -2,14 +2,15 @@
 // Visible only to the member and, while an event runs, to the person who gives to them
 // (enforced by RLS in the database, not here).
 
-import { h, fill } from "../dom.js?v=a1074d3";
-import { t, errorText } from "../i18n.js?v=a1074d3";
-import { getMe, select, insert, update, remove, upsert, rpc } from "../api.js?v=a1074d3";
+import { h, fill } from "../dom.js?v=b403f9e";
+import { t, errorText } from "../i18n.js?v=b403f9e";
+import { getMe, select, insert, update, remove, upsert, rpc } from "../api.js?v=b403f9e";
 import {
   field, statusLine, whileBusy, confirmButton,
   formatEuro, formatDate, parseAmount, normaliseUrl, textOrNull,
-} from "../ui.js?v=a1074d3";
-import { renderNotMember } from "./not-member.js?v=a1074d3";
+} from "../ui.js?v=b403f9e";
+import { renderNotMember } from "./not-member.js?v=b403f9e";
+import { findPartner } from "./partner.js?v=b403f9e";
 
 const PRIORITIES = [1, 2, 3];
 const PROFILE_FIELDS = ["current_wishes", "interests", "sizes", "colors", "dislikes", "favorite_shops"];
@@ -18,10 +19,11 @@ export async function renderMyList() {
   const me = await getMe();
   if (!me) return renderNotMember();
 
-  const [wishes, profiles, ideaRequests] = await Promise.all([
+  const [wishes, profiles, ideaRequests, partner] = await Promise.all([
     select("wishes", `select=*&member_id=eq.${me.id}&order=priority.asc,created_at.asc`),
     select("profiles", `select=*&member_id=eq.${me.id}`),
     rpc("my_idea_requests"),
+    findPartner(me),
   ]);
   // Somebody would like ideas and the list has not changed since: say so at the top.
   const asked = ideaRequests.filter((r) => r.pending);
@@ -217,6 +219,10 @@ export async function renderMyList() {
     { class: "my-list" },
     h("h1", {}, t("myList.title")),
     h("p", { class: "lead" }, t("myList.intro")),
+    partner
+      ? h("p", { class: "partner-link" },
+          h("a", { class: "button-secondary link-button", href: "#/partner" }, t("partner.link", { name: partner.display_name })))
+      : null,
     askedBanner,
     status.element,
     addButton,

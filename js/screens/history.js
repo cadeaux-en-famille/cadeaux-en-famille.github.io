@@ -3,11 +3,11 @@
 // Events still running only link to the home screen: their draw is never revealed here.
 // Birthdays I prepared link to their page; my own past birthdays say who took part.
 
-import { h } from "../dom.js?v=a1074d3";
-import { t } from "../i18n.js?v=a1074d3";
-import { getMe, select, rpc } from "../api.js?v=a1074d3";
-import { formatEuro, formatDate } from "../ui.js?v=a1074d3";
-import { renderNotMember } from "./not-member.js?v=a1074d3";
+import { h } from "../dom.js?v=b403f9e";
+import { t } from "../i18n.js?v=b403f9e";
+import { getMe, select, rpc } from "../api.js?v=b403f9e";
+import { formatEuro, formatDate } from "../ui.js?v=b403f9e";
+import { renderNotMember } from "./not-member.js?v=b403f9e";
 
 export async function renderHistory() {
   const me = await getMe();

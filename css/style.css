@@ -601,6 +601,7 @@ code { font-size: 0.9em; padding: 0.05rem 0.3rem; margin-right: 0.3rem; backgrou
 .help-faq dt:first-child { margin-top: 0; }
 .help-faq dd { margin: 0.25rem 0 0; }
 .help-link { margin-top: 1rem; }
+.partner-link { margin: 0.75rem 0 1rem; }
 
 /* The guide printed to PDF (scripts/help/make-guide.mjs): no navigation; each section
    keeps its steps on the left and its pictures on the right, on one page. */
