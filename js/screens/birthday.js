@@ -4,15 +4,15 @@
 // discussion between participants, and who takes part (chosen by the organiser).
 // The celebrated member never reaches this screen: the database hides the event from them.
 
-import { h, fill } from "../dom.js?v=5c310fc";
-import { t, errorText } from "../i18n.js?v=5c310fc";
-import { getMe, select, rpc, insert, update } from "../api.js?v=5c310fc";
+import { h, fill } from "../dom.js?v=5d60296";
+import { t, errorText } from "../i18n.js?v=5d60296";
+import { getMe, select, rpc, insert, update } from "../api.js?v=5d60296";
 import {
   field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount, normaliseUrl, textOrNull,
-} from "../ui.js?v=5c310fc";
-import { bubbles, composer } from "./messages.js?v=5c310fc";
-import { renderNotMember } from "./not-member.js?v=5c310fc";
-import { askIdeasBlock } from "./ideas.js?v=5c310fc";
+} from "../ui.js?v=5d60296";
+import { bubbles, composer } from "./messages.js?v=5d60296";
+import { renderNotMember } from "./not-member.js?v=5d60296";
+import { askIdeasBlock } from "./ideas.js?v=5d60296";
 
 const PROFILE_FIELDS = ["current_wishes", "interests", "sizes", "colors", "dislikes", "favorite_shops"];
 
@@ -432,7 +432,7 @@ function participantsCard({ event, members, participantIds, names, organiser, do
 // Best effort: the bell forgets this birthday's messages and announcements.
 async function markRead(event) {
   try {
-    await update("notifications", `event_id=eq.${event.id}&read_at=is.null&kind=in.(family_message,birthday_opened,birthday_reminder,family_answer,receiver_list_changed)`,
+    await update("notifications", `event_id=eq.${event.id}&read_at=is.null&kind=in.(family_message,birthday_message,birthday_opened,birthday_reminder,family_answer,receiver_list_changed)`,
       { read_at: new Date().toISOString() });
     document.dispatchEvent(new CustomEvent("notifications-changed"));
   } catch {

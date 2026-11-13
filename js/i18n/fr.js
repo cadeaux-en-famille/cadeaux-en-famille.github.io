@@ -340,6 +340,11 @@ export const fr = {
       hint: "On me pose une question anonyme pour trouver mon cadeau.",
       text: "Un membre de la famille te pose une question.",
     },
+    birthday_message: {
+      label: "Discussion d'un anniversaire",
+      hint: "Un participant a écrit dans la discussion d'un anniversaire que je prépare.",
+      text: "{author} a écrit dans la discussion de l'anniversaire.",
+    },
     family_answer: {
       label: "Réponse de la personne fêtée",
       hint: "La personne dont je prépare l'anniversaire a répondu à une question.",
@@ -923,6 +928,7 @@ export const fr = {
   digest: {
     private_message: "- {count} nouveau(x) message(s) personnel(s)",
     family_message: "- {count} nouveau(x) message(s) à toute la famille",
+    birthday_message: "- {count} nouveau(x) message(s) dans la discussion d'un anniversaire",
     receiver_list_changed: "- La personne à qui tu offres a modifié sa liste d'envies",
   },
 
@@ -1005,6 +1011,12 @@ export const fr = {
       body:
         "Bonjour {prenom},\n\nUn membre de la famille te pose une question, sans dire qui il est. " +
         "Tu peux lui répondre sur le site, dans « Messages ».\n\n{lien}",
+    },
+    birthday_message: {
+      subject: "{evenement} : nouveau message des participants",
+      body:
+        "Bonjour {prenom},\n\nUn participant a écrit dans la discussion de {evenement}. " +
+        "Connecte-toi pour lire et répondre (la personne fêtée ne voit pas cette discussion).\n\n{lien}",
     },
     family_answer: {
       subject: "{evenement} : une réponse à tes questions",

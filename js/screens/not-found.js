@@ -1,7 +1,7 @@
 // Shown for any unknown route.
 
-import { h } from "../dom.js?v=5c310fc";
-import { t } from "../i18n.js?v=5c310fc";
+import { h } from "../dom.js?v=5d60296";
+import { t } from "../i18n.js?v=5d60296";
 
 export function renderNotFound() {
   return h(

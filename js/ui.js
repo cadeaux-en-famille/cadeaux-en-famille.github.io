@@ -1,8 +1,8 @@
 // Small building blocks shared by the screens: form fields, status messages,
 // busy buttons, confirmation questions and French number formatting.
 
-import { h } from "./dom.js?v=5c310fc";
-import { t } from "./i18n.js?v=5c310fc";
+import { h } from "./dom.js?v=5d60296";
+import { t } from "./i18n.js?v=5d60296";
 
 let fieldCounter = 0;
 

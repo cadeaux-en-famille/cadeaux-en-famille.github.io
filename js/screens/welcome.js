@@ -6,9 +6,9 @@
 // somebody testing addresses which ones have access, a small risk for a family site,
 // against a member left waiting for a code that will never come.
 
-import { h } from "../dom.js?v=5c310fc";
-import { t, errorText } from "../i18n.js?v=5c310fc";
-import { isConfigured, sendCode, verifyCode } from "../api.js?v=5c310fc";
+import { h } from "../dom.js?v=5d60296";
+import { t, errorText } from "../i18n.js?v=5d60296";
+import { isConfigured, sendCode, verifyCode } from "../api.js?v=5d60296";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CODE_PATTERN = /^\d{6}$/;
