@@ -301,14 +301,14 @@ export const fr = {
   notifications: {
     private_message: {
       label: "Message personnel",
-      hint: "Un message de mon Père Noël secret ou de la personne à qui j'offre.", text: "Vous avez un nouveau message personnel."
+      hint: "Un message de mon Père Noël secret ou de la personne à qui j'offre.", text: "Tu as un nouveau message personnel."
     },
     family_message: { label: "Message à toute la famille", hint: "Un nouveau message dans le fil familial.", text: "{author} a écrit à toute la famille." },
-    draw_opened: { label: "Nouveau tirage", hint: "Le tirage de l'année est disponible.", text: "Le tirage est fait : découvrez à qui vous offrez !" },
-    wishlist_reminder: { label: "Rappel de liste", hint: "Penser à créer ou compléter ma liste d'envies.", text: "Pensez à compléter votre liste d'envies." },
+    draw_opened: { label: "Nouveau tirage", hint: "Le tirage de l'année est disponible.", text: "Le tirage est fait : découvre à qui tu offres !" },
+    wishlist_reminder: { label: "Rappel de liste", hint: "Penser à créer ou compléter ma liste d'envies.", text: "Pense à compléter ta liste d'envies." },
     receiver_list_changed: {
       label: "Liste de mon receveur modifiée",
-      hint: "La personne à qui j'offre a changé sa liste.", text: "La personne à qui vous offrez a modifié sa liste."
+      hint: "La personne à qui j'offre a changé sa liste.", text: "La personne à qui tu offres a modifié sa liste."
     },
     event_reminder: { label: "Rappel avant l'événement", hint: "Une semaine avant Noël, sauf si mon cadeau est déjà emballé.", text: "L'événement approche : plus qu'une semaine !" },
     invitation: {
@@ -319,27 +319,27 @@ export const fr = {
     birthday_opened: {
       label: "Anniversaire en préparation",
       hint: "Un anniversaire se prépare et j'y participe.",
-      text: "Un anniversaire se prépare : choisissez comment participer.",
+      text: "Un anniversaire se prépare : choisis comment participer.",
     },
     birthday_reminder: {
       label: "Rappel d'anniversaire",
       hint: "Deux semaines puis trois jours avant, tant que je n'ai rien choisi.",
-      text: "L'anniversaire approche (dans {days} jours) et vous n'avez encore rien choisi.",
+      text: "L'anniversaire approche (dans {days} jours) et tu n'as encore rien choisi.",
     },
     ideas_requested: {
       label: "Demande d'idées",
       hint: "Quelqu'un qui me prépare un cadeau aimerait des idées.",
-      text: "Quelqu'un qui vous prépare un cadeau aimerait quelques idées : complétez votre liste.",
+      text: "Quelqu'un qui te prépare un cadeau aimerait quelques idées : complète ta liste.",
     },
     ideas_requested_secret: {
       label: "Demande d'idées (sans précision)",
       hint: "Un membre de la famille aimerait des idées, sans dire pour quelle occasion.",
-      text: "Un membre de la famille aimerait quelques idées : pensez à mettre à jour votre liste.",
+      text: "Un membre de la famille aimerait quelques idées : pense à mettre à jour ta liste.",
     },
     family_question: {
       label: "Question de la famille",
       hint: "On me pose une question anonyme pour trouver mon cadeau.",
-      text: "Un membre de la famille vous pose une question.",
+      text: "Un membre de la famille te pose une question.",
     },
     family_answer: {
       label: "Réponse de la personne fêtée",
@@ -348,7 +348,7 @@ export const fr = {
     },
     weekly_digest: {
       label: "Récapitulatif hebdomadaire",
-      hint: "Un seul email par semaine au lieu d'emails séparés.", text: "Votre récapitulatif de la semaine est disponible."
+      hint: "Un seul email par semaine au lieu d'emails séparés.", text: "Ton récapitulatif de la semaine est disponible."
     },
   },
 
@@ -924,7 +924,7 @@ export const fr = {
   digest: {
     private_message: "- {count} nouveau(x) message(s) personnel(s)",
     family_message: "- {count} nouveau(x) message(s) à toute la famille",
-    receiver_list_changed: "- La personne à qui vous offrez a modifié sa liste d'envies",
+    receiver_list_changed: "- La personne à qui tu offres a modifié sa liste d'envies",
   },
 
   // Default email texts, used until the admin saves his own version.
@@ -933,35 +933,35 @@ export const fr = {
     invitation: {
       subject: "Le site du tirage des cadeaux est ouvert !",
       body:
-        "Bonjour {prenom},\n\nLa famille a maintenant son site pour le tirage des cadeaux : vous y trouverez " +
-        "la personne à qui vous offrez un cadeau, sa liste d'envies, et vous pourrez remplir la vôtre. On y " +
+        "Bonjour {prenom},\n\nLa famille a maintenant son site pour le tirage des cadeaux : tu y trouveras " +
+        "la personne à qui tu offres un cadeau, sa liste d'envies, et tu pourras remplir la tienne. On y " +
         "prépare aussi les anniversaires.\n\n" +
-        "Pour vous connecter, ouvrez le lien ci-dessous et saisissez cette adresse email : vous recevrez " +
+        "Pour te connecter, ouvre le lien ci-dessous et saisis cette adresse email : tu recevras " +
         "un code à 6 chiffres, sans mot de passe.\n\n{lien}\n\n" +
         "Un mode d'emploi illustré, en quelques minutes : {lien}/#/help\n\nÀ très bientôt !",
     },
     draw_opened: {
       subject: "{evenement} : le tirage est fait !",
       body:
-        "Bonjour {prenom},\n\nLe tirage de {evenement} est fait. Connectez-vous pour découvrir " +
-        "à qui vous offrirez un cadeau, et pensez à remplir votre liste d'envies avant le {date_limite}.\n\n" +
+        "Bonjour {prenom},\n\nLe tirage de {evenement} est fait. Connecte-toi pour découvrir " +
+        "à qui tu offriras un cadeau, et pense à remplir ta liste d'envies avant le {date_limite}.\n\n" +
         "Budget conseillé : {budget}.\n\n{lien}\n\nÀ bientôt !",
     },
     wishlist_reminder: {
-      subject: "Pensez à votre liste d'envies",
+      subject: "Pense à ta liste d'envies",
       body:
-        "Bonjour {prenom},\n\nVotre liste d'envies pour {evenement} est encore vide ou presque. " +
-        "Ajoutez quelques idées avant le {date_limite} pour aider la personne qui vous offre un cadeau.\n\n{lien}",
+        "Bonjour {prenom},\n\nTa liste d'envies pour {evenement} est encore vide ou presque. " +
+        "Ajoute quelques idées avant le {date_limite} pour aider la personne qui t'offre un cadeau.\n\n{lien}",
     },
     event_reminder: {
       subject: "{evenement} approche !",
       body:
-        "Bonjour {prenom},\n\n{evenement} a lieu le {date}. Il est encore temps de préparer votre cadeau " +
+        "Bonjour {prenom},\n\n{evenement} a lieu le {date}. Il est encore temps de préparer ton cadeau " +
         "(budget conseillé : {budget}).\n\n{lien}",
     },
     private_message: {
-      subject: "Vous avez un nouveau message",
-      body: "Bonjour {prenom},\n\nVous avez reçu un nouveau message pour {evenement}. Connectez-vous pour le lire.\n\n{lien}",
+      subject: "Tu as un nouveau message",
+      body: "Bonjour {prenom},\n\nTu as reçu un nouveau message pour {evenement}. Connecte-toi pour le lire.\n\n{lien}",
     },
     family_message: {
       subject: "Nouveau message à toute la famille",
@@ -970,50 +970,50 @@ export const fr = {
     receiver_list_changed: {
       subject: "Une liste d'envies a changé",
       body:
-        "Bonjour {prenom},\n\nLa personne à qui vous offrez un cadeau pour {evenement} a modifié sa liste d'envies.\n\n{lien}",
+        "Bonjour {prenom},\n\nLa personne à qui tu offres un cadeau pour {evenement} a modifié sa liste d'envies.\n\n{lien}",
     },
     birthday_opened: {
       subject: "{evenement} : on prépare la surprise !",
       body:
-        "Bonjour {prenom},\n\n{evenement} tombe le {date} et vous faites partie des participants. " +
-        "Sur le site, vous trouverez sa liste d'envies : prenez une idée en charge, participez à un cadeau " +
-        "commun ou proposez-en un. Chacun voit qui fait quoi, et la personne fêtée ne voit rien.\n\n" +
+        "Bonjour {prenom},\n\n{evenement} tombe le {date} et tu fais partie des participants. " +
+        "Sur le site, tu trouveras sa liste d'envies : prends une idée en charge, participe à un cadeau " +
+        "commun ou proposes-en un. Chacun voit qui fait quoi, et la personne fêtée ne voit rien.\n\n" +
         "Contribution indicative : {budget}.\n\n{lien}\n\nChut, c'est une surprise !",
     },
     birthday_reminder: {
       subject: "{evenement} approche",
       body:
-        "Bonjour {prenom},\n\n{evenement} tombe le {date} et vous n'avez encore choisi aucun cadeau. " +
+        "Bonjour {prenom},\n\n{evenement} tombe le {date} et tu n'as encore choisi aucun cadeau. " +
         "Il est encore temps de prendre une idée en charge ou de participer à un cadeau commun " +
         "(contribution indicative : {budget}).\n\n{lien}",
     },
     ideas_requested: {
       subject: "{evenement} : on aimerait quelques idées",
       body:
-        "Bonjour {prenom},\n\nQuelqu'un qui vous prépare un cadeau ({evenement}) aimerait quelques idées. " +
-        "Ajoutez des envies à votre liste, ou dites en une phrase ce qui vous ferait plaisir en ce moment " +
+        "Bonjour {prenom},\n\nQuelqu'un qui te prépare un cadeau ({evenement}) aimerait quelques idées. " +
+        "Ajoute des envies à ta liste, ou dis en une phrase ce qui te ferait plaisir en ce moment " +
         "(« Mes envies du moment »).\n\n{lien}",
     },
     ideas_requested_secret: {
-      subject: "Votre liste d'envies vous attend",
+      subject: "Ta liste d'envies t'attend",
       body:
-        "Bonjour {prenom},\n\nUn membre de la famille aimerait quelques idées de cadeaux pour vous. " +
-        "Pensez à mettre à jour votre liste d'envies, ou à dire en une phrase ce qui vous ferait plaisir " +
+        "Bonjour {prenom},\n\nUn membre de la famille aimerait quelques idées de cadeaux pour toi. " +
+        "Pense à mettre à jour ta liste d'envies, ou à dire en une phrase ce qui te ferait plaisir " +
         "en ce moment (« Mes envies du moment »).\n\n{lien}",
     },
     family_question: {
       subject: "Une question de la famille",
       body:
-        "Bonjour {prenom},\n\nUn membre de la famille vous pose une question, sans dire qui il est. " +
-        "Vous pouvez lui répondre sur le site, dans « Messages ».\n\n{lien}",
+        "Bonjour {prenom},\n\nUn membre de la famille te pose une question, sans dire qui il est. " +
+        "Tu peux lui répondre sur le site, dans « Messages ».\n\n{lien}",
     },
     family_answer: {
-      subject: "{evenement} : une réponse à vos questions",
+      subject: "{evenement} : une réponse à tes questions",
       body:
         "Bonjour {prenom},\n\nLa personne fêtée a répondu à une question sur la page de l'anniversaire.\n\n{lien}",
     },
     weekly_digest: {
-      subject: "Votre récapitulatif de la semaine",
+      subject: "Ton récapitulatif de la semaine",
       body: "Bonjour {prenom},\n\nVoici les nouveautés de la semaine pour {evenement} :\n\n{resume}\n\n{lien}",
     },
   },

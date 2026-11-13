@@ -1,7 +1,7 @@
 // Tiny translation helper. The site is French only, but keeping every text in
 // one dictionary (i18n/fr.js) keeps the code in English and the texts easy to edit.
 
-import { fr } from "./i18n/fr.js?v=3bb9c56";
+import { fr } from "./i18n/fr.js?v=2c5d768";
 
 /**
  * Returns the text for a dotted key, e.g. t("welcome.title").
