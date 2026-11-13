@@ -350,6 +350,11 @@ export const fr = {
       hint: "La personne dont je prépare l'anniversaire a répondu à une question.",
       text: "La personne fêtée a répondu à une question.",
     },
+    news: {
+      label: "Plusieurs nouveautés à la fois",
+      hint: "Un seul email quand plusieurs nouveautés arrivent en même temps.",
+      text: "Du nouveau sur le site.",
+    },
     weekly_digest: {
       label: "Récapitulatif hebdomadaire",
       hint: "Un seul email par semaine au lieu d'emails séparés.", text: "Ton récapitulatif de la semaine est disponible."
@@ -924,12 +929,22 @@ export const fr = {
     },
   },
 
-  // Lines of the weekly digest email ({resume} variable), one per kind.
+  // Lines of the weekly digest and « Du nouveau » emails ({resume} variable), one per
+  // kind; the event's title is added in brackets when there is one.
   digest: {
     private_message: "- {count} nouveau(x) message(s) personnel(s)",
     family_message: "- {count} nouveau(x) message(s) à toute la famille",
     birthday_message: "- {count} nouveau(x) message(s) dans la discussion d'un anniversaire",
     receiver_list_changed: "- La personne à qui tu offres a modifié sa liste d'envies",
+    draw_opened: "- Le tirage est fait : découvre à qui tu offres",
+    birthday_opened: "- Un anniversaire se prépare : choisis comment participer",
+    wishlist_reminder: "- Pense à compléter ta liste d'envies",
+    event_reminder: "- L'événement approche : pense à ton cadeau",
+    birthday_reminder: "- Un anniversaire approche et tu n'as encore rien choisi",
+    family_answer: "- {count} réponse(s) de la personne fêtée",
+    ideas_requested: "- Quelqu'un qui te prépare un cadeau aimerait quelques idées",
+    ideas_requested_secret: "- Un membre de la famille aimerait quelques idées pour toi",
+    family_question: "- {count} question(s) de la famille pour toi",
   },
 
   // Default email texts, used until the admin saves his own version.
@@ -1022,6 +1037,10 @@ export const fr = {
       subject: "{evenement} : une réponse à tes questions",
       body:
         "Bonjour {prenom},\n\nLa personne fêtée a répondu à une question sur la page de l'anniversaire.\n\n{lien}",
+    },
+    news: {
+      subject: "Du nouveau sur le site des cadeaux",
+      body: "Bonjour {prenom},\n\nVoici ce qui t'attend sur le site :\n\n{resume}\n\n{lien}",
     },
     weekly_digest: {
       subject: "Ton récapitulatif de la semaine",

@@ -4,15 +4,15 @@
 // discussion between participants, and who takes part (chosen by the organiser).
 // The celebrated member never reaches this screen: the database hides the event from them.
 
-import { h, fill } from "../dom.js?v=5d60296";
-import { t, errorText } from "../i18n.js?v=5d60296";
-import { getMe, select, rpc, insert, update } from "../api.js?v=5d60296";
+import { h, fill } from "../dom.js?v=6c60e8a";
+import { t, errorText } from "../i18n.js?v=6c60e8a";
+import { getMe, select, rpc, insert, update } from "../api.js?v=6c60e8a";
 import {
   field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount, normaliseUrl, textOrNull,
-} from "../ui.js?v=5d60296";
-import { bubbles, composer } from "./messages.js?v=5d60296";
-import { renderNotMember } from "./not-member.js?v=5d60296";
-import { askIdeasBlock } from "./ideas.js?v=5d60296";
+} from "../ui.js?v=6c60e8a";
+import { bubbles, composer } from "./messages.js?v=6c60e8a";
+import { renderNotMember } from "./not-member.js?v=6c60e8a";
+import { askIdeasBlock } from "./ideas.js?v=6c60e8a";
 
 const PROFILE_FIELDS = ["current_wishes", "interests", "sizes", "colors", "dislikes", "favorite_shops"];
 
