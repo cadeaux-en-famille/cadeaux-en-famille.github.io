@@ -4,26 +4,26 @@
 // Each route says whether it needs a signed-in member. Screens may be async
 // (they load data first); a loading text is shown meanwhile.
 
-import { applyTranslations, t } from "./i18n.js?v=2c5d768";
-import { h } from "./dom.js?v=2c5d768";
-import { initApi, isSignedIn, getMe } from "./api.js?v=2c5d768";
-import { renderWelcome } from "./screens/welcome.js?v=2c5d768";
-import { renderHome } from "./screens/home.js?v=2c5d768";
-import { renderMyList } from "./screens/my-list.js?v=2c5d768";
-import { renderProfile } from "./screens/profile.js?v=2c5d768";
-import { renderReceiver } from "./screens/receiver.js?v=2c5d768";
-import { renderMessages } from "./screens/messages.js?v=2c5d768";
-import { renderHistory } from "./screens/history.js?v=2c5d768";
-import { renderBirthday } from "./screens/birthday.js?v=2c5d768";
-import { renderHelp } from "./screens/help.js?v=2c5d768";
-import { renderPartner } from "./screens/partner.js?v=2c5d768";
-import { renderNotifications, unreadCount } from "./screens/notifications.js?v=2c5d768";
-import { renderNotFound } from "./screens/not-found.js?v=2c5d768";
-import { renderAdminEvents } from "./screens/admin/events.js?v=2c5d768";
-import { renderAdminMembers } from "./screens/admin/members.js?v=2c5d768";
-import { renderAdminBirthdays } from "./screens/admin/birthdays.js?v=2c5d768";
-import { renderAdminSettings } from "./screens/admin/settings.js?v=2c5d768";
-import { renderAdminEmails } from "./screens/admin/emails.js?v=2c5d768";
+import { applyTranslations, t } from "./i18n.js?v=5c310fc";
+import { h } from "./dom.js?v=5c310fc";
+import { initApi, isSignedIn, getMe } from "./api.js?v=5c310fc";
+import { renderWelcome } from "./screens/welcome.js?v=5c310fc";
+import { renderHome } from "./screens/home.js?v=5c310fc";
+import { renderMyList } from "./screens/my-list.js?v=5c310fc";
+import { renderProfile } from "./screens/profile.js?v=5c310fc";
+import { renderReceiver } from "./screens/receiver.js?v=5c310fc";
+import { renderMessages } from "./screens/messages.js?v=5c310fc";
+import { renderHistory } from "./screens/history.js?v=5c310fc";
+import { renderBirthday } from "./screens/birthday.js?v=5c310fc";
+import { renderHelp } from "./screens/help.js?v=5c310fc";
+import { renderPartner } from "./screens/partner.js?v=5c310fc";
+import { renderNotifications, unreadCount } from "./screens/notifications.js?v=5c310fc";
+import { renderNotFound } from "./screens/not-found.js?v=5c310fc";
+import { renderAdminEvents } from "./screens/admin/events.js?v=5c310fc";
+import { renderAdminMembers } from "./screens/admin/members.js?v=5c310fc";
+import { renderAdminBirthdays } from "./screens/admin/birthdays.js?v=5c310fc";
+import { renderAdminSettings } from "./screens/admin/settings.js?v=5c310fc";
+import { renderAdminEmails } from "./screens/admin/emails.js?v=5c310fc";
 
 const ROUTES = {
   "/": { screen: renderWelcome, public: true },

@@ -4,15 +4,15 @@
 // discussion between participants, and who takes part (chosen by the organiser).
 // The celebrated member never reaches this screen: the database hides the event from them.
 
-import { h, fill } from "../dom.js?v=2c5d768";
-import { t, errorText } from "../i18n.js?v=2c5d768";
-import { getMe, select, rpc, insert, update } from "../api.js?v=2c5d768";
+import { h, fill } from "../dom.js?v=5c310fc";
+import { t, errorText } from "../i18n.js?v=5c310fc";
+import { getMe, select, rpc, insert, update } from "../api.js?v=5c310fc";
 import {
   field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount, normaliseUrl, textOrNull,
-} from "../ui.js?v=2c5d768";
-import { bubbles, composer } from "./messages.js?v=2c5d768";
-import { renderNotMember } from "./not-member.js?v=2c5d768";
-import { askIdeasBlock } from "./ideas.js?v=2c5d768";
+} from "../ui.js?v=5c310fc";
+import { bubbles, composer } from "./messages.js?v=5c310fc";
+import { renderNotMember } from "./not-member.js?v=5c310fc";
+import { askIdeasBlock } from "./ideas.js?v=5c310fc";
 
 const PROFILE_FIELDS = ["current_wishes", "interests", "sizes", "colors", "dislikes", "favorite_shops"];
 
@@ -127,6 +127,21 @@ export async function renderBirthday({ navigate, params }) {
       ? h("p", { class: "empty" }, t("birthday.tastesEmpty"))
       : h("dl", { class: "card tastes" }, tastes),
 
+    h("h2", { class: "section-title" }, t("birthday.discussionTitle")),
+    h(
+      "article",
+      { class: "card thread family" },
+      h("p", { class: "field-hint" }, t("birthday.discussionHint", { name: celebrated })),
+      bubbles(messages.map((m) => ({
+        mine: m.author_id === me.id,
+        author: m.author_id === me.id ? t("messages.me") : names.get(m.author_id) ?? "?",
+        body: m.body,
+        date: m.created_at,
+      }))),
+      canEdit ? composer((body) => insert("family_messages", { event_id: event.id, body }), () => navigate(here)) : null,
+    ),
+
+
     h("h2", { class: "section-title" }, t("birthday.questionsTitle", { name: celebrated })),
     h(
       "article",
@@ -157,20 +172,6 @@ export async function renderBirthday({ navigate, params }) {
             ? t("birthday.lastRequestBy", { name: requests[0].requested_by === me.id ? t("birthday.you") : names.get(requests[0].requested_by) ?? "?" })
             : t("birthday.lastRequestAuto"))
         : null,
-    ),
-
-    h("h2", { class: "section-title" }, t("birthday.discussionTitle")),
-    h(
-      "article",
-      { class: "card thread family" },
-      h("p", { class: "field-hint" }, t("birthday.discussionHint", { name: celebrated })),
-      bubbles(messages.map((m) => ({
-        mine: m.author_id === me.id,
-        author: m.author_id === me.id ? t("messages.me") : names.get(m.author_id) ?? "?",
-        body: m.body,
-        date: m.created_at,
-      }))),
-      canEdit ? composer((body) => insert("family_messages", { event_id: event.id, body }), () => navigate(here)) : null,
     ),
 
     h("h2", { class: "section-title" }, t("birthday.participantsTitle", { count: participantIds.size })),

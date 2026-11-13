@@ -3,11 +3,11 @@
 // their own screen (admin/birthdays.js).
 // The admin never sees who gives to whom: the database only returns counts.
 
-import { h, fill } from "../../dom.js?v=2c5d768";
-import { t, errorText } from "../../i18n.js?v=2c5d768";
-import { select, insert, update, remove, rpc } from "../../api.js?v=2c5d768";
-import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount, addDays } from "../../ui.js?v=2c5d768";
-import { requireAdmin, adminShell } from "./common.js?v=2c5d768";
+import { h, fill } from "../../dom.js?v=5c310fc";
+import { t, errorText } from "../../i18n.js?v=5c310fc";
+import { select, insert, update, remove, rpc } from "../../api.js?v=5c310fc";
+import { field, statusLine, whileBusy, confirmButton, formatEuro, formatDate, parseAmount, addDays } from "../../ui.js?v=5c310fc";
+import { requireAdmin, adminShell } from "./common.js?v=5c310fc";
 
 export async function renderAdminEvents() {
   const denied = await requireAdmin();

@@ -99,8 +99,7 @@ export const fr = {
     birthdayMe: "Vous",
     birthdayOpen: "Voir la préparation",
     birthdayElsewhere: "En préparation (sans vous)",
-    birthdaysPreparing: "En préparation",
-    birthdaysComing: "À venir",
+    birthdayContribution: "Contribution indicative : {amount}",
     birthdayFacts: "{count} participant(s)",
     birthdayFactsMoney: "{count} participant(s) · {amount} réunis",
     birthdayYouChose: "Vous participez : {gifts}",
@@ -447,9 +446,9 @@ export const fr = {
         title: "Les anniversaires",
         steps: [
           "Quelques semaines avant un anniversaire, les participants reçoivent un email.",
-          "Sur l'accueil, les anniversaires que vous préparez sont en haut, encadrés, sous « En préparation » : " +
-            "touchez-en un pour ouvrir sa page. « À venir » liste les autres ; « Lancer la préparation » ouvre " +
-            "un anniversaire plus tôt (ou tout court, quand il ne s'ouvre pas tout seul), puis « Oui, lancer ».",
+          "Sur l'accueil, chaque anniversaire que vous préparez a son propre encadré, comme Noël : touchez " +
+            "« Voir la préparation ». « Anniversaires à venir » liste les autres ; « Lancer la préparation » " +
+            "ouvre un anniversaire plus tôt (ou tout court, quand il ne s'ouvre pas tout seul), puis « Oui, lancer ».",
           "Sur une idée de sa liste, touchez « Je m'en occupe » (vous l'achetez) ou « Je participe » " +
             "(vous donnez une somme pour un cadeau commun).",
           "Vous pouvez aussi proposer un cadeau commun et discuter avec les autres participants.",

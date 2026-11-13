@@ -6,9 +6,9 @@
 // Texts live in fr.js under "help"; this file only knows the order of the sections and
 // their pictures.
 
-import { h } from "../dom.js?v=2c5d768";
-import { t } from "../i18n.js?v=2c5d768";
-import { isSignedIn } from "../api.js?v=2c5d768";
+import { h } from "../dom.js?v=5c310fc";
+import { t } from "../i18n.js?v=5c310fc";
+import { isSignedIn } from "../api.js?v=5c310fc";
 
 // Section id -> pictures (file names in site/help/), in reading order.
 export const HELP_SECTIONS = [
